@@ -1,5 +1,5 @@
 # VoxPopuli
-VoxPopuli is a backend system designed to provide a comment section to any website. It leverages a microservice architecture for scalability, maintainability and clear separation of concerns.
+VoxPopuli is a chrome extension integrated with a Spring boot backend system designed to provide a comment section to any website. It leverages a microservice architecture for scalability, maintainability and clear separation of concerns.
 
 ## Overview
 VoxPopuli is a Chrome extension that adds a comment section to any website. I'm building it as a learning project to explore microservice architectures, backend authentication with Spring security JWT, and frontend Shadow DOM manipulation. The backend is built with Spring Boot and PostgreSQL, with separate services for users, comments, authentication, filtering, and a gateway. The Chrome extension communicates with the backend to show comments in real time.
@@ -14,7 +14,7 @@ Service level flow charts and sequence diagrams can be found in the [Architectur
 
 ## Roadmap:
 **Backend:**
-- [ ] User Service.
+- [x] User Service.
 - [ ] Comment Service.
 - [ ] Authentication Service.
 - [ ] Filter Service.
