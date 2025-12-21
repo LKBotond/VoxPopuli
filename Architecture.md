@@ -5,7 +5,7 @@
 ```mermaid
 erDiagram
     users {
-        BIGINT user_id PK
+        UUID user_id PK
         CITEXT email
         CITEXT alias
         TEXT pass_hash
@@ -17,9 +17,9 @@ erDiagram
         TIMESTAMP expires_at
     }
     comments {
-        BIGINT id PK
-        BIGINT parent_id
-        BIGINT user_id
+        UUID id PK
+        UUID parent_id
+        UUID user_id
         TEXT source_link_hash
         TEXT content
         TIMESTAMP created_at

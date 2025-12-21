@@ -1,5 +1,4 @@
 services:
-
   userservice:
     build: .
     container_name: userservice
@@ -8,24 +7,15 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=prod
     depends_on:
-      - postgres
+      - userservice-db
 
-  postgres:
+  userservice-db:
     image: postgres:16
-    container_name: postgres-db
+    container_name: userservice-db
     restart: always
     environment:
-      POSTGRES_DB: mydb
+      POSTGRES_DB: users_db
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
     ports:
       - "5432:5432"
-
-  postgres-test:
-    image: postgres:16
-    environment:
-      POSTGRES_DB: testdb
-      POSTGRES_USER: test
-      POSTGRES_PASSWORD: test
-    ports:
-      - "5433:5432"
