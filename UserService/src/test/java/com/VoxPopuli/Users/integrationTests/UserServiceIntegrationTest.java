@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.VoxPopuli.Users.domain.User;
-import com.VoxPopuli.Users.dto.AuthenticationRequest;
 import com.VoxPopuli.Users.dto.RegistrationRequest;
 import com.VoxPopuli.Users.exceptions.AliasTakenException;
 import com.VoxPopuli.Users.exceptions.EmailTakenException;
@@ -53,8 +52,8 @@ public class UserServiceIntegrationTest {
     public void testSuccesfulLogin() {
         RegistrationRequest registrationRequest = TestDataUtils.createTestRegistrationRequest();
         userService.createUser(registrationRequest);
-        AuthenticationRequest authenticationRequest = TestDataUtils.createAuthenticationRequest();
-        User result = userService.loginByEmail(authenticationRequest);
+        String loginRequest = TestDataUtils.createLoginRequest();
+        User result = userService.loginByEmail(loginRequest);
         assertNotNull(result);
     }
 
@@ -62,8 +61,6 @@ public class UserServiceIntegrationTest {
     public void testUnSuccesfulLogin() {
         RegistrationRequest registrationRequest = TestDataUtils.createTestRegistrationRequest();
         userService.createUser(registrationRequest);
-        AuthenticationRequest authenticationRequest = TestDataUtils.createAuthenticationRequest();
-        authenticationRequest.setEmail("null@null.null");
-        assertThrows(UserNotFoundException.class, () -> userService.loginByEmail(authenticationRequest));
+        assertThrows(UserNotFoundException.class, () -> userService.loginByEmail("Null@null.null"));
     }
 }

@@ -1,10 +1,10 @@
 package com.VoxPopuli.Users.services;
 
+import java.util.UUID;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import com.VoxPopuli.Users.domain.User;
-import com.VoxPopuli.Users.dto.AuthenticationRequest;
-import com.VoxPopuli.Users.dto.DeletionRequest;
 import com.VoxPopuli.Users.dto.RegistrationRequest;
 import com.VoxPopuli.Users.exceptions.AliasTakenException;
 import com.VoxPopuli.Users.exceptions.EmailTakenException;
@@ -33,14 +33,13 @@ public class UserService {
         }
     }
 
-    public User loginByEmail(AuthenticationRequest authenticationRequest) {
-        return userRepository.findByEmail(authenticationRequest.getEmail())
-                .orElseThrow(
-                        () -> new UserNotFoundException("No user with Such email" + authenticationRequest.getEmail()));
+    public User loginByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("No user with Such email" + email));
     }
 
-    public void deleteUser(DeletionRequest deletionRequest) {
-        userRepository.deleteById(deletionRequest.getUserId());
+    public void deleteUser(UUID userId) {
+        userRepository.deleteById(userId);
     }
 
     private boolean checkForAlias(String alias) {

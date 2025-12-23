@@ -1,10 +1,6 @@
 package com.VoxPopuli.Users.utils;
 
-import java.util.UUID;
-
 import com.VoxPopuli.Users.domain.User;
-import com.VoxPopuli.Users.dto.AuthenticationRequest;
-import com.VoxPopuli.Users.dto.DeletionRequest;
 import com.VoxPopuli.Users.dto.RegistrationRequest;
 
 public final class TestDataUtils {
@@ -27,11 +23,8 @@ public final class TestDataUtils {
                 .passHash("password").build();
     }
 
-    public static AuthenticationRequest createAuthenticationRequest() {
-        return AuthenticationRequest.builder().email("Test@test.test").build();
+    public static String createLoginRequest() {
+        return "Test@test.test";
     }
 
-    public static DeletionRequest createDeletionRequest(UUID uuid) {
-        return DeletionRequest.builder().userId(uuid).build();
-    }
 }
