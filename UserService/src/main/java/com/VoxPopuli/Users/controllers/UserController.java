@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.VoxPopuli.Users.domain.User;
+import com.VoxPopuli.Users.dto.LoginResponse;
 import com.VoxPopuli.Users.dto.RegistrationRequest;
 import com.VoxPopuli.Users.dto.UserDto;
 import com.VoxPopuli.Users.services.UserService;
@@ -32,11 +33,11 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> registerUser(@RequestBody RegistrationRequest request) {
+    public ResponseEntity<LoginResponse> registerUser(@RequestBody RegistrationRequest request) {
         User user = userService.createUser(request);
-        UserDto userDto = new UserDto();
-        userDto.mapUserToDTO(user);
-        return ResponseEntity.ok(userDto);
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.mapUserToDTO(user);
+        return ResponseEntity.ok(loginResponse);
     }
 
     @DeleteMapping("/delete/{userId}")
