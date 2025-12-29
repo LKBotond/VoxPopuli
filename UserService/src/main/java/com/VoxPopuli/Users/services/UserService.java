@@ -38,13 +38,16 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("No user with Such email" + email));
     }
 
+    public void changePass(UUID userId, String newPass) {
+        userRepository.updatePassByUserId(userId, newPass);
+    }
+
     public void deleteUser(UUID userId) {
         userRepository.deleteById(userId);
     }
 
     private boolean checkForAlias(String alias) {
         return userRepository.findByAlias(alias).isPresent();
-
     }
 
     private boolean checkForEmail(String email) {

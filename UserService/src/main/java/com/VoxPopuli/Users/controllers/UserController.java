@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.VoxPopuli.Users.domain.User;
 import com.VoxPopuli.Users.dto.LoginResponse;
+import com.VoxPopuli.Users.dto.PassUpdateRequest;
 import com.VoxPopuli.Users.dto.RegistrationRequest;
 import com.VoxPopuli.Users.dto.UserDto;
 import com.VoxPopuli.Users.services.UserService;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/users")
@@ -40,10 +42,16 @@ public class UserController {
         return ResponseEntity.ok(loginResponse);
     }
 
+    @PutMapping("/{id}/passwords")
+    public ResponseEntity<Void> updatePass(@PathVariable("id") UUID userId, @RequestBody PassUpdateRequest request) {
+        userService.changePass(userId, request.getNewPassHash());
+        return ResponseEntity.noContent().build();
+    }
+
     @DeleteMapping("/delete/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable("userId") UUID userId) {
         userService.deleteUser(userId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
 }
