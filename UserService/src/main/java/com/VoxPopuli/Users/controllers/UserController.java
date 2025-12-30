@@ -21,7 +21,7 @@ import com.VoxPopuli.Users.services.UserService;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/internal/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -42,7 +42,7 @@ public class UserController {
         return ResponseEntity.ok(loginResponse);
     }
 
-    @PutMapping("/{id}/passwords")
+    @PutMapping("/{id}/password")
     public ResponseEntity<Void> updatePass(@PathVariable("id") UUID userId, @RequestBody PassUpdateRequest request) {
         userService.changePass(userId, request.getNewPassHash());
         return ResponseEntity.noContent().build();
