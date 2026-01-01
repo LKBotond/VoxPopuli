@@ -1,7 +1,5 @@
 package com.VoxPopuli.Users.dto;
 
-import com.VoxPopuli.Users.domain.User;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,11 +14,5 @@ public class RegistrationRequest {
     private String alias;
     private String passHash;
 
-    public User mapToUser() {
-        return User.builder()
-                .email(this.email)
-                .alias(this.alias)
-                .passHash(this.passHash)
-                .build();
-    }
+
 }

@@ -9,6 +9,7 @@ import com.VoxPopuli.Users.dto.RegistrationRequest;
 import com.VoxPopuli.Users.exceptions.AliasTakenException;
 import com.VoxPopuli.Users.exceptions.EmailTakenException;
 import com.VoxPopuli.Users.exceptions.UserNotFoundException;
+import com.VoxPopuli.Users.helpers.UserMapper;
 import com.VoxPopuli.Users.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     public User createUser(RegistrationRequest registrationRequest) {
         try {
@@ -26,9 +28,8 @@ public class UserService {
             if (checkForEmail(registrationRequest.getEmail())) {
                 throw new EmailTakenException("Email already taken: " + registrationRequest.getEmail());
             }
-            return userRepository.save(registrationRequest.mapToUser());
+            return userRepository.save(userMapper.RegistrationRequestToUser(registrationRequest));
         } catch (DataIntegrityViolationException e) {
-
             throw new RuntimeException("User creation failed due to duplicate entry", e);
         }
     }
@@ -36,6 +37,10 @@ public class UserService {
     public User loginByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("No user with Such email" + email));
+    }
+
+    public User findById(UUID id) {
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("No user with Such id" + id));
     }
 
     public void changePass(UUID userId, String newPass) {

@@ -17,6 +17,7 @@ import com.VoxPopuli.Users.dto.LoginResponse;
 import com.VoxPopuli.Users.dto.PassUpdateRequest;
 import com.VoxPopuli.Users.dto.RegistrationRequest;
 import com.VoxPopuli.Users.dto.UserDto;
+import com.VoxPopuli.Users.helpers.UserMapper;
 import com.VoxPopuli.Users.services.UserService;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -25,21 +26,24 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-
-    @GetMapping("/login/{email}")
-    public ResponseEntity<UserDto> loginUser(@PathVariable("email") String email) {
-        User user = userService.loginByEmail(email);
-        UserDto userDto = new UserDto();
-        userDto.mapUserToDTO(user);
-        return ResponseEntity.ok(userDto);
-    }
+    private final UserMapper userMapper;
 
     @PostMapping("/register")
     public ResponseEntity<LoginResponse> registerUser(@RequestBody RegistrationRequest request) {
         User user = userService.createUser(request);
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.mapUserToDTO(user);
-        return ResponseEntity.ok(loginResponse);
+        return ResponseEntity.ok(userMapper.toLoginResponse(user));
+    }
+
+    @GetMapping("/login/{email}")
+    public ResponseEntity<UserDto> loginUser(@PathVariable("email") String email) {
+        User user = userService.loginByEmail(email);
+        return ResponseEntity.ok(userMapper.toUserDto(user));
+    }
+
+    @GetMapping("/internal/users/auth/{id}")
+    public ResponseEntity<UserDto> getCredentialsById(@PathVariable("id") UUID userId) {
+        User user = userService.findById(userId);
+        return ResponseEntity.ok(userMapper.toUserDto(user));
     }
 
     @PutMapping("/{id}/password")

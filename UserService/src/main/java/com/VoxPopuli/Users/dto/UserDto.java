@@ -14,12 +14,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
-    private UUID user_id;
+    private UUID userId;
     private String alias;
     private String passHash;
 
     public void mapUserToDTO(User user) {
-        this.user_id = user.getUserID();
+        this.userId = user.getUserID();
         this.alias = user.getAlias();
         this.passHash=user.getPassHash();
     }

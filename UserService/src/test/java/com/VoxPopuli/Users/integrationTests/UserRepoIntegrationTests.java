@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.VoxPopuli.Users.domain.User;
 import com.VoxPopuli.Users.dto.RegistrationRequest;
+import com.VoxPopuli.Users.helpers.UserMapper;
 import com.VoxPopuli.Users.repository.UserRepository;
 import com.VoxPopuli.Users.utils.ClassIntegrityTests;
 import com.VoxPopuli.Users.utils.TestDataUtils;
@@ -25,6 +26,9 @@ public class UserRepoIntegrationTests {
     @Autowired
     private UserRepository repositoryTest;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Test
     public void testCreation() {
         User savedUser = repositoryTest.save(TestDataUtils.createTestUser());
@@ -35,7 +39,7 @@ public class UserRepoIntegrationTests {
     @Test
     public void testRegistrationDtoToUserDomainMapping() {
         RegistrationRequest request = TestDataUtils.createTestRegistrationRequest();
-        User user = request.mapToUser();
+        User user = userMapper.RegistrationRequestToUser(request);
         try {
             testIdLessUserDomains(user);
         } catch (IllegalAccessException e) {
