@@ -18,16 +18,19 @@ import com.VoxPopuli.AuthenticationService.dtos.UserDto;
 @FeignClient(name = "user-service", url = "http://user-service:8080")
 public interface UserClient {
 
-    @PostMapping("/users/register")
-    LoginResponse registerUser(@RequestBody HashedRegistrationRequest request);
+    @PostMapping("/internal/users/register")
+    public LoginResponse registerUser(@RequestBody HashedRegistrationRequest request);
 
-    @GetMapping("/users/login/{email}")
-    UserDto getUserCredentials(@PathVariable("email") String email);
+    @GetMapping("/internal/users/login/{email}")
+    public UserDto getUserCredentialsByEmail(@PathVariable("email") String email);
 
-    @PutMapping("/users/{id}/passwords")
-    Void updatePass(@PathVariable("id") UUID id, PassUpdateRequestForUserService updated);
+    @GetMapping("/internal/users/auth/{id}")
+    public UserDto getUserCredentialsById(@PathVariable("id") UUID userId);
 
-    @DeleteMapping("/users/delete/{userId}")
-    void deleteUser(@PathVariable("userId") UUID userId);
+    @PutMapping("/internal/users/{id}/passwords")
+    public Void updatePass(@PathVariable("id") UUID id, PassUpdateRequestForUserService updated);
+
+    @DeleteMapping("/internal/users/delete/{userId}")
+    public void deleteUser(@PathVariable("userId") UUID userId);
 
 }

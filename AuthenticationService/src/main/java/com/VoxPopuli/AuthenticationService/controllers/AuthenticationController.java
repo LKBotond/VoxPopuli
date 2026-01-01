@@ -37,7 +37,7 @@ public class AuthenticationController {
     @PutMapping("/users/{id}/passwords")
     public ResponseEntity<Void> changePassForUser(@PathVariable("id") UUID userId,
             @RequestBody PassUpdateRequestForAuthService request) {
-        accessService.changePass(request.getNewPassArray(), userId);
+        accessService.changePass(request, userId);
         return ResponseEntity.noContent().build();
     }
 }

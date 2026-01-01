@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
-    private UUID user_id;
+    private UUID userId;
     private String alias;
     private String passHash;
 
     public LoginResponse mapToLoginResponse() {
-        return LoginResponse.builder().userId(user_id).alias(alias).build();
+        return LoginResponse.builder().userId(userId).alias(alias).build();
     }
 }

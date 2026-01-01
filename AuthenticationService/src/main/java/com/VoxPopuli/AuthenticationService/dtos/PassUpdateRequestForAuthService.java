@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PassUpdateRequestForAuthService {
+        private char[] oldPassArray;
         private char[] newPassArray;
 }
