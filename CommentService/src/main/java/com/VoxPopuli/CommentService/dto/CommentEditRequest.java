@@ -1,12 +1,15 @@
 package com.VoxPopuli.CommentService.dto;
 
 import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-@Data
+import lombok.Setter;
+ 
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
