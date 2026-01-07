@@ -2,10 +2,12 @@ package com.VoxPopuli.Users.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-@Data
+import lombok.Setter;
+ 
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
