@@ -12,7 +12,7 @@ public final class TestDataUtils {
     }
 
     public static final SessionCreationRequest createSessionCreationRequest() {
-        return new SessionCreationRequest("TestUserId");
+        return new SessionCreationRequest("TestUserId", "alias");
     }
 
     public static final UserDto createUserDto() {
@@ -24,7 +24,7 @@ public final class TestDataUtils {
     }
 
     public static final SessionResponse createSessionResponse() {
-        return new SessionResponse("TestSessionId");
+        return new SessionResponse("TestSessionId", "alias");
     }
 
     public static final ValidationRequest createValidationRequest() {

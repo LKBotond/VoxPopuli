@@ -13,4 +13,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SessionResponse {
     private String sessionId;
+    private String alias;
 }

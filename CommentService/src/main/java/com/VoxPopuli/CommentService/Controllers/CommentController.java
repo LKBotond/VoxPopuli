@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
-@RequestMapping("/comments")
+@RequestMapping("/internal/comments")
 @RequiredArgsConstructor
 public class CommentController {
     private final CommentService commentService;

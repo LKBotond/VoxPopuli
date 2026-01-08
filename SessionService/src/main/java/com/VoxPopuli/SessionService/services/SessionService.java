@@ -27,7 +27,7 @@ public class SessionService {
     public SessionResponse createSession(SessionCreationRequest request) {
         SessionToken token = buildToken(request);
         saveToken(token);
-        return new SessionResponse(token.getSessionId());
+        return new SessionResponse(token.getSessionId(), request.getAlias());
     }
 
     public UserDto validateSession(ValidationRequest request) {

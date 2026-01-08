@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/censor")
+@RequestMapping("/internal/censor")
 @RequiredArgsConstructor
 public class FilterController {
     private final Censor censor;
