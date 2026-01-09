@@ -5,12 +5,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
- 
+
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PassUpdateRequestForUserService {
-    private String newPassHash;
+public class PassHashRequest {
+    char[] pass;
+
 }

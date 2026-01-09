@@ -11,8 +11,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegistrationRequest {
-    private String email;
-    private String alias;
-    private char[] password;
+public class ValidationRequest {
+    String hashedPass;
+    char[] susPass;
 }
