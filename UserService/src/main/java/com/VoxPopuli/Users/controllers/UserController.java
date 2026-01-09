@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.VoxPopuli.Users.domain.User;
-import com.VoxPopuli.Users.dto.LoginResponse;
-import com.VoxPopuli.Users.dto.PassUpdateRequest;
+import com.VoxPopuli.Users.dto.UserData;
+import com.VoxPopuli.Users.dto.PassRequest;
 import com.VoxPopuli.Users.dto.RegistrationRequest;
+
 import com.VoxPopuli.Users.helpers.UserMapper;
 import com.VoxPopuli.Users.services.UserService;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,26 +29,26 @@ public class UserController {
     private final UserMapper userMapper;
 
     @PostMapping("/register")
-    public ResponseEntity<LoginResponse> registerUser(@RequestBody RegistrationRequest request) {
+    public ResponseEntity<UserData> registerUser(@RequestBody RegistrationRequest request) {
         User user = userService.createUser(request);
-        return ResponseEntity.ok(userMapper.toLoginResponse(user));
+        return ResponseEntity.ok(userMapper.toUserData(user));
     }
 
     @GetMapping("/login/{email}")
-    public ResponseEntity<LoginResponse> loginUser(@PathVariable("email") String email) {
+    public ResponseEntity<UserData> loginUser(@PathVariable("email") String email) {
         User user = userService.loginByEmail(email);
-        return ResponseEntity.ok(userMapper.toLoginResponse(user));
+        return ResponseEntity.ok(userMapper.toUserData(user));
     }
 
     @GetMapping("/auth/{id}")
-    public ResponseEntity<LoginResponse> getCredentialsById(@PathVariable("id") UUID userId) {
+    public ResponseEntity<PassRequest> getCredentialsById(@PathVariable("id") UUID userId) {
         User user = userService.findById(userId);
-        return ResponseEntity.ok(userMapper.toLoginResponse(user));
+        return ResponseEntity.ok(userMapper.toPassHash(user));
     }
 
     @PutMapping("/{id}/password")
-    public ResponseEntity<Void> updatePass(@PathVariable("id") UUID userId, @RequestBody PassUpdateRequest request) {
-        userService.changePass(userId, request.getNewPassHash());
+    public ResponseEntity<Void> updatePass(@PathVariable("id") UUID userId, @RequestBody PassRequest request) {
+        userService.changePass(userId, request.getPassHash());
         return ResponseEntity.noContent().build();
     }
 

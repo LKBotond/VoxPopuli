@@ -1,4 +1,4 @@
-package com.VoxPopuli.Users.dto;
+package com.VoxPopuli.AuthenticationService.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +11,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PassUpdateRequest {
-    private String newPassHash;
+public class PassValidationRequest {
+    String hashedPass;
+    char[] susPass;
 }

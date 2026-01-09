@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.VoxPopuli.FilterService.dtos.CensorRequest;
 import com.VoxPopuli.FilterService.dtos.CensorResponse;
-import com.VoxPopuli.FilterService.dtos.DiktUpdateRequest;
+import com.VoxPopuli.FilterService.dtos.DictUpdateRequest;
 import com.VoxPopuli.FilterService.services.Censor;
 import com.VoxPopuli.FilterService.services.ProfanityDataHandler;
 
@@ -28,7 +28,7 @@ public class FilterController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Void> addDict(@RequestBody DiktUpdateRequest update) {
+    public ResponseEntity<Void> addDict(@RequestBody DictUpdateRequest update) {
         handler.loadDictionary(update.getDictLang(), update.getWords());
         return ResponseEntity.noContent().build();
     }

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.VoxPopuli.AuthenticationService.dtos.HashedPass;
 import com.VoxPopuli.AuthenticationService.dtos.PassHashRequest;
-import com.VoxPopuli.AuthenticationService.dtos.ValidationRequest;
+import com.VoxPopuli.AuthenticationService.dtos.PassValidationRequest;
 import com.VoxPopuli.AuthenticationService.services.AuthenticationService;
 
 @SpringBootTest
@@ -37,13 +37,13 @@ public class AccessServiceTest {
         char[] legitCopy = Arrays.copyOf(legitPass, legitPass.length);
         char[] legitCopy2 = Arrays.copyOf(legitPass, legitPass.length);
         HashedPass passHash = authService.hashPass(new PassHashRequest(legitCopy));
-        assertTrue(authService.authenticatePassword(new ValidationRequest(passHash.getHashedPass(), legitCopy2)));
+        assertTrue(authService.authenticatePassword(new PassValidationRequest(passHash.getHashedPass(), legitCopy2)));
     }
 
     @Test
     void testForFalsePassfRejection() {
         HashedPass passHash = authService.hashPass(new PassHashRequest(legitPass));
-        assertFalse(authService.authenticatePassword(new ValidationRequest(passHash.getHashedPass(), susPass)));
+        assertFalse(authService.authenticatePassword(new PassValidationRequest(passHash.getHashedPass(), susPass)));
     }
 
 }

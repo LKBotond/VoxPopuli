@@ -1,17 +1,16 @@
-package com.VoxPopuli.AuthenticationService.dtos;
+package com.VoxPopuli.Users.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
- 
+
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ValidationRequest {
-    String hashedPass;
-    char[] susPass;
+public class PassRequest {
+    String passHash;
 }

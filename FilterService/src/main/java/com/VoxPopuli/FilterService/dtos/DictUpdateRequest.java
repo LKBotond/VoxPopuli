@@ -13,7 +13,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DiktUpdateRequest {
+public class DictUpdateRequest {
     String dictLang;
     Set<String> words;
 }

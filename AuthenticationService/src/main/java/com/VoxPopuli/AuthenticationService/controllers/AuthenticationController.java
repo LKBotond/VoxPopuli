@@ -2,7 +2,7 @@ package com.VoxPopuli.AuthenticationService.controllers;
 
 
 
-import com.VoxPopuli.AuthenticationService.dtos.ValidationRequest;
+import com.VoxPopuli.AuthenticationService.dtos.PassValidationRequest;
 import com.VoxPopuli.AuthenticationService.dtos.HashedPass;
 import com.VoxPopuli.AuthenticationService.dtos.PassHashRequest;
 import com.VoxPopuli.AuthenticationService.services.AuthenticationService;
@@ -24,16 +24,15 @@ public class AuthenticationController {
     private final AuthenticationService authService;
 
     @PostMapping("/validate")
-    public ResponseEntity<Void> loginUser(@RequestBody ValidationRequest loginRequest) {
+    public ResponseEntity<Void> validatePass(@RequestBody PassValidationRequest loginRequest) {
         if (authService.authenticatePassword(loginRequest)) {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-
     }
 
     @PostMapping("/hash")
-    public ResponseEntity<HashedPass> registerUser(@RequestBody PassHashRequest request) {
+    public ResponseEntity<HashedPass> hashPass(@RequestBody PassHashRequest request) {
         return ResponseEntity.ok(authService.hashPass(request));
     }
 

@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.VoxPopuli.AuthenticationService.dtos.HashedPass;
 import com.VoxPopuli.AuthenticationService.dtos.PassHashRequest;
-import com.VoxPopuli.AuthenticationService.dtos.ValidationRequest;
+import com.VoxPopuli.AuthenticationService.dtos.PassValidationRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationService {
     private final Argon2PassHashingService passHashingService;
 
-    public boolean authenticatePassword(ValidationRequest request) {
+    public boolean authenticatePassword(PassValidationRequest request) {
         return passHashingService.verifyPass(request.getSusPass(), request.getHashedPass());
     }
 

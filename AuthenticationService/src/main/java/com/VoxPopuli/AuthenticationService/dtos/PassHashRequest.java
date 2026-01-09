@@ -13,5 +13,4 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PassHashRequest {
     char[] pass;
-
 }
