@@ -28,7 +28,7 @@ public class UserService {
             if (checkForEmail(registrationRequest.getEmail())) {
                 throw new EmailTakenException("Email already taken: " + registrationRequest.getEmail());
             }
-            return userRepository.save(userMapper.RegistrationRequestToUser(registrationRequest));
+            return userRepository.save(userMapper.registrationRequestToUser(registrationRequest));
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException("User creation failed due to duplicate entry", e);
         }

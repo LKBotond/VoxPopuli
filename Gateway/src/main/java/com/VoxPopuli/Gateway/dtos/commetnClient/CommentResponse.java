@@ -1,0 +1,25 @@
+package com.VoxPopuli.Gateway.dtos.commetnClient;
+
+
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+ 
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class CommentResponse {
+    UUID commentId;
+    UUID parentId;
+    UUID userId;
+    String content;
+    OffsetDateTime updatedAt;
+}
+

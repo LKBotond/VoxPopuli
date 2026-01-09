@@ -39,7 +39,7 @@ public class UserRepoIntegrationTests {
     @Test
     public void testRegistrationDtoToUserDomainMapping() {
         RegistrationRequest request = TestDataUtils.createTestRegistrationRequest();
-        User user = userMapper.RegistrationRequestToUser(request);
+        User user = userMapper.registrationRequestToUser(request);
         try {
             testIdLessUserDomains(user);
         } catch (IllegalAccessException e) {
