@@ -5,12 +5,9 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.VoxPopuli.SessionService.domain.SessionToken;
-import com.VoxPopuli.SessionService.dtos.SessionCreationRequest;
-import com.VoxPopuli.SessionService.dtos.SessionEndRequest;
-import com.VoxPopuli.SessionService.dtos.SessionResponse;
-import com.VoxPopuli.SessionService.dtos.UserDto;
-import com.VoxPopuli.SessionService.dtos.ValidationRequest;
+import com.VoxPopuli.SessionService.domain.SessionDomain;
+import com.VoxPopuli.SessionService.dtos.UserData;
+import com.VoxPopuli.SessionService.dtos.SessionToken;
 import com.VoxPopuli.SessionService.repositories.RedisRepo;
 import com.VoxPopuli.SessionService.exceptions.InvalidSessionException;
 
@@ -24,39 +21,39 @@ public class SessionService {
     @Value("${app.session.timeout:600}")
     private long sessionLifetime;
 
-    public SessionResponse createSession(SessionCreationRequest request) {
-        SessionToken token = buildToken(request);
+    public SessionToken createSession(UserData sessionCreationRequest) {
+        SessionDomain token = buildToken(sessionCreationRequest);
         saveToken(token);
-        return new SessionResponse(token.getSessionId(), request.getAlias());
+        return new SessionToken(token.getSessionId(), sessionCreationRequest.getAlias());
     }
 
-    public UserDto validateSession(ValidationRequest request) {
-        SessionToken token = authenticateToken(request.getSessionId());
+    public UserData validateSession(SessionToken validationRequest) {
+        SessionDomain token = authenticateToken(validationRequest.getSessionId());
         refreshToken(token);
-        return new UserDto(token.getUserId());
+        return new UserData(token.getUserId(), validationRequest.getAlias());
     }
 
-    public void endSession(SessionEndRequest request) {
-        deleteSession(request.getSessionId());
+    public void endSession(String sessionId) {
+        deleteSession(sessionId);
     }
 
-    public void saveToken(SessionToken token) {
+    public void saveToken(SessionDomain token) {
         redisRepository.save(token);
     }
 
-    private SessionToken authenticateToken(String sessionId) {
+    private SessionDomain authenticateToken(String sessionId) {
         return redisRepository.findById(sessionId)
                 .orElseThrow(() -> new InvalidSessionException("Token does not exist"));
     }
 
-    private SessionToken refreshToken(SessionToken token) {
+    private SessionDomain refreshToken(SessionDomain token) {
         token.setExpiryInSeconds(sessionLifetime);
         redisRepository.save(token);
         return token;
     }
 
-    private SessionToken buildToken(SessionCreationRequest request) {
-        return SessionToken.builder()
+    private SessionDomain buildToken(UserData request) {
+        return SessionDomain.builder()
                 .sessionId(UUID.randomUUID().toString())
                 .userId(request.getUserId())
                 .expiryInSeconds(sessionLifetime).build();

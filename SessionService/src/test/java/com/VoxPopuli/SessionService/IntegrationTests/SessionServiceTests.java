@@ -10,6 +10,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.junit.jupiter.Container;
@@ -18,11 +19,9 @@ import org.testcontainers.utility.DockerImageName;
 
 import static org.awaitility.Awaitility.await;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import com.VoxPopuli.SessionService.domain.SessionToken;
-import com.VoxPopuli.SessionService.dtos.SessionEndRequest;
-import com.VoxPopuli.SessionService.dtos.SessionResponse;
-import com.VoxPopuli.SessionService.dtos.UserDto;
-import com.VoxPopuli.SessionService.dtos.ValidationRequest;
+import com.VoxPopuli.SessionService.domain.SessionDomain;
+import com.VoxPopuli.SessionService.dtos.SessionToken;
+import com.VoxPopuli.SessionService.dtos.UserData;
 import com.VoxPopuli.SessionService.exceptions.InvalidSessionException;
 import com.VoxPopuli.SessionService.repositories.RedisRepo;
 import com.VoxPopuli.SessionService.services.SessionService;
@@ -34,6 +33,7 @@ import com.redis.testcontainers.RedisContainer;
 public class SessionServiceTests {
 
     @Container
+    @ServiceConnection
     @SuppressWarnings("resource")
     private static final RedisContainer REDIS_CONTAINER = new RedisContainer(
             DockerImageName.parse("redis:7-alpine")).withExposedPorts(6379);
@@ -57,24 +57,25 @@ public class SessionServiceTests {
 
     @Test
     public void testSessionCreation() {
-        SessionResponse response = sessionService.createSession(TestDataUtils.createSessionCreationRequest());
+        SessionToken response = sessionService.createSession(TestDataUtils.createSessionCreationRequest());
         assertNotNull(response);
     }
 
     @Test
     public void testSessionValidation() {
-        SessionResponse saved = sessionService.createSession(TestDataUtils.createSessionCreationRequest());
-        ValidationRequest request = new ValidationRequest(saved.getSessionId());
-        UserDto response = sessionService.validateSession(request);
-        assertNotNull(response);
+        SessionToken saved = sessionService.createSession(TestDataUtils.createSessionCreationRequest());
+        SessionToken request = new SessionToken(saved.getSessionId(), saved.getAlias());
+        UserData response = sessionService.validateSession(request);
+        assertNotNull(response.getAlias());
+        assertNotNull(response.getUserId());
     }
 
     @Test
     public void testTimeout() {
 
-        SessionToken token = TestDataUtils.createSessionToken(2);
+        SessionDomain token = TestDataUtils.createSessionToken(2);
         sessionService.saveToken(token);
-        Optional<SessionToken> stored = sessionRepo.findById(token.getSessionId());
+        Optional<SessionDomain> stored = sessionRepo.findById(token.getSessionId());
 
         assertTrue(stored.isPresent());
         await().atMost(5, SECONDS).untilAsserted(() -> {
@@ -84,11 +85,10 @@ public class SessionServiceTests {
 
     @Test
     public void testSessionDeletion() {
-        SessionResponse response = sessionService.createSession(TestDataUtils.createSessionCreationRequest());
-        SessionEndRequest request = new SessionEndRequest(response.getSessionId());
-        sessionService.endSession(request);
+        SessionToken response = sessionService.createSession(TestDataUtils.createSessionCreationRequest());
+        sessionService.endSession(response.getSessionId());
 
-        ValidationRequest validationRequest = new ValidationRequest(response.getSessionId());
+        SessionToken validationRequest = new SessionToken(response.getSessionId(), response.getAlias());
         assertThrows(
                 InvalidSessionException.class,
                 () -> sessionService.validateSession(validationRequest));

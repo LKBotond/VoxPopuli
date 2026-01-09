@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @RedisHash("SessionToken")
 @AllArgsConstructor
 @NoArgsConstructor
-public class SessionToken implements Serializable {
+public class SessionDomain implements Serializable {
 
     @Id
     private String sessionId;

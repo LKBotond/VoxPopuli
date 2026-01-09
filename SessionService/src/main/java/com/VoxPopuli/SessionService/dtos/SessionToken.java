@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SessionResponse {
+public class SessionToken {
     private String sessionId;
     private String alias;
 }
