@@ -15,6 +15,4 @@ public class RegistrationRequest {
     private String email;
     private String alias;
     private String passHash;
-
-
 }

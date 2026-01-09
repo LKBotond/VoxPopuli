@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/sesions")
+@RequestMapping("/interior/sesions")
 public class SessionController {
     private final SessionService sessionService;
 

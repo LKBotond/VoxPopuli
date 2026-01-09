@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import com.VoxPopuli.Users.domain.User;
 import com.VoxPopuli.Users.dto.LoginResponse;
 import com.VoxPopuli.Users.dto.RegistrationRequest;
-import com.VoxPopuli.Users.dto.UserDto;
 
 @Component
 public class UserMapper {
@@ -15,14 +14,6 @@ public class UserMapper {
         return LoginResponse.builder()
                 .userId(user.getUserID())
                 .alias(user.getAlias())
-                .build();
-    }
-
-    public UserDto toUserDto(User user) {
-        return UserDto.builder()
-                .userId(user.getUserID())
-                .alias(user.getAlias())
-                .passHash(user.getPassHash())
                 .build();
     }
 
