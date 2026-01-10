@@ -4,6 +4,7 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +21,29 @@ public class TextNormalizer {
     // patternsc
     private static final Pattern WORD_PATTERN = Pattern.compile("\\p{L}+");
     private static final Pattern SEPARATION_PATTERN = Pattern.compile("(?<!\\p{L})(?:\\p{L}\\s+){2,}\\p{L}(?!\\p{L})");
+
+    // map for substitute Characters some clever people use to try avoid being
+    // caught.
+    private static final Map<Character, Character> cleverityMap = Map.ofEntries(
+            Map.entry('@', 'a'),
+            Map.entry('4', 'a'),
+            Map.entry('8', 'b'),
+            Map.entry('(', 'c'),
+            Map.entry('<', 'c'),
+            Map.entry('{', 'c'),
+            Map.entry('[', 'c'),
+            Map.entry('3', 'e'),
+            Map.entry('6', 'g'),
+            Map.entry('9', 'g'),
+            Map.entry('1', 'i'),
+            Map.entry('!', 'i'),
+            Map.entry('|', 'i'),
+            Map.entry('0', 'o'),
+            Map.entry('$', 's'),
+            Map.entry('5', 's'),
+            Map.entry('7', 't'),
+            Map.entry('+', 't'),
+            Map.entry('2', 'z'));
 
     /**
      * Should be used for user inputs, not dict inputs.
@@ -48,30 +72,15 @@ public class TextNormalizer {
     }
 
     private String cleverityFilter(String input) {
-        return input
-                .replace('@', 'a')
-                .replace('4', 'a')
-                .replace('8', 'b')
-                .replace('(', 'c')
-                .replace('<', 'c')
-                .replace('{', 'c')
-                .replace('[', 'c')
-                .replace('3', 'e')
-                .replace('6', 'g')
-                .replace('9', 'g')
-                .replace('1', 'i')
-                .replace('!', 'i')
-                .replace('|', 'i')
-                .replace('0', 'o')
-                .replace('$', 's')
-                .replace('5', 's')
-                .replace('7', 't')
-                .replace('+', 't')
-                .replace('2', 'z');
+
+        char[] chars = input.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            chars[i] = cleverityMap.getOrDefault(chars[i], chars[i]);
+        }
+        return new String(chars);
     }
 
     private String punctuationNormalization(String input) {
-        log.info(input.replaceAll("[^\\p{L}\\p{Nd}]+", " "));
         return input.replaceAll("[^\\p{L}\\p{Nd}]+", " ");
     }
 
