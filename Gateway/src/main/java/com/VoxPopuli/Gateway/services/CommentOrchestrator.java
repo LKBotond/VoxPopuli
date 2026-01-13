@@ -15,6 +15,7 @@ import com.VoxPopuli.Gateway.dtos.filterClient.CensorResponse;
 
 import lombok.RequiredArgsConstructor;
 
+//move this to comment service
 @Service
 @RequiredArgsConstructor
 public class CommentOrchestrator {

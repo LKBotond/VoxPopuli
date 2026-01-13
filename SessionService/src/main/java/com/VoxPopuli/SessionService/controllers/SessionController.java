@@ -3,7 +3,7 @@ package com.VoxPopuli.SessionService.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.VoxPopuli.SessionService.dtos.UserData;
+import com.VoxPopuli.SessionService.dtos.SessionCreationRequest;
 import com.VoxPopuli.SessionService.dtos.SessionToken;
 import com.VoxPopuli.SessionService.services.SessionService;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,7 +21,7 @@ public class SessionController {
     private final SessionService sessionService;
 
     @PostMapping("/create")
-    public ResponseEntity<SessionToken> createSession(@RequestBody UserData request) {
+    public ResponseEntity<SessionToken> createSession(@RequestBody SessionCreationRequest request) {
         SessionToken response = sessionService.createSession(request);
         return ResponseEntity.ok(response);
     }
@@ -33,8 +33,8 @@ public class SessionController {
     }
 
     @PutMapping("/validate")
-    public ResponseEntity<UserData> validateSession(@RequestBody SessionToken validateThis) {
-        UserData dto = sessionService.validateSession(validateThis);
+    public ResponseEntity<SessionCreationRequest> validateSession(@RequestBody SessionToken validateThis) {
+        SessionCreationRequest dto = sessionService.validateSession(validateThis);
         return ResponseEntity.ok(dto);
     }
 

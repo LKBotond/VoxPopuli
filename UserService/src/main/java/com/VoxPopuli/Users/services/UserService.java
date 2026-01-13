@@ -5,12 +5,12 @@ import java.util.UUID;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import com.VoxPopuli.Users.domain.User;
-import com.VoxPopuli.Users.dto.RegistrationRequest;
 import com.VoxPopuli.Users.exceptions.AliasTakenException;
 import com.VoxPopuli.Users.exceptions.EmailTakenException;
 import com.VoxPopuli.Users.exceptions.UserNotFoundException;
 import com.VoxPopuli.Users.helpers.UserMapper;
 import com.VoxPopuli.Users.repository.UserRepository;
+import com.VoxPopuli.usercontracts.HashedRegistrationRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +20,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public User createUser(RegistrationRequest registrationRequest) {
+    public User createUser(HashedRegistrationRequest registrationRequest) {
         try {
             if (checkForAlias(registrationRequest.getAlias())) {
                 throw new AliasTakenException("Alias already taken: " + registrationRequest.getAlias());

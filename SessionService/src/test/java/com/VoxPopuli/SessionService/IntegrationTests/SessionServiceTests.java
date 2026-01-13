@@ -21,7 +21,7 @@ import static org.awaitility.Awaitility.await;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import com.VoxPopuli.SessionService.domain.SessionDomain;
 import com.VoxPopuli.SessionService.dtos.SessionToken;
-import com.VoxPopuli.SessionService.dtos.UserData;
+import com.VoxPopuli.SessionService.dtos.SessionCreationRequest;
 import com.VoxPopuli.SessionService.exceptions.InvalidSessionException;
 import com.VoxPopuli.SessionService.repositories.RedisRepo;
 import com.VoxPopuli.SessionService.services.SessionService;
@@ -65,7 +65,7 @@ public class SessionServiceTests {
     public void testSessionValidation() {
         SessionToken saved = sessionService.createSession(TestDataUtils.createSessionCreationRequest());
         SessionToken request = new SessionToken(saved.getSessionId(), saved.getAlias());
-        UserData response = sessionService.validateSession(request);
+        SessionCreationRequest response = sessionService.validateSession(request);
         assertNotNull(response.getAlias());
         assertNotNull(response.getUserId());
     }

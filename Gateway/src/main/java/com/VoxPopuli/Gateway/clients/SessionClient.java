@@ -8,18 +8,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.VoxPopuli.Gateway.dtos.sessionClient.SessionToken;
-import com.VoxPopuli.Gateway.dtos.sessionClient.SessionUserData;
+import com.VoxPopuli.Gateway.dtos.userClient.UserData;
 
 
 @FeignClient(name = "session-service", url = "http://user-service:8080")
 public interface SessionClient {
 
     @PostMapping("/interior/sesions/create")
-    public SessionToken createSession(@RequestBody SessionUserData request);
+    public SessionToken createSession(@RequestBody UserData request);
 
     @DeleteMapping("/interior/sesions/delete/{id}")
     public Void endSession(@PathVariable String sessionId);
 
     @PutMapping("/interior/sesions/validate")
-    public SessionUserData validateSession(@RequestBody SessionToken request);
+    public UserData validateSession(@RequestBody SessionToken request);
 }

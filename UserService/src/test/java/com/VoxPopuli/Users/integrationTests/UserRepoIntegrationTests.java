@@ -13,11 +13,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.VoxPopuli.Users.domain.User;
-import com.VoxPopuli.Users.dto.RegistrationRequest;
 import com.VoxPopuli.Users.helpers.UserMapper;
 import com.VoxPopuli.Users.repository.UserRepository;
 import com.VoxPopuli.Users.utils.ClassIntegrityTests;
 import com.VoxPopuli.Users.utils.TestDataUtils;
+import com.VoxPopuli.usercontracts.HashedRegistrationRequest;
 
 @SpringBootTest
 @Transactional
@@ -38,7 +38,7 @@ public class UserRepoIntegrationTests {
 
     @Test
     public void testRegistrationDtoToUserDomainMapping() {
-        RegistrationRequest request = TestDataUtils.createTestRegistrationRequest();
+        HashedRegistrationRequest request = TestDataUtils.createTestRegistrationRequest();
         User user = userMapper.registrationRequestToUser(request);
         try {
             testIdLessUserDomains(user);

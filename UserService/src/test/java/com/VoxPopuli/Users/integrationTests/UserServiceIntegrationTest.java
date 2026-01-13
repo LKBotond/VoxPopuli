@@ -10,13 +10,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.VoxPopuli.Users.domain.User;
-import com.VoxPopuli.Users.dto.RegistrationRequest;
 import com.VoxPopuli.Users.exceptions.AliasTakenException;
 import com.VoxPopuli.Users.exceptions.EmailTakenException;
 import com.VoxPopuli.Users.exceptions.UserNotFoundException;
 import com.VoxPopuli.Users.services.UserService;
 import com.VoxPopuli.Users.utils.ClassIntegrityTests;
 import com.VoxPopuli.Users.utils.TestDataUtils;
+import com.VoxPopuli.usercontracts.HashedRegistrationRequest;
 
 @SpringBootTest
 @Transactional
@@ -27,14 +27,14 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void testSuccesfulRegistration() {
-        RegistrationRequest registrationRequest = TestDataUtils.createTestRegistrationRequest();
+        HashedRegistrationRequest registrationRequest = TestDataUtils.createTestRegistrationRequest();
         User user = userService.createUser(registrationRequest);
         ClassIntegrityTests.testObjectIntegrity(user);
     }
 
     @Test
     public void testDuplicateEmailDetection() {
-        RegistrationRequest registrationRequest = TestDataUtils.createTestRegistrationRequest();
+        HashedRegistrationRequest registrationRequest = TestDataUtils.createTestRegistrationRequest();
         userService.createUser(registrationRequest);
         registrationRequest.setAlias("duplicate");
         assertThrows(EmailTakenException.class, () -> userService.createUser(registrationRequest));
@@ -42,7 +42,7 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void testDuplicateAliasDetection() {
-        RegistrationRequest registrationRequest = TestDataUtils.createTestRegistrationRequest();
+        HashedRegistrationRequest registrationRequest = TestDataUtils.createTestRegistrationRequest();
         userService.createUser(registrationRequest);
         registrationRequest.setEmail("duplicate@duplicate.com");
         assertThrows(AliasTakenException.class, () -> userService.createUser(registrationRequest));
@@ -50,7 +50,7 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void testSuccesfulLogin() {
-        RegistrationRequest registrationRequest = TestDataUtils.createTestRegistrationRequest();
+        HashedRegistrationRequest registrationRequest = TestDataUtils.createTestRegistrationRequest();
         userService.createUser(registrationRequest);
         String loginRequest = TestDataUtils.createLoginRequest();
         User result = userService.loginByEmail(loginRequest);
@@ -59,7 +59,7 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void testUnSuccesfulLogin() {
-        RegistrationRequest registrationRequest = TestDataUtils.createTestRegistrationRequest();
+        HashedRegistrationRequest registrationRequest = TestDataUtils.createTestRegistrationRequest();
         userService.createUser(registrationRequest);
         assertThrows(UserNotFoundException.class, () -> userService.loginByEmail("Null@null.null"));
     }

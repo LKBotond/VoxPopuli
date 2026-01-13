@@ -12,25 +12,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.VoxPopuli.Gateway.dtos.sessionClient.SessionToken;
+import com.VoxPopuli.Gateway.dtos.userClient.CharPassedRegistrationRequest;
+import com.VoxPopuli.Gateway.dtos.userClient.LoginRequest;
 import com.VoxPopuli.Gateway.dtos.userClient.PassRequest;
-import com.VoxPopuli.Gateway.dtos.userClient.RegistrationRequest;
+import com.VoxPopuli.Gateway.services.UserOrchestrator;
 
-
+import lombok.RequiredArgsConstructor;
 
 @RequestMapping("api/v1/gateway/user")
+@RequiredArgsConstructor
 public class AuthController {
+    private final UserOrchestrator orchestrator;
+
     @PostMapping("/register")
-    public ResponseEntity<SessionToken> registerUser(@RequestBody RegistrationRequest request) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<SessionToken> registerUser(@RequestBody CharPassedRegistrationRequest request) {
+        return ResponseEntity.ok(orchestrator.registerUser(request));
     }
 
     @GetMapping("/login")
-    public ResponseEntity<SessionToken> loginUser(@PathVariable("email") String email) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<SessionToken> loginUser(@RequestBody LoginRequest request) {
+        return ResponseEntity.ok(orchestrator.loginUser(request));
     }
 
     @PutMapping("/{id}/password")
     public ResponseEntity<Void> updatePass(@PathVariable("id") UUID userId, @RequestBody PassRequest request) {
+        
         return ResponseEntity.ok().build();
     }
 

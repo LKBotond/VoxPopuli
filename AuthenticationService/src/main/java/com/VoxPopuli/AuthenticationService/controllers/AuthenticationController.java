@@ -1,10 +1,11 @@
 package com.VoxPopuli.AuthenticationService.controllers;
 
-
-
 import com.VoxPopuli.AuthenticationService.dtos.PassValidationRequest;
-import com.VoxPopuli.AuthenticationService.dtos.HashedPass;
-import com.VoxPopuli.AuthenticationService.dtos.PassHashRequest;
+import com.VoxPopuli.AuthenticationService.dtos.RegistrationRequest;
+import com.VoxPopuli.AuthenticationService.dtos.sessionClient.SessionToken;
+import com.VoxPopuli.AuthenticationService.dtos.userClient.HashedRegistrationRequest;
+import com.VoxPopuli.AuthenticationService.dtos.LoginRequest;
+import com.VoxPopuli.AuthenticationService.dtos.PassUpdateRequest;
 import com.VoxPopuli.AuthenticationService.services.AuthenticationService;
 
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/internal/auth")
@@ -23,17 +25,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     private final AuthenticationService authService;
 
-    @PostMapping("/validate")
-    public ResponseEntity<Void> validatePass(@RequestBody PassValidationRequest loginRequest) {
-        if (authService.authenticatePassword(loginRequest)) {
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    @PostMapping("/login")
+    public ResponseEntity<SessionToken> login(@RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/hash")
-    public ResponseEntity<HashedPass> hashPass(@RequestBody PassHashRequest request) {
-        return ResponseEntity.ok(authService.hashPass(request));
+    @PostMapping("/register")
+    public ResponseEntity<SessionToken> register(@RequestBody RegistrationRequest request) {
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/updatepass")
+    public ResponseEntity<HashedRegistrationRequest> updatePass(@RequestBody PassUpdateRequest request) {
+        return ResponseEntity.ok().build();
     }
 
 }

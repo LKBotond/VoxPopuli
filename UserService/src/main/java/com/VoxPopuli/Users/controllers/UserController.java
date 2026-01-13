@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.VoxPopuli.Users.domain.User;
-import com.VoxPopuli.Users.dto.UserData;
-import com.VoxPopuli.Users.dto.PassRequest;
-import com.VoxPopuli.Users.dto.RegistrationRequest;
-
 import com.VoxPopuli.Users.helpers.UserMapper;
 import com.VoxPopuli.Users.services.UserService;
+import com.VoxPopuli.usercontracts.HashedPass;
+import com.VoxPopuli.usercontracts.HashedRegistrationRequest;
+import com.VoxPopuli.usercontracts.UserData;
+
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
@@ -29,25 +29,19 @@ public class UserController {
     private final UserMapper userMapper;
 
     @PostMapping("/register")
-    public ResponseEntity<UserData> registerUser(@RequestBody RegistrationRequest request) {
+    public ResponseEntity<UserData> registerUser(@RequestBody HashedRegistrationRequest request) {
         User user = userService.createUser(request);
         return ResponseEntity.ok(userMapper.toUserData(user));
     }
 
     @GetMapping("/login/{email}")
-    public ResponseEntity<UserData> loginUser(@PathVariable("email") String email) {
+    public ResponseEntity<UserData> getUserByEmail(@PathVariable("email") String email) {
         User user = userService.loginByEmail(email);
         return ResponseEntity.ok(userMapper.toUserData(user));
     }
 
-    @GetMapping("/auth/{id}")
-    public ResponseEntity<PassRequest> getCredentialsById(@PathVariable("id") UUID userId) {
-        User user = userService.findById(userId);
-        return ResponseEntity.ok(userMapper.toPassHash(user));
-    }
-
     @PutMapping("/{id}/password")
-    public ResponseEntity<Void> updatePass(@PathVariable("id") UUID userId, @RequestBody PassRequest request) {
+    public ResponseEntity<Void> updatePass(@PathVariable("id") UUID userId, @RequestBody HashedPass request) {
         userService.changePass(userId, request.getPassHash());
         return ResponseEntity.noContent().build();
     }

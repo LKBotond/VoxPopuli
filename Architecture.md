@@ -10,12 +10,6 @@ erDiagram
         CITEXT alias
         TEXT pass_hash
     }
-     active_sessions{
-        TEXT id PK
-        BIGINT user_id
-        TIMESTAMP issued_at
-        TIMESTAMP expires_at
-    }
     comments {
         UUID id PK
         UUID parent_id
@@ -25,6 +19,17 @@ erDiagram
         TIMESTAMP created_at
     }
 
+```
+
+**_Redis_**
+
+```mermaid
+erDiagram
+     active_sessions{
+        TEXT sessionId PK
+        TEXT userId
+        LONG expiryInSeconds
+    }
 ```
 
 ## All the backend services in Coordinator->subordinate roles
@@ -48,10 +53,10 @@ flowchart LR
     end
 
 Gateway-->Auth
-Auth-->User
-Auth-->Session
+Gateway-->User
+Gateway-->Session
 Gateway-->Filter
-Filter-->Comment
+Gateway-->Comment
 
 User-->userDB
 Session-->session
@@ -67,10 +72,11 @@ Comment-->comment
 ```mermaid
 flowchart TD
     A[User sends necessary data ] --> B[Check for integrity]
-    B -->|Valid| C[Add user to DB]
-    C --> D[Generate Session Token]
-    D --> E[Return response to user]
-    B -->|Invalid| E[Return appropriate response]
+    B-->|Valid| C[Hash password]
+    C --> D[Add user to DB]
+    D --> E[Generate Session Token]
+    E --> F[Return appropriate response]
+    B -->|Invalid| F[Return appropriate response]
 ```
 
 #### Implementation:
@@ -81,33 +87,35 @@ autonumber
     participant User
     participant APIGateway
     participant AuthService
+    participant SessionService
     participant UserService
     participant PersistanceLayer
 
     User->>APIGateway: RegistrationRequestDTO
-    Note over APIGateway: validate DTO integrity (check for ull fields)
+    Note over APIGateway: validate DTO integrity (check for null fields)
     alt Missing necesary data
         APIGateway-->>User: 400 bad request
     else Valid data
         APIGateway->>AuthService: RegistrationRequestDTO
         Note over AuthService: HashPassword
-        AuthService->>UserService: CreateUserDTO
+        AuthService->>APIGateway: HashedRegistrationRequestDTO
+        APIGateway->>UserService: HashedRegistrationRequestDTO
 
             UserService->>PersistanceLayer: Check if User Already exists
         alt User already exists
             PersistanceLayer-->>UserService: Exists
-            UserService-->>AuthService: 409 Conflict
-            AuthService-->>APIGateway: 409 Conflict
+            UserService-->>APIGateway: 409 Conflict
             APIGateway-->>User: 409 Conflict
         else User does not exist
             PersistanceLayer-->>UserService: Ready to add user
             UserService->>PersistanceLayer: Add user to DB
             PersistanceLayer-->>UserService: User added successfully
-            UserService-->>AuthService: User added succesfully
-            Note over AuthService: Create Session Token
-            AuthService-->>PersistanceLayer: Save Session token
-            PersistanceLayer-->>AuthService: Token Saved
-            AuthService-->>APIGateway: sessionToken
+            UserService->>APIGateway: UserDataDto
+            APIGateway->>SessionService: UserDataDto
+            Note over SessionService: create sessionToken
+            SessionService->>PersistanceLayer: Save Session token
+            PersistanceLayer-->>SessionService: Token Saved
+            SessionService->>APIGateway: sessionToken
             APIGateway-->>User: 200 OK + Session Token
         end
     end

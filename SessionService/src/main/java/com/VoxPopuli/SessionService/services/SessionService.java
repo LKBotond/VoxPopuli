@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.VoxPopuli.SessionService.domain.SessionDomain;
-import com.VoxPopuli.SessionService.dtos.UserData;
+import com.VoxPopuli.SessionService.dtos.SessionCreationRequest;
 import com.VoxPopuli.SessionService.dtos.SessionToken;
 import com.VoxPopuli.SessionService.repositories.RedisRepo;
 import com.VoxPopuli.SessionService.exceptions.InvalidSessionException;
@@ -21,16 +21,16 @@ public class SessionService {
     @Value("${app.session.timeout:600}")
     private long sessionLifetime;
 
-    public SessionToken createSession(UserData sessionCreationRequest) {
+    public SessionToken createSession(SessionCreationRequest sessionCreationRequest) {
         SessionDomain token = buildToken(sessionCreationRequest);
         saveToken(token);
         return new SessionToken(token.getSessionId(), sessionCreationRequest.getAlias());
     }
 
-    public UserData validateSession(SessionToken validationRequest) {
+    public SessionCreationRequest validateSession(SessionToken validationRequest) {
         SessionDomain token = authenticateToken(validationRequest.getSessionId());
         refreshToken(token);
-        return new UserData(token.getUserId(), validationRequest.getAlias());
+        return new SessionCreationRequest(token.getUserId(), validationRequest.getAlias());
     }
 
     public void endSession(String sessionId) {
@@ -52,7 +52,7 @@ public class SessionService {
         return token;
     }
 
-    private SessionDomain buildToken(UserData request) {
+    private SessionDomain buildToken(SessionCreationRequest request) {
         return SessionDomain.builder()
                 .sessionId(UUID.randomUUID().toString())
                 .userId(request.getUserId())

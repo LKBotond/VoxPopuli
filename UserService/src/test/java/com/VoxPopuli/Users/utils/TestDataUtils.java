@@ -1,7 +1,7 @@
 package com.VoxPopuli.Users.utils;
 
 import com.VoxPopuli.Users.domain.User;
-import com.VoxPopuli.Users.dto.RegistrationRequest;
+import com.VoxPopuli.usercontracts.HashedRegistrationRequest;
 
 public final class TestDataUtils {
 
@@ -16,8 +16,8 @@ public final class TestDataUtils {
                 .build();
     }
 
-    public static RegistrationRequest createTestRegistrationRequest() {
-        return RegistrationRequest.builder()
+    public static HashedRegistrationRequest createTestRegistrationRequest() {
+        return HashedRegistrationRequest.builder()
                 .alias("Test")
                 .email("Test@test.test")
                 .passHash("password").build();

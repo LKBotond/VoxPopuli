@@ -1,0 +1,14 @@
+com\VoxPopuli\sessioncontracts\SessionToken.class
+com\VoxPopuli\commentcontracts\CommentRequest.class
+com\VoxPopuli\filtercontracts\DictUpdateRequest.class
+com\VoxPopuli\commentcontracts\CommentEditRequest.class
+com\VoxPopuli\authcontracts\LoginRequest.class
+com\VoxPopuli\filtercontracts\CensorRequest.class
+com\VoxPopuli\filtercontracts\CensorResponse.class
+com\VoxPopuli\authcontracts\RegistrationRequest.class
+com\VoxPopuli\usercontracts\HashedPass.class
+com\VoxPopuli\usercontracts\UserData.class
+com\VoxPopuli\authcontracts\PassUpdateRequest.class
+com\VoxPopuli\commentcontracts\CommentResponse.class
+com\VoxPopuli\sessioncontracts\SessionCreationRequest.class
+com\VoxPopuli\usercontracts\HashedRegistrationRequest.class
