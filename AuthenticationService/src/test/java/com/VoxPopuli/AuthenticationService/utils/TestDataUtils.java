@@ -9,28 +9,28 @@ public final class TestDataUtils {
     private TestDataUtils() {
     }
 
-    public RegistrationRequest createRegistrationRequest() {
+    public static final RegistrationRequest createRegistrationRequest() {
         return RegistrationRequest.builder()
                 .email("test@test.test")
                 .alias("TestAlias").passArray("pass".toCharArray())
                 .build();
     }
 
-    public LoginRequest createLoginRequest() {
+    public static final LoginRequest createLoginRequest() {
         return LoginRequest.builder()
                 .email("test@test.test")
                 .pass("pass".toCharArray())
                 .build();
     }
 
-    public SessionToken createSessionToken() {
+    public static final SessionToken createSessionToken() {
         return SessionToken.builder()
                 .sessionId("session123")
                 .alias("TestAlias")
                 .build();
     }
 
-    public UserData createUserData(String passHash) {
+    public static final UserData createUserData(String passHash) {
         return UserData.builder()
                 .userId("user123")
                 .alias("TestAlias")
