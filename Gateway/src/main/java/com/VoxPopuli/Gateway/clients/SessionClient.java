@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.VoxPopuli.Gateway.dtos.sessionClient.SessionToken;
-import com.VoxPopuli.Gateway.dtos.userClient.UserData;
+import com.VoxPopuli.sessioncontracts.SessionToken;
+import com.VoxPopuli.usercontracts.UserData;
 
 
 @FeignClient(name = "session-service", url = "http://user-service:8080")

@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.VoxPopuli.Gateway.dtos.commetnClient.CommentEditRequest;
-import com.VoxPopuli.Gateway.dtos.commetnClient.CommentRequest;
-import com.VoxPopuli.Gateway.dtos.commetnClient.CommentResponse;
+import com.VoxPopuli.commentcontracts.CommentEditRequest;
+import com.VoxPopuli.commentcontracts.CommentRequest;
+import com.VoxPopuli.commentcontracts.CommentResponse;
+
 @RequestMapping("api/v1/gateway/comments")
 public class CommentController {
 

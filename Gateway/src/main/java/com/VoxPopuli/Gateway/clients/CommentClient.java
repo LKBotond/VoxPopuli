@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.VoxPopuli.Gateway.dtos.commetnClient.CommentEditRequest;
-import com.VoxPopuli.Gateway.dtos.commetnClient.CommentRequest;
-import com.VoxPopuli.Gateway.dtos.commetnClient.CommentResponse;
+import com.VoxPopuli.commentcontracts.CommentEditRequest;
+import com.VoxPopuli.commentcontracts.CommentRequest;
+import com.VoxPopuli.commentcontracts.CommentResponse;
 
 @FeignClient(name = "comment-service", url = "http://comment-service:8080")
 public interface CommentClient {
