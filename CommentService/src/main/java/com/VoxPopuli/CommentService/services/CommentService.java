@@ -7,12 +7,17 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.VoxPopuli.CommentService.clients.FilterClient;
 import com.VoxPopuli.CommentService.domain.Comment;
-import com.VoxPopuli.CommentService.dto.CommentEditRequest;
-import com.VoxPopuli.CommentService.dto.CommentRequest;
-import com.VoxPopuli.CommentService.dto.CommentResponse;
 import com.VoxPopuli.CommentService.exceptions.CommentDoesntExistException;
+import com.VoxPopuli.CommentService.exceptions.VandalismException;
+import com.VoxPopuli.CommentService.mappers.CommentMapper;
 import com.VoxPopuli.CommentService.repository.CommentRepository;
+import com.VoxPopuli.commentcontracts.CommentEditRequest;
+import com.VoxPopuli.commentcontracts.CommentRequest;
+import com.VoxPopuli.commentcontracts.CommentResponse;
+import com.VoxPopuli.filtercontracts.CensorRequest;
+import com.VoxPopuli.filtercontracts.CensorResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,12 +25,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
+    private final FilterClient filterClient;
 
     public CommentResponse registerComment(CommentRequest commentRequest) {
+        CensorResponse response = censorComment(commentRequest.getContent());
+        if (response.isFlagged()) {
+            throw new VandalismException("The following words got caught in our web", response.getCaughtWords());
+        }
         return buildCommentResponse(saveComment(commentRequest));
     }
 
     public CommentResponse registerCommentEdit(CommentEditRequest request) {
+        CensorResponse response = censorComment(request.getEditedContent());
+        if (response.isFlagged()) {
+            throw new VandalismException("The following words got caught in our web", response.getCaughtWords());
+        }
         return buildCommentResponse(editComment(request));
     }
 
@@ -37,6 +51,10 @@ public class CommentService {
         return parseCommentsIntoCommentResponseList(commentRepository.findAllBySourceLinkHash(sourceLinkHash));
     }
 
+    private CensorResponse censorComment(String content) {
+        return filterClient.checkRequest(new CensorRequest(content));
+    }
+
     private Comment deleteComment(UUID commentID) {
         Comment old = loadCommentById(commentID);
         Comment deleted = deleteUserSpecificData(old);
@@ -44,20 +62,20 @@ public class CommentService {
     }
 
     private Comment editComment(CommentEditRequest request) {
-        Comment old = loadCommentById(request.getCommentId());
+        Comment old = loadCommentById(UUID.fromString(request.getCommentId()));
         old.setContent(request.getEditedContent());
         return commentRepository.save(old);
     }
 
     private Comment saveComment(CommentRequest request) {
-        return commentRepository.save(request.mapToComment());
+        return commentRepository.save(CommentMapper.fromRequest(request));
     }
 
     private CommentResponse buildCommentResponse(Comment comment) {
         return CommentResponse.builder()
-                .commentId(comment.getCommentId())
-                .parentId(comment.getParentId())
-                .userId(comment.getUserId())
+                .commentId(comment.getCommentId().toString())
+                .parentId(comment.getParentId().toString())
+                .userId(comment.getUserId().toString())
                 .content(comment.getContent())
                 .updatedAt(comment.getLastUpdated())
                 .build();

@@ -4,8 +4,8 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 import com.VoxPopuli.CommentService.domain.Comment;
-import com.VoxPopuli.CommentService.dto.CommentEditRequest;
-import com.VoxPopuli.CommentService.dto.CommentRequest;
+import com.VoxPopuli.commentcontracts.CommentEditRequest;
+import com.VoxPopuli.commentcontracts.CommentRequest;
 
 public final class TestDataUtils {
 
@@ -24,17 +24,16 @@ public final class TestDataUtils {
 
     public static CommentRequest createTestCommentRequest() {
         return CommentRequest.builder()
-                .parentId(UUID.randomUUID())
-                .userId(UUID.randomUUID())
+                .parentId(UUID.randomUUID().toString())
+                .userId(UUID.randomUUID().toString())
                 .sourceLinkHash("www.webpage.hash")
                 .content("lorem ipsum")
                 .updatedAt(OffsetDateTime.now())
                 .build();
     }
 
-
     public static CommentEditRequest createCommentEditRequest(UUID commentId) {
-        return CommentEditRequest.builder().commentId(commentId)
+        return CommentEditRequest.builder().commentId(commentId.toString())
                 .editedContent("editum editam editarem editatem edituram editim").build();
     }
 }

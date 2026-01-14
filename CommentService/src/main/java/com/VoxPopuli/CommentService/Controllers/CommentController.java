@@ -2,11 +2,10 @@ package com.VoxPopuli.CommentService.Controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.VoxPopuli.CommentService.dto.CommentEditRequest;
-import com.VoxPopuli.CommentService.dto.CommentRequest;
-import com.VoxPopuli.CommentService.dto.CommentResponse;
 import com.VoxPopuli.CommentService.services.CommentService;
+import com.VoxPopuli.commentcontracts.CommentEditRequest;
+import com.VoxPopuli.commentcontracts.CommentRequest;
+import com.VoxPopuli.commentcontracts.CommentResponse;
 
 import lombok.RequiredArgsConstructor;
 
