@@ -32,7 +32,7 @@ public class CommentService {
         if (response.isFlagged()) {
             throw new VandalismException("The following words got caught in our web", response.getCaughtWords());
         }
-        return buildCommentResponse(saveComment(commentRequest));
+        return CommentMapper.toCommentResponse(saveComment(commentRequest));
     }
 
     public CommentResponse registerCommentEdit(CommentEditRequest request) {
@@ -40,11 +40,11 @@ public class CommentService {
         if (response.isFlagged()) {
             throw new VandalismException("The following words got caught in our web", response.getCaughtWords());
         }
-        return buildCommentResponse(editComment(request));
+        return CommentMapper.toCommentResponse(editComment(request));
     }
 
     public CommentResponse registerCommentDeletion(UUID request) {
-        return buildCommentResponse(deleteComment(request));
+        return CommentMapper.toCommentResponse(deleteComment(request));
     }
 
     public List<CommentResponse> getAllCommentsForSite(String sourceLinkHash) {
@@ -71,20 +71,11 @@ public class CommentService {
         return commentRepository.save(CommentMapper.fromRequest(request));
     }
 
-    private CommentResponse buildCommentResponse(Comment comment) {
-        return CommentResponse.builder()
-                .commentId(comment.getCommentId().toString())
-                .parentId(comment.getParentId().toString())
-                .userId(comment.getUserId().toString())
-                .content(comment.getContent())
-                .updatedAt(comment.getLastUpdated())
-                .build();
-    }
 
     private List<CommentResponse> parseCommentsIntoCommentResponseList(List<Comment> comments) {
         List<CommentResponse> responseList = new ArrayList<>();
         for (Comment comment : comments) {
-            responseList.add(buildCommentResponse(comment));
+            responseList.add(CommentMapper.toCommentResponse(comment));
         }
         return responseList;
     }

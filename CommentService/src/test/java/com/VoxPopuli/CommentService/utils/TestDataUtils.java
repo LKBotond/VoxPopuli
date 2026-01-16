@@ -1,11 +1,14 @@
 package com.VoxPopuli.CommentService.utils;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.VoxPopuli.CommentService.domain.Comment;
 import com.VoxPopuli.commentcontracts.CommentEditRequest;
 import com.VoxPopuli.commentcontracts.CommentRequest;
+import com.VoxPopuli.filtercontracts.CensorResponse;
 
 public final class TestDataUtils {
 
@@ -35,5 +38,10 @@ public final class TestDataUtils {
     public static CommentEditRequest createCommentEditRequest(UUID commentId) {
         return CommentEditRequest.builder().commentId(commentId.toString())
                 .editedContent("editum editam editarem editatem edituram editim").build();
+    }
+
+    public static CensorResponse createUnflagged() {
+        List<String> empty = new ArrayList<>();
+        return CensorResponse.builder().caughtWords(empty).flagged(false).build();
     }
 }

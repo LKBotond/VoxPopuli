@@ -14,8 +14,12 @@ public final class CommentMapper {
         return CommentResponse.builder()
                 .commentId(comment.getCommentId().toString())
                 .parentId(comment.getParentId().toString())
-                .userId(comment.getUserId().toString())
-                .content(comment.getContent())
+                .userId(comment.getUserId() != null
+                        ? comment.getUserId().toString()
+                        : "[deleted]")
+                .content(comment.getContent() != null
+                        ? comment.getContent()
+                        : "[deleted]")
                 .updatedAt(comment.getLastUpdated())
                 .build();
     }
@@ -24,6 +28,7 @@ public final class CommentMapper {
         return Comment.builder()
                 .parentId(UUID.fromString(request.getParentId()))
                 .userId(UUID.fromString(request.getUserId()))
+                .content(request.getContent())
                 .sourceLinkHash(request.getSourceLinkHash())
                 .lastUpdated(request.getUpdatedAt())
                 .build();
