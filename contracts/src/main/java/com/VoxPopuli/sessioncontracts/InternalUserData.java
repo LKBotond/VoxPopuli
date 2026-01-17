@@ -1,17 +1,17 @@
 package com.VoxPopuli.sessioncontracts;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.Builder;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class SessionCreationRequest {
+@AllArgsConstructor
+public class InternalUserData {
     private String userId;
     private String alias;
 }
