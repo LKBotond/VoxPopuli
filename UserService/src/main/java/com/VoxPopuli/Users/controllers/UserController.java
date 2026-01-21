@@ -28,13 +28,13 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
 
-    @PostMapping("/register")
+    @PostMapping
     public ResponseEntity<UserData> registerUser(@RequestBody HashedRegistrationRequest request) {
         User user = userService.createUser(request);
         return ResponseEntity.ok(userMapper.toUserData(user));
     }
 
-    @GetMapping("/login/{email}")
+    @GetMapping("/{email}")
     public ResponseEntity<UserData> getUserByEmail(@PathVariable("email") String email) {
         User user = userService.loginByEmail(email);
         return ResponseEntity.ok(userMapper.toUserData(user));
@@ -46,7 +46,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/delete/{userId}")
+    @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable("userId") UUID userId) {
         userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
