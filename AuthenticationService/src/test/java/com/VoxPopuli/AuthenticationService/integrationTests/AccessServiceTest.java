@@ -11,14 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-import com.VoxPopuli.AuthenticationService.clients.SesssionClient;
+import com.VoxPopuli.AuthenticationService.clients.SessionClient;
 import com.VoxPopuli.AuthenticationService.clients.UserClient;
 import com.VoxPopuli.AuthenticationService.services.Argon2PassHashingService;
 import com.VoxPopuli.AuthenticationService.services.AuthenticationService;
 import com.VoxPopuli.AuthenticationService.utils.TestDataUtils;
 import com.VoxPopuli.authcontracts.LoginRequest;
 import com.VoxPopuli.authcontracts.RegistrationRequest;
-import com.VoxPopuli.sessioncontracts.SessionCreationRequest;
+import com.VoxPopuli.sessioncontracts.InternalUserData;
 import com.VoxPopuli.sessioncontracts.SessionToken;
 import com.VoxPopuli.usercontracts.HashedRegistrationRequest;
 
@@ -29,7 +29,7 @@ public class AccessServiceTest {
     UserClient userClient;
 
     @MockitoBean
-    SesssionClient sessionClient;
+    SessionClient sessionClient;
 
     @Autowired
     AuthenticationService authService;
@@ -47,7 +47,7 @@ public class AccessServiceTest {
 
         when(userClient.register(any(HashedRegistrationRequest.class)))
                 .thenReturn(TestDataUtils.createUserData(hash));
-        when(sessionClient.createSession(any(SessionCreationRequest.class)))
+        when(sessionClient.createSession(any(InternalUserData.class)))
                 .thenReturn(TestDataUtils.createSessionToken());
 
         SessionToken token = authService.registerUser(request);
@@ -66,7 +66,7 @@ public class AccessServiceTest {
 
         when(userClient.getUserByEmail(any(String.class)))
                 .thenReturn(TestDataUtils.createUserData(hash));
-        when(sessionClient.createSession(any(SessionCreationRequest.class)))
+        when(sessionClient.createSession(any(InternalUserData.class)))
                 .thenReturn(TestDataUtils.createSessionToken());
 
         SessionToken token = authService.loginUser(request);

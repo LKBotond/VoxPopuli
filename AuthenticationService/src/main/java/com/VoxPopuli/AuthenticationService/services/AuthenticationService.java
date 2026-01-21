@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.VoxPopuli.AuthenticationService.clients.SesssionClient;
+import com.VoxPopuli.AuthenticationService.clients.SessionClient;
 import com.VoxPopuli.AuthenticationService.clients.UserClient;
 import com.VoxPopuli.AuthenticationService.exceptions.InvalidPassException;
 import com.VoxPopuli.AuthenticationService.mappers.SessionMapper;
@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationService {
     private final Argon2PassHashingService passHashingService;
     private final UserClient userClient;
-    private final SesssionClient sessionClient;
+    private final SessionClient sessionClient;
 
     public SessionToken registerUser(RegistrationRequest request) {
         List<SagaStep> steps = new ArrayList<>();

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@RequestMapping("/internal/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationService authService;
@@ -34,6 +34,7 @@ public class AuthenticationController {
     public ResponseEntity<SessionToken> register(@RequestBody RegistrationRequest request) {
         return ResponseEntity.ok(authService.registerUser(request));
     }
+    
     //unimplemented
     @DenyAll
     @PutMapping("/updatepass")
