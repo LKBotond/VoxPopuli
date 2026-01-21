@@ -21,6 +21,7 @@ public class SessionDomain implements Serializable {
     @Id
     private String sessionId;
     private String userId;
+    private String alias;
     @TimeToLive
     private Long expiryInSeconds;
 

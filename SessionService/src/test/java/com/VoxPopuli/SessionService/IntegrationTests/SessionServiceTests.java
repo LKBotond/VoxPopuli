@@ -20,12 +20,12 @@ import org.testcontainers.utility.DockerImageName;
 import static org.awaitility.Awaitility.await;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import com.VoxPopuli.SessionService.domain.SessionDomain;
-import com.VoxPopuli.SessionService.dtos.SessionToken;
-import com.VoxPopuli.SessionService.dtos.SessionCreationRequest;
 import com.VoxPopuli.SessionService.exceptions.InvalidSessionException;
 import com.VoxPopuli.SessionService.repositories.RedisRepo;
 import com.VoxPopuli.SessionService.services.SessionService;
 import com.VoxPopuli.SessionService.utils.TestDataUtils;
+import com.VoxPopuli.sessioncontracts.InternalUserData;
+import com.VoxPopuli.sessioncontracts.SessionToken;
 import com.redis.testcontainers.RedisContainer;
 
 @Testcontainers
@@ -64,8 +64,7 @@ public class SessionServiceTests {
     @Test
     public void testSessionValidation() {
         SessionToken saved = sessionService.createSession(TestDataUtils.createSessionCreationRequest());
-        SessionToken request = new SessionToken(saved.getSessionId(), saved.getAlias());
-        SessionCreationRequest response = sessionService.validateSession(request);
+        InternalUserData response = sessionService.validateSession(saved.getSessionId());
         assertNotNull(response.getAlias());
         assertNotNull(response.getUserId());
     }
@@ -88,10 +87,9 @@ public class SessionServiceTests {
         SessionToken response = sessionService.createSession(TestDataUtils.createSessionCreationRequest());
         sessionService.endSession(response.getSessionId());
 
-        SessionToken validationRequest = new SessionToken(response.getSessionId(), response.getAlias());
         assertThrows(
                 InvalidSessionException.class,
-                () -> sessionService.validateSession(validationRequest));
+                () -> sessionService.validateSession(response.getSessionId()));
     }
 
     @AfterEach

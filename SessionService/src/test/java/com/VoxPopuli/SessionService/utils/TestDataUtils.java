@@ -1,15 +1,15 @@
 package com.VoxPopuli.SessionService.utils;
 
 import com.VoxPopuli.SessionService.domain.SessionDomain;
-import com.VoxPopuli.SessionService.dtos.SessionCreationRequest;
-import com.VoxPopuli.SessionService.dtos.SessionToken;
+import com.VoxPopuli.sessioncontracts.InternalUserData;
+import com.VoxPopuli.sessioncontracts.SessionToken;
 
 public final class TestDataUtils {
     private TestDataUtils() {
     }
 
-    public static final SessionCreationRequest createSessionCreationRequest() {
-        return new SessionCreationRequest("TestUserId", "alias");
+    public static final InternalUserData createSessionCreationRequest() {
+        return new InternalUserData("TestUserId", "alias");
     }
 
     public static final String createSessionEndRequest() {

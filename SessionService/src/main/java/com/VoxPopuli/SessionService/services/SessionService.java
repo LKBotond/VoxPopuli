@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.VoxPopuli.SessionService.domain.SessionDomain;
-import com.VoxPopuli.SessionService.dtos.SessionCreationRequest;
-import com.VoxPopuli.SessionService.dtos.SessionToken;
 import com.VoxPopuli.SessionService.repositories.RedisRepo;
+import com.VoxPopuli.sessioncontracts.InternalUserData;
+import com.VoxPopuli.sessioncontracts.SessionToken;
 import com.VoxPopuli.SessionService.exceptions.InvalidSessionException;
 
 import lombok.RequiredArgsConstructor;
@@ -21,16 +21,16 @@ public class SessionService {
     @Value("${app.session.timeout:600}")
     private long sessionLifetime;
 
-    public SessionToken createSession(SessionCreationRequest sessionCreationRequest) {
+    public SessionToken createSession(InternalUserData sessionCreationRequest) {
         SessionDomain token = buildToken(sessionCreationRequest);
         saveToken(token);
         return new SessionToken(token.getSessionId(), sessionCreationRequest.getAlias());
     }
 
-    public SessionCreationRequest validateSession(SessionToken validationRequest) {
-        SessionDomain token = authenticateToken(validationRequest.getSessionId());
+    public InternalUserData validateSession(String tokenString) {
+        SessionDomain token = authenticateToken(tokenString);
         refreshToken(token);
-        return new SessionCreationRequest(token.getUserId(), validationRequest.getAlias());
+        return new InternalUserData(token.getUserId(), token.getAlias());
     }
 
     public void endSession(String sessionId) {
@@ -52,10 +52,11 @@ public class SessionService {
         return token;
     }
 
-    private SessionDomain buildToken(SessionCreationRequest request) {
+    private SessionDomain buildToken(InternalUserData request) {
         return SessionDomain.builder()
                 .sessionId(UUID.randomUUID().toString())
                 .userId(request.getUserId())
+                .alias(request.getAlias())
                 .expiryInSeconds(sessionLifetime).build();
     }
 
