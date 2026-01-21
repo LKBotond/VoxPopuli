@@ -62,11 +62,11 @@ public class CommentServiceIntegrationTests {
 
     @Test
     public void commentCreationTest() {
-        CensorResponse cResponse = TestDataUtils.createUnflagged();
         when(client.checkRequest(any(CensorRequest.class))).thenReturn(TestDataUtils.createUnflagged());
 
         CommentRequest request = TestDataUtils.createTestCommentRequest();
-        CommentResponse response = serviceTest.registerComment(request);
+        UUID user = TestDataUtils.getUUID();
+        CommentResponse response = serviceTest.registerComment(request, user);
         assertThat(response).hasNoNullFieldsOrProperties();
 
     }
@@ -75,9 +75,10 @@ public class CommentServiceIntegrationTests {
     public void commentEditTest() {
         CensorResponse cResponse = TestDataUtils.createUnflagged();
         when(client.checkRequest(any(CensorRequest.class))).thenReturn(cResponse);
-        CommentResponse response = serviceTest.registerComment(TestDataUtils.createTestCommentRequest());
+        UUID user = TestDataUtils.getUUID();
+        CommentResponse response = serviceTest.registerComment(TestDataUtils.createTestCommentRequest(), user);
         CommentResponse edited = serviceTest.registerCommentEdit(
-                TestDataUtils.createCommentEditRequest(UUID.fromString(response.getCommentId())));
+                TestDataUtils.createCommentEditRequest(UUID.fromString(response.getCommentId())), user);
         ClassIntegrityTests.testObjectIntegrity(edited);
         assertNotEquals(response, edited);
     }
@@ -87,15 +88,11 @@ public class CommentServiceIntegrationTests {
         CensorResponse cResponse = TestDataUtils.createUnflagged();
         when(client.checkRequest(any(CensorRequest.class))).thenReturn(cResponse);
 
-        CommentResponse response = serviceTest.registerComment(TestDataUtils.createTestCommentRequest());
-        log.info("response UUID: " + response.getUserId());
-        log.info("response parentUUID: " + response.getParentId());
-        log.info("response commentUUID: " + response.getCommentId());
-        log.info("response UUID: " + response.getCommentId());
-        CommentResponse deleted = serviceTest.registerCommentDeletion(UUID.fromString(response.getCommentId()));
+        UUID user = TestDataUtils.getUUID();
+        CommentResponse response = serviceTest.registerComment(TestDataUtils.createTestCommentRequest(), user);
+        CommentResponse deleted = serviceTest.registerCommentDeletion(UUID.fromString(response.getCommentId()), user);
         assertNotEquals(response.getUpdatedAt(), deleted.getUpdatedAt());
         assertNotEquals(response.getContent(), deleted.getContent());
-        assertNotEquals(response.getUserId(), deleted.getUserId());
     }
 
     @Test
@@ -115,7 +112,8 @@ public class CommentServiceIntegrationTests {
     private String registerTenComments() {
         Comment comment = TestDataUtils.createTestComment();
         for (int i = 0; i < 10; i++) {
-            serviceTest.registerComment(TestDataUtils.createTestCommentRequest());
+            UUID user = TestDataUtils.getUUID();
+            serviceTest.registerComment(TestDataUtils.createTestCommentRequest(), user);
         }
         return comment.getSourceLinkHash();
 

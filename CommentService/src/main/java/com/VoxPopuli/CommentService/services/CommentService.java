@@ -27,50 +27,57 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final FilterClient filterClient;
 
-    public CommentResponse registerComment(CommentRequest commentRequest) {
+    public CommentResponse registerComment(CommentRequest commentRequest, UUID userId) {
         CensorResponse response = censorComment(commentRequest.getContent());
         if (response.isFlagged()) {
             throw new VandalismException("The following words got caught in our web", response.getCaughtWords());
         }
-        return CommentMapper.toCommentResponse(saveComment(commentRequest));
+        return CommentMapper.toCommentResponse(saveComment(commentRequest, userId));
     }
 
-    public CommentResponse registerCommentEdit(CommentEditRequest request) {
+    public CommentResponse registerCommentEdit(CommentEditRequest request, UUID userId) {
         CensorResponse response = censorComment(request.getEditedContent());
         if (response.isFlagged()) {
             throw new VandalismException("The following words got caught in our web", response.getCaughtWords());
         }
-        return CommentMapper.toCommentResponse(editComment(request));
+        return CommentMapper.toCommentResponse(editComment(request, userId));
     }
 
-    public CommentResponse registerCommentDeletion(UUID request) {
-        return CommentMapper.toCommentResponse(deleteComment(request));
+    public CommentResponse registerCommentDeletion(UUID request, UUID userId) {
+        return CommentMapper.toCommentResponse(deleteComment(request, userId));
     }
 
     public List<CommentResponse> getAllCommentsForSite(String sourceLinkHash) {
         return parseCommentsIntoCommentResponseList(commentRepository.findAllBySourceLinkHash(sourceLinkHash));
     }
 
+    private void checkOwner(UUID commentOwner, UUID requestOwneString) {
+        if (!commentOwner.equals(requestOwneString)) {
+            throw new VandalismException("You shouldn't try to meddle with other peoples comments", null);
+        }
+    }
+
     private CensorResponse censorComment(String content) {
         return filterClient.checkRequest(new CensorRequest(content));
     }
 
-    private Comment deleteComment(UUID commentID) {
+    private Comment deleteComment(UUID commentID, UUID userId) {
         Comment old = loadCommentById(commentID);
+        checkOwner(old.getUserId(), userId);
         Comment deleted = deleteUserSpecificData(old);
         return commentRepository.save(deleted);
     }
 
-    private Comment editComment(CommentEditRequest request) {
+    private Comment editComment(CommentEditRequest request, UUID userId) {
         Comment old = loadCommentById(UUID.fromString(request.getCommentId()));
+        checkOwner(old.getUserId(), userId);
         old.setContent(request.getEditedContent());
         return commentRepository.save(old);
     }
 
-    private Comment saveComment(CommentRequest request) {
-        return commentRepository.save(CommentMapper.fromRequest(request));
+    private Comment saveComment(CommentRequest request, UUID userId) {
+        return commentRepository.save(CommentMapper.fromRequest(request, userId));
     }
-
 
     private List<CommentResponse> parseCommentsIntoCommentResponseList(List<Comment> comments) {
         List<CommentResponse> responseList = new ArrayList<>();

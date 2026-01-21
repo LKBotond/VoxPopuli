@@ -28,7 +28,6 @@ public final class TestDataUtils {
     public static CommentRequest createTestCommentRequest() {
         return CommentRequest.builder()
                 .parentId(UUID.randomUUID().toString())
-                .userId(UUID.randomUUID().toString())
                 .sourceLinkHash("www.webpage.hash")
                 .content("lorem ipsum")
                 .updatedAt(OffsetDateTime.now())
@@ -43,5 +42,9 @@ public final class TestDataUtils {
     public static CensorResponse createUnflagged() {
         List<String> empty = new ArrayList<>();
         return CensorResponse.builder().caughtWords(empty).flagged(false).build();
+    }
+
+    public static UUID getUUID() {
+        return UUID.randomUUID();
     }
 }
