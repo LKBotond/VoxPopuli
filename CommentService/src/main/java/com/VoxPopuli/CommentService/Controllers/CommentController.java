@@ -22,24 +22,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
-@RequestMapping("/internal/comments")
+@RequestMapping("/comments")
 @RequiredArgsConstructor
 public class CommentController {
     private final CommentService commentService;
 
-    @PostMapping("/comment")
+    @PostMapping
     public ResponseEntity<CommentResponse> comment(@RequestBody CommentRequest request) {
         CommentResponse response = commentService.registerComment(request);
         return ResponseEntity.ok().body(response);
     }
 
-    @PutMapping("/edit")
+    @PutMapping
     public ResponseEntity<CommentResponse> editComment(@RequestBody CommentEditRequest request) {
         CommentResponse edited = commentService.registerCommentEdit(request);
         return ResponseEntity.ok().body(edited);
     }
 
-    @DeleteMapping("/delete/{commentId}")
+    @DeleteMapping("/{commentId}")
     public ResponseEntity<CommentResponse> postMethodName(@PathVariable("commentId") UUID commentID) {
         CommentResponse deleted = commentService.registerCommentDeletion(commentID);
         return ResponseEntity.ok().body(deleted);
