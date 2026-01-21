@@ -1,25 +1,31 @@
 package com.VoxPopuli.Gateway.clients;
 
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
 
-import com.VoxPopuli.sessioncontracts.SessionToken;
-import com.VoxPopuli.usercontracts.UserData;
+import com.VoxPopuli.headercontracts.NamingConventions;
 
+import reactor.core.publisher.Mono;
 
-@FeignClient(name = "session-service", url = "http://user-service:8080")
-public interface SessionClient {
+@Component
+public class SessionClient {
 
-    @PostMapping("/interior/sesions/create")
-    public SessionToken createSession(@RequestBody UserData request);
+    private final WebClient webClient;
 
-    @DeleteMapping("/interior/sesions/delete/{id}")
-    public Void endSession(@PathVariable String sessionId);
+    public SessionClient(WebClient.Builder builder,
+            @Value("${gateway.auth.session-service-url}") String sessionServiceUrl) {
+        this.webClient = builder.baseUrl(sessionServiceUrl).build();
+    }
 
-    @PutMapping("/interior/sesions/validate")
-    public UserData validateSession(@RequestBody SessionToken request);
+    public Mono<SessionResponse> validateSession(String sessionToken) {
+        return webClient.get()
+                .uri("interior/sessions/validate")
+                .header(NamingConventions.sessionId, sessionToken)
+                .retrieve()
+                .bodyToMono(SessionResponse.class);
+    }
+
+    public record SessionResponse(String userId, String alias, boolean valid) {
+    }
 }
