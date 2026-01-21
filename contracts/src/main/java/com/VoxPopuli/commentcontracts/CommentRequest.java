@@ -18,8 +18,6 @@ import lombok.Setter;
 public class CommentRequest {
     @NotBlank(message = "ParentId is required")
     String parentId;
-    @NotBlank(message = "UserId is required")
-    String userId;
     @NotBlank(message = "Content is required")
     String content;
     @NotBlank(message = "SourceLinkHash is required")
