@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.VoxPopuli.headercontracts.NamingConventions;
+import com.VoxPopuli.sessioncontracts.InternalUserData;
 
 import reactor.core.publisher.Mono;
 
@@ -18,14 +19,11 @@ public class SessionClient {
         this.webClient = builder.baseUrl(sessionServiceUrl).build();
     }
 
-    public Mono<SessionResponse> validateSession(String sessionToken) {
+    public Mono<InternalUserData> validateSession(String sessionToken) {
         return webClient.get()
-                .uri("interior/sessions/validate")
+                .uri("/sessions")
                 .header(NamingConventions.sessionId, sessionToken)
                 .retrieve()
-                .bodyToMono(SessionResponse.class);
-    }
-
-    public record SessionResponse(String userId, String alias, boolean valid) {
+                .bodyToMono(InternalUserData.class);
     }
 }

@@ -2,7 +2,7 @@ package com.VoxPopuli.Gateway.filters;
 
 import com.VoxPopuli.Gateway.clients.SessionClient;
 import com.VoxPopuli.headercontracts.NamingConventions;
-
+import com.VoxPopuli.sessioncontracts.InternalUserData;
 
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -31,15 +31,15 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
             }
 
             return sessionClient.validateSession(token)
-                    .flatMap(session -> {
-                        if (!session.valid()) {
+                    .flatMap((InternalUserData session) -> {
+                        if (session.getUserId().isBlank()) {
                             return onError(exchange, HttpStatus.FORBIDDEN);
                         }
                         var request = exchange.getRequest().mutate()
                                 .headers(h -> h.remove(NamingConventions.userId))
                                 .headers(h -> h.remove(NamingConventions.aliasId))
-                                .header(NamingConventions.userId, session.userId())
-                                .header(NamingConventions.aliasId, session.alias())
+                                .header(NamingConventions.userId, session.getUserId())
+                                .header(NamingConventions.aliasId, session.getAlias())
                                 .build();
 
                         return chain.filter(exchange.mutate().request(request).build());
