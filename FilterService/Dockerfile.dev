@@ -1,0 +1,10 @@
+FROM maven:3.9-eclipse-temurin-21
+WORKDIR /app
+
+COPY FilterService/mvnw .
+COPY FilterService/.mvn .mvn
+COPY FilterService/pom.xml .
+
+RUN chmod +x mvnw
+
+CMD ["./mvnw", "spring-boot:run"]

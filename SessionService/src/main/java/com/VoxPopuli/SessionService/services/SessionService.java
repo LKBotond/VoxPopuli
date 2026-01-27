@@ -12,8 +12,10 @@ import com.VoxPopuli.sessioncontracts.SessionToken;
 import com.VoxPopuli.SessionService.exceptions.InvalidSessionException;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class SessionService {
     private final RedisRepo redisRepository;
@@ -23,13 +25,18 @@ public class SessionService {
 
     public SessionToken createSession(InternalUserData sessionCreationRequest) {
         SessionDomain token = buildToken(sessionCreationRequest);
+        log.debug("Created Token:" + token.getSessionId());
         saveToken(token);
+        SessionDomain loaded = authenticateToken(token.getSessionId());
+        log.debug("Loaded Token:" + loaded.getSessionId());
         return new SessionToken(token.getSessionId(), sessionCreationRequest.getAlias());
     }
 
     public InternalUserData validateSession(String tokenString) {
         SessionDomain token = authenticateToken(tokenString);
         refreshToken(token);
+        log.debug("Loaded Token sessionId:" + token.getSessionId());
+        log.debug("Loaded Token userId:" + token.getUserId());
         return new InternalUserData(token.getUserId(), token.getAlias());
     }
 
@@ -43,7 +50,7 @@ public class SessionService {
 
     private SessionDomain authenticateToken(String sessionId) {
         return redisRepository.findById(sessionId)
-                .orElseThrow(() -> new InvalidSessionException("Token does not exist"));
+                .orElseThrow(() -> new InvalidSessionException("Token does not exist id:" + sessionId));
     }
 
     private SessionDomain refreshToken(SessionDomain token) {

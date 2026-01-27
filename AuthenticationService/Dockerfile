@@ -1,7 +1,7 @@
 FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
-COPY UserService/pom.xml .
 
+COPY AuthenticationService/pom.xml .
 COPY contracts/target/contracts-1.0.jar /tmp/contracts-1.0.jar
 RUN mvn install:install-file \
     -Dfile=/tmp/contracts-1.0.jar \
@@ -11,7 +11,8 @@ RUN mvn install:install-file \
     -Dpackaging=jar
 
 RUN mvn dependency:go-offline -B
-COPY UserService/src ./src
+
+COPY AuthenticationService/src ./src
 RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:21-jdk

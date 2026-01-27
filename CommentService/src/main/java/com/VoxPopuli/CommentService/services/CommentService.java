@@ -30,7 +30,7 @@ public class CommentService {
     public CommentResponse registerComment(CommentRequest commentRequest, UUID userId) {
         CensorResponse response = censorComment(commentRequest.getContent());
         if (response.isFlagged()) {
-            throw new VandalismException("The following words got caught in our web", response.getCaughtWords());
+            throw new VandalismException("The following words got caught in our web: ", response.getCaughtWords());
         }
         return CommentMapper.toCommentResponse(saveComment(commentRequest, userId));
     }
@@ -38,7 +38,7 @@ public class CommentService {
     public CommentResponse registerCommentEdit(CommentEditRequest request, UUID userId) {
         CensorResponse response = censorComment(request.getEditedContent());
         if (response.isFlagged()) {
-            throw new VandalismException("The following words got caught in our web", response.getCaughtWords());
+            throw new VandalismException("The following words got caught in our web: ", response.getCaughtWords());
         }
         return CommentMapper.toCommentResponse(editComment(request, userId));
     }

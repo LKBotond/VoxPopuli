@@ -12,12 +12,12 @@ import com.VoxPopuli.usercontracts.UserData;
 
 @FeignClient(name = "user-service", url = "http://user-service:8080")
 public interface UserClient {
-    @PostMapping("/register")
+    @PostMapping("/users")
     public UserData register(@RequestBody HashedRegistrationRequest request);
 
-    @GetMapping("/login/{email}")
+    @GetMapping("/users/{email}")
     public UserData getUserByEmail(@PathVariable("email") String email);
 
-    @DeleteMapping("/delete/{userId}")
+    @DeleteMapping("/users/{userId}")
     public void deleteUser(@PathVariable("userId") String userId);
 }

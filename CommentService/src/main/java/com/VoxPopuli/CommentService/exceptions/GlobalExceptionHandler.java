@@ -24,6 +24,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 
+    @ExceptionHandler(VandalismException.class)
+    public ResponseEntity<String> handleVandalismServiceDown(VandalismException e) {
+        log.error("Naughty naughty words found: ", e);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(e.getMessage());
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIdTempering(IllegalArgumentException e) {
         log.error("Id Tampering detected", e);

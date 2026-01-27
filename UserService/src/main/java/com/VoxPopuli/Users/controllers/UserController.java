@@ -22,7 +22,7 @@ import com.VoxPopuli.usercontracts.UserData;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
-@RequestMapping("/internal/users")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;

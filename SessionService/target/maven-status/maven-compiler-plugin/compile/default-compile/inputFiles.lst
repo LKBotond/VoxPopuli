@@ -1,0 +1,7 @@
+/app/src/main/java/com/VoxPopuli/SessionService/SessionServiceApplication.java
+/app/src/main/java/com/VoxPopuli/SessionService/controllers/SessionController.java
+/app/src/main/java/com/VoxPopuli/SessionService/domain/SessionDomain.java
+/app/src/main/java/com/VoxPopuli/SessionService/exceptions/GlobalExceptionHandler.java
+/app/src/main/java/com/VoxPopuli/SessionService/exceptions/InvalidSessionException.java
+/app/src/main/java/com/VoxPopuli/SessionService/repositories/RedisRepo.java
+/app/src/main/java/com/VoxPopuli/SessionService/services/SessionService.java

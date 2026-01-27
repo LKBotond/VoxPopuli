@@ -1,0 +1,3 @@
+/app/src/test/java/com/VoxPopuli/SessionService/IntegrationTests/SessionServiceTests.java
+/app/src/test/java/com/VoxPopuli/SessionService/SessionServiceApplicationTests.java
+/app/src/test/java/com/VoxPopuli/SessionService/utils/TestDataUtils.java

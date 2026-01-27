@@ -1,0 +1,9 @@
+FROM maven:3.9-eclipse-temurin-21
+WORKDIR /app
+
+COPY Gateway/mvnw .
+COPY Gateway/.mvn .mvn
+COPY Gateway/pom.xml .
+
+RUN chmod +x mvnw
+CMD ["./mvnw", "spring-boot:run"]
