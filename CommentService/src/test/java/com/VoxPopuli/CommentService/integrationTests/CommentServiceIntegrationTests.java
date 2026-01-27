@@ -47,6 +47,7 @@ public class CommentServiceIntegrationTests {
     private CommentService serviceTest;
 
     @Container
+    @SuppressWarnings("resource")
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15")
             .withDatabaseName("testdb")
             .withUsername("test")
