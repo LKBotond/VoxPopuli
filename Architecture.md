@@ -1,6 +1,7 @@
+# Architecture
 ## Necessary DB data
 
-**_PostgreSQL_**
+### **_PostgreSQL_**
 
 ```mermaid
 erDiagram
@@ -11,23 +12,24 @@ erDiagram
         TEXT pass_hash
     }
     comments {
-        UUID id PK
+        UUID comment_id PK
         UUID parent_id
         UUID user_id
         TEXT source_link_hash
         TEXT content
-        TIMESTAMP created_at
+        TIMESTAMP last_updated
     }
 
 ```
 
-**_Redis_**
+### **_Redis_**
 
 ```mermaid
 erDiagram
      active_sessions{
         TEXT sessionId PK
         TEXT userId
+        TEXT alias
         LONG expiryInSeconds
     }
 ```
@@ -53,9 +55,10 @@ flowchart LR
     end
 
 Gateway-->Auth
-Gateway-->User
-Gateway-->Session
-Gateway-->Filter
+Auth-->User
+Auth-->Session
+Gateway -->Session
+Comment-->Filter
 Gateway-->Comment
 
 User-->userDB
@@ -65,58 +68,96 @@ Comment-->comment
 
 ## Sequence Diagrams for implementation
 
-### Registration:
+### Authentication flow:
 
-#### Abstract:
-
-```mermaid
-flowchart TD
-    A[User sends necessary data ] --> B[Check for integrity]
-    B-->|Valid| C[Hash password]
-    C --> D[Add user to DB]
-    D --> E[Generate Session Token]
-    E --> F[Return appropriate response]
-    B -->|Invalid| F[Return appropriate response]
-```
-
-#### Implementation:
 
 ```mermaid
 sequenceDiagram
 autonumber
-    participant User
-    participant APIGateway
-    participant AuthService
-    participant SessionService
-    participant UserService
-    participant PersistanceLayer
+    Actor User as User 
+    participant GW as Gateway 
+    participant Auth as Auth Service
+    participant UserSvc as User Service
+    participant Session as Session Service
 
-    User->>APIGateway: RegistrationRequestDTO
-    Note over APIGateway: validate DTO integrity (check for null fields)
-    alt Missing necesary data
-        APIGateway-->>User: 400 bad request
-    else Valid data
-        APIGateway->>AuthService: RegistrationRequestDTO
-        Note over AuthService: HashPassword
-        AuthService->>APIGateway: HashedRegistrationRequestDTO
-        APIGateway->>UserService: HashedRegistrationRequestDTO
+    Note over User, GW: 1. Initial Request
+    User->>GW: Send Request (Register/Login)
+    activate GW
+    
+    Note over GW: 2. Edge Validation
+    GW->>GW: Validate Origin & Clean Headers
+    
+    GW->>Auth: Forward/Proxy Request
+    activate Auth
+    
+    Note over Auth: 3. Logic & Hashing
+    Auth->>Auth: Hash Password (Argon2)
+    
+    Note over Auth, UserSvc: 4. Persistence
+    Auth->>UserSvc: Request to Save User
+    activate UserSvc
+    UserSvc-->>Auth: Return Saved User Data
+    deactivate UserSvc
+    
+    Note over Auth, Session: 5. Session Management
+    Auth->>Session: Generate & Save Opaque Token
+    activate Session
+    Session-->>Auth: Return Token
+    deactivate Session
+    
+    Note over Auth, User: 6. Response
+    Auth-->>GW: Return Token
+    deactivate Auth
+    
+    GW-->>User: Response (Token)
+    deactivate GW
+```
 
-            UserService->>PersistanceLayer: Check if User Already exists
-        alt User already exists
-            PersistanceLayer-->>UserService: Exists
-            UserService-->>APIGateway: 409 Conflict
-            APIGateway-->>User: 409 Conflict
-        else User does not exist
-            PersistanceLayer-->>UserService: Ready to add user
-            UserService->>PersistanceLayer: Add user to DB
-            PersistanceLayer-->>UserService: User added successfully
-            UserService->>APIGateway: UserDataDto
-            APIGateway->>SessionService: UserDataDto
-            Note over SessionService: create sessionToken
-            SessionService->>PersistanceLayer: Save Session token
-            PersistanceLayer-->>SessionService: Token Saved
-            SessionService->>APIGateway: sessionToken
-            APIGateway-->>User: 200 OK + Session Token
-        end
-    end
+### Comment flow:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client as User 
+    participant GW as Gateway
+    participant Session as Session Service
+    participant Comment as Comment Service
+    participant Filter as Filter Service
+    participant DB as Comment DB
+
+    Note over Client, GW: 1. Inbound Request
+    Client->>GW: POST /comment
+    activate GW
+
+    Note over GW, Session: 2. Authentication & Enrichment
+    GW->>Session: Validate Token
+    activate Session
+    Session-->>GW: Return Internal User Data (User ID, Alias)
+    deactivate Session
+
+    GW->>GW: Inject User ID/Role into Request Headers
+    
+    Note over GW, Comment: 3. Forwarding
+    GW->>Comment: Forward Request (Headers: X-User-ID, etc.)
+    activate Comment
+
+    Note over Comment, Filter: 4. Moderation
+    Comment->>Filter: Request Content Validation
+    activate Filter
+    Filter-->>Comment: Return Flag (e.g., IsSafe: True)
+    deactivate Filter
+
+    Note over Comment, DB: 5. Persistence
+
+    Comment->>DB: Save Comment Entity
+    activate DB
+    DB-->>Comment: Confirm Save
+    deactivate DB
+        
+    Comment-->>GW: Return Saved Comment Object
+    deactivate Comment
+
+    GW-->>Client: Final Response
+    deactivate GW
+
 ```
