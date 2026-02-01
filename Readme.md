@@ -57,11 +57,11 @@ Service-to-service-level sequence diagrams can be found in the [Architecture.md]
 
 **Frontend:**
 
-- [ ] Popup UI.
+- [x] Authentication logic.
 - [ ] BackgroundScript.
-- [ ] Authentication logic.
 - [ ] Messaging logic (extension ↔ backend).
 - [ ] Shadow DOM logic.
+- [ ] Popup UI.
 
 **Integration:**
 
