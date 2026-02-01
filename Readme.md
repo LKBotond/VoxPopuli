@@ -15,6 +15,7 @@ With this, I’ve learned how to use Docker and Dockerfiles, how to debug interc
 ## Tech Stack used
 
 **Backend:** Spring Boot, Java, JPA, Git
+**Frontend:** React, TypeScript, chrome API (storage, runtime)
 **Communication:** Spring MVC (FeignClient), Spring Webflux (WebClient)
 **Testing:** Junit, Mockito, Testcontainers
 **Security:** Spring Security, Argon2, Opaque Tokens
@@ -27,14 +28,14 @@ Edge gateway with Orchestrating Services underneath.
 **Comment Service** controls and orchestrates anything comment related (CRUD, filtering for words, etc.).
 **Gateway** edge gateway validates opaque tokens (calls SessionService), validates request origins, cleans headers, and handles routing.
 
-To avoid DTO hell, I've opted for contract based communication. for now this works on a shared Jar, updating to openApi is on the list.
+To avoid DTO hell, I've opted for contract based communication. for now this works on a shared Jar. Updating to openApi is on the list.
 
 Service-to-service-level sequence diagrams can be found in the [Architecture.md](Architecture.md) file. Service implementation-level diagrams are found in the Architecture.md files within each service directory.
 
 ## Files and Folders:
 
-**AuthenticationService/.** microservice for authentication. Orchestrates user persistance and session lifecycle.
-**CommentService/.** microservice for comment Specific CRUD. Orchestrates FilterService for moderation purposes.
+**AuthenticationService/.** microservice for authentication. Orchestrates user persistence and session lifecycle.
+**CommentService/.** microservice for comment specific CRUD. Orchestrates FilterService for moderation purposes.
 **contracts/.** commonly used DTOs.
 **FilterService/.** moderation microservice, handles text normalization, and moderation libraries.
 **Gateway/.** Edge Gateway for routing.
@@ -42,10 +43,16 @@ Service-to-service-level sequence diagrams can be found in the [Architecture.md]
 **UserService/.** microservice for user specific CRUD.
 **Architecture.md** sequence diagrams for communication flows.
 **docker-compose-dev.yml** runs the services in development mode with hot reload support, allowing you to see code changes instantly.
-**docker-compose.yml** propper containerization for the app, with proper builds and settings.
+**docker-compose.yml** proper containerization for the app, with proper builds and settings.
 **Readme.md** description.
 
-## TODO:
+## Quick Start
+ 1. clone this repository
+ 2. navigate your IDE/ terminal to the root of this project.
+ 3. run docker-compose up -d
+ 4. you can send requests to it via your preferred platform (Postman Curl)
+ 
+ ## TODO:
 
 **Backend:**
 
