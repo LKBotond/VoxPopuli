@@ -1,8 +1,8 @@
 import { redirect, saveSession } from "../helpers/helpers";
-import { Session } from "../types/Session";
+import { SessionToken } from "../types/VoxPopuliTypes";
 
 export async function register(registrationRequest: FormData) {
-  const session: Session = await chrome.runtime.sendMessage({
+  const session: SessionToken = await chrome.runtime.sendMessage({
     action: "register",
     payload: registrationRequest,
   });
@@ -11,7 +11,7 @@ export async function register(registrationRequest: FormData) {
 }
 
 export async function login(loginRequest: FormData) {
-  const session: Session = await chrome.runtime.sendMessage({
+  const session: SessionToken = await chrome.runtime.sendMessage({
     action: "login",
     payload: loginRequest,
   });
