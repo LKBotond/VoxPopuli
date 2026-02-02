@@ -45,7 +45,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<CommentResponse> postMethodName(
+    public ResponseEntity<CommentResponse> deleteComment(
             @RequestHeader(NamingConventions.userId) UUID userId,
             @PathVariable("commentId") UUID commentID) {
         CommentResponse deleted = commentService.registerCommentDeletion(commentID, userId);
