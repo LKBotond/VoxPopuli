@@ -1,25 +1,63 @@
+import { loadSession } from "./helpers/helpers";
 import * as Api from "./logic/VoxPopuliAPI";
-import { RuntimeMessage } from "./types/MessageTypes";
-import { SessionToken } from "./types/VoxPopuliTypes";
+import { CommentDeleteMessag, RuntimeMessage } from "./types/MessageTypes";
+import {
+  CommentEditRequest,
+  CommentRequest,
+  CommentResponse,
+  LoginRequest,
+  RegistrationRequest,
+  SessionToken,
+} from "./types/VoxPopuliTypes";
 
+//call the helpers
 chrome.runtime.onMessage.addListener(
-  async (message: RuntimeMessage, sender, sendResponse) => {
-    switch (message.action) {
-      case "login": {
-        const response: SessionToken | undefined = await Api.login(
-          message.payload,
-        );
-        sendResponse(response);
-        return true;
-      }
-      case "register": {
-        const response: SessionToken | undefined = await Api.register(
-          message.payload,
-        );
-        sendResponse(response);
-        return true;
-      }
-      default:
-    }
+  (message: RuntimeMessage, sender, sendResponse) => {
+    handleMessaging(message).then((response) => {
+      sendResponse(response);
+    });
+    return true;
   },
 );
+
+async function handleMessaging(message: RuntimeMessage) {
+  try {
+    const sessionToken: SessionToken | undefined = await loadSession();
+
+    switch (message.action) {
+      case "login":
+        return await Api.login(message.payload as LoginRequest);
+
+      case "register":
+        return await Api.register(message.payload as RegistrationRequest);
+
+      case "getComments":
+        if (!sessionToken) throw new Error("Unauthorized");
+        return await Api.getComments(message.payload as string, sessionToken);
+
+      case "comment":
+        if (!sessionToken) throw new Error("Unauthorized");
+        return await Api.postComment(
+          message.payload as CommentRequest,
+          sessionToken,
+        );
+
+      case "edit":
+        if (!sessionToken) throw new Error("Unauthorized");
+        return await Api.editComment(
+          message.payload as CommentEditRequest,
+          sessionToken,
+        );
+      case "deleteComment":
+        if (!sessionToken) throw new Error("Unauthorized");
+        return await Api.deleteComment(message.payload as string, sessionToken);
+
+      default:
+        console.warn("Unknown action", message.action);
+        return { error: "Unknown action" };
+    }
+  } catch (error) {
+    console.error("Background script error:", error);
+    return { error: error instanceof Error ? error.message : "Unknown error" };
+  }
+}

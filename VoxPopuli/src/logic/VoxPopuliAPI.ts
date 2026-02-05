@@ -59,7 +59,7 @@ export async function register(
 export async function getComments(
   sourcelInkHash: string,
   sessionToken: SessionToken,
-) {
+): Promise<CommentResponse[]> {
   const sessionHeaders = createSessionHeaders(EXTENSION_ID, sessionToken);
   return await call("/comments/" + sourcelInkHash, "GET", sessionHeaders);
 }
@@ -80,7 +80,7 @@ export async function postComment(
 export async function editComment(
   commentEditRequest: CommentEditRequest,
   sessionToken: SessionToken,
-): Promise<CommentEditRequest | undefined> {
+): Promise<CommentResponse | undefined> {
   const sessionHeaders = createSessionHeaders(EXTENSION_ID, sessionToken);
   return await call(
     "/comments",
@@ -95,7 +95,7 @@ export async function deleteComment(
   sessionToken: SessionToken,
 ): Promise<CommentResponse> {
   const sessionHeaders = createSessionHeaders(EXTENSION_ID, sessionToken);
-  return await call("/comments/"+commentId, "DELETE", sessionHeaders);
+  return await call("/comments/" + commentId, "DELETE", sessionHeaders);
 }
 function createOriginHeaders(extensionId: string): AuthHeaders {
   return { "X-extension-id": extensionId };
