@@ -1,4 +1,8 @@
 import { redirect, saveSession } from "../helpers/helpers";
+import {
+  mapFormDataToLoginRequest,
+  mapFormDataToRegistrationRequest,
+} from "../helpers/mappers";
 import { LoginMessage, RegistrationMessage } from "../types/MessageTypes";
 import {
   LoginRequest,
@@ -6,7 +10,8 @@ import {
   SessionToken,
 } from "../types/VoxPopuliTypes";
 
-export async function register(registrationRequest: RegistrationRequest) {
+export async function register(inputForm: FormData) {
+  const registrationRequest = mapFormDataToRegistrationRequest(inputForm);
   const session: SessionToken =
     await chrome.runtime.sendMessage<RegistrationMessage>({
       action: "register",
@@ -16,7 +21,8 @@ export async function register(registrationRequest: RegistrationRequest) {
   redirect("html/Interior.html");
 }
 
-export async function login(loginRequest: LoginRequest) {
+export async function login(inputForm: FormData) {
+  const loginRequest = mapFormDataToLoginRequest(inputForm);
   const session: SessionToken = await chrome.runtime.sendMessage<LoginMessage>({
     action: "login",
     payload: loginRequest,
