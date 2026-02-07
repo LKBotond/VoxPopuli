@@ -14,11 +14,16 @@ With this, I’ve learned how to use Docker and Dockerfiles, how to debug interc
 
 ## Tech Stack used
 
-**Backend:** Spring Boot, Java, JPA, Git
-**Frontend:** React, TypeScript, chrome API (storage, runtime)
+**Backend:** Spring Boot, Java, JPA, Git 
+
+**Frontend:**  TypeScript, chrome API (storage, runtime), Vite
+
 **Communication:** Spring MVC (FeignClient), Spring Webflux (WebClient)
+
 **Testing:** Junit, Mockito, Testcontainers
+
 **Security:** Spring Security, Argon2, Opaque Tokens
+
 **Database:** PostgreSQL, Redis
 
 ## Architecture
