@@ -1,14 +1,15 @@
 import type { ViewProps } from "../../types/Props";
 import { VIEWS } from "../../types/Constants";
+import Button from "../generics/Button";
 
 export function IndexView({ changeViewTo }: ViewProps) {
   return (
     <ul>
       <li>
-        <button onClick={() => changeViewTo(VIEWS.LOGIN)}>Login</button>
+        <Button onClick={() => changeViewTo(VIEWS.LOGIN)}>Login</Button>
       </li>
       <li>
-        <button onClick={() => changeViewTo(VIEWS.REGISTER)}>Register</button>
+        <Button onClick={() => changeViewTo(VIEWS.REGISTER)}>Register</Button>
       </li>
     </ul>
   );

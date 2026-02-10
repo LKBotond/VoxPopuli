@@ -1,11 +1,12 @@
 import type { ViewProps } from "../../types/Props";
 import { VIEWS } from "../../types/Constants";
+import Button from "../generics/Button";
 
 export function InteriorView({ changeViewTo }: ViewProps) {
   return (
     <ul>
       <li>
-        <button onClick={() => changeViewTo(VIEWS.INDEX)}>back</button>
+        <Button onClick={() => changeViewTo(VIEWS.INDEX)}>back</Button>
       </li>
     </ul>
   );
