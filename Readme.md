@@ -16,7 +16,7 @@ With this, I’ve learned how to use Docker and Dockerfiles, how to debug interc
 
 **Backend:** Spring Boot, Java, JPA, Git 
 
-**Frontend:**  TypeScript, chrome API (storage, runtime), Vite
+**Frontend:**  React, TypeScript, chrome API (storage, runtime), Vite, Tailwind
 
 **Communication:** Spring MVC (FeignClient), Spring Webflux (WebClient)
 
@@ -40,16 +40,28 @@ Service-to-service-level sequence diagrams can be found in the [Architecture.md]
 ## Files and Folders:
 
 **AuthenticationService/.** microservice for authentication. Orchestrates user persistence and session lifecycle.
+
 **CommentService/.** microservice for comment specific CRUD. Orchestrates FilterService for moderation purposes.
+
 **contracts/.** commonly used DTOs.
+
 **FilterService/.** moderation microservice, handles text normalization, and moderation libraries.
+
 **Gateway/.** Edge Gateway for routing.
+
 **SessionService/.** microservice for session specific CRUD.
+
 **UserService/.** microservice for user specific CRUD.
-**Architecture.md** sequence diagrams for communication flows.
+
+[**Architecture.md**](Architecture.md) sequence diagrams for communication flows.
+
 **docker-compose-dev.yml** runs the services in development mode with hot reload support, allowing you to see code changes instantly.
+
 **docker-compose.yml** proper containerization for the app, with proper builds and settings.
+
 **Readme.md** description.
+
+[**Project Journal.md**](ProjectJournal.md) Issues I've faced along the way
 
 ## Quick Start
  1. clone this repository
