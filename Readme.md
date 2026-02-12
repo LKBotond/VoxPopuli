@@ -8,13 +8,13 @@ I’m building this as a learning project to explore microservices through exten
 
 ### Why microservices?
 
-Indeed, a modular monolith would have been much less of a hassle; I wouldn’t have had to worry about availability and service rollbacks when processes require input from two or more services. It is the prudent choice for an app of this size. My aim, however, was to expose and familiarize myself with the quirks of this architecture.
+Indeed, a modular monolith would have been much less of a hassle; I wouldn’t have had to worry about availability, service rollbacks on inter service failiures, inter service communication nor secure routing. It is the prudent choice for an app of this size. My aim, however, was to expose and familiarize myself with the quirks of this architecture.
 
 With this, I’ve learned how to use Docker and Dockerfiles, how to debug interconnected services, and how to perform inter-service rollbacks. I also learned the importance of testing, especially with Testcontainers, thus avoiding concerns about the subtle differences between an H2 in-memory database and PostgreSQL/Redis.
 
 ## Tech Stack used
 
-**Backend:** Spring Boot, Java, JPA, Git 
+**Backend:** Spring Boot, Java, JPA 
 
 **Frontend:**  React, TypeScript, chrome API (storage, runtime), Vite, Tailwind
 
@@ -25,6 +25,8 @@ With this, I’ve learned how to use Docker and Dockerfiles, how to debug interc
 **Security:** Spring Security, Argon2, Opaque Tokens
 
 **Database:** PostgreSQL, Redis
+
+**Tools:** Maven, Git
 
 ## Architecture
 
@@ -66,9 +68,10 @@ Service-to-service-level sequence diagrams can be found in the [Architecture.md]
 ## Quick Start
  1. clone this repository
  2. navigate your IDE/ terminal to the root of this project.
- 3. run docker-compose up -d
+ 3. run : `docker compose -f docker-compose-dev.yml up`
  4. you can send requests to it via your preferred platform (Postman Curl)
- 
+ 5. DTO's for structuring requests can be found in the **contracts** folder
+
  ## TODO:
 
 **Backend:**
