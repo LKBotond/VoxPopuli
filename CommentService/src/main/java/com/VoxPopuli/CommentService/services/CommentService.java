@@ -37,6 +37,7 @@ public class CommentService {
 
     public CommentResponse registerCommentEdit(CommentEditRequest request, UUID userId) {
         CensorResponse response = censorComment(request.getEditedContent());
+        
         if (response.isFlagged()) {
             throw new VandalismException("The following words got caught in our web: ", response.getCaughtWords());
         }

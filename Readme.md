@@ -30,9 +30,42 @@ With this, I’ve learned how to use Docker and Dockerfiles, how to debug interc
 
 ## Architecture
 
+
+```mermaid
+flowchart LR
+
+    subgraph Backend Services
+        Gateway[API Gateway]
+        Auth[Authentication Service]
+        User[User Service]
+        Session[Session Service]
+        Comment[Comment Service]
+        Filter[Filtering Service]
+    end
+
+    subgraph DBs
+        userDB[(users DB)]
+        session[(Active Sessions)]
+        comment[(comments)]
+    end
+
+Gateway-->Auth
+Auth-->User
+Auth-->Session
+Gateway -->Session
+Gateway -->Filter
+Comment-->Filter
+Gateway-->Comment
+
+User-->userDB
+Session-->session
+Comment-->comment
+```
 Edge gateway with Orchestrating Services underneath.
 **Auth Service** controls and orchestrates everything user related (login/logout, name/password changes, and other basic CRUD).
+
 **Comment Service** controls and orchestrates anything comment related (CRUD, filtering for words, etc.).
+
 **Gateway** edge gateway validates opaque tokens (calls SessionService), validates request origins, cleans headers, and handles routing.
 
 To avoid DTO hell, I've opted for contract based communication. for now this works on a shared Jar. Updating to openApi is on the list.

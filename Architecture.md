@@ -1,4 +1,9 @@
 # Architecture
+System level overview of the most important logic chains
+## Chapters:
+1. [Necesary Db Data](#necessary-db-data)
+2. [Authentication Flow](#authentication-flow)
+3. [Comment Flow](#comment-flow)
 ## Necessary DB data
 
 ### **_PostgreSQL_**
@@ -26,7 +31,7 @@ erDiagram
 
 ```mermaid
 erDiagram
-     active_sessions{
+     sessionToken{
         TEXT sessionId PK
         TEXT userId
         TEXT alias
@@ -34,41 +39,7 @@ erDiagram
     }
 ```
 
-## All the backend services in Coordinator->subordinate roles
-
-```mermaid
-flowchart LR
-
-    subgraph Backend Services
-        Gateway[API Gateway]
-        Auth[Authentication Service]
-        User[User Service]
-        Session[Session Service]
-        Comment[Comment Service]
-        Filter[Filtering Service]
-    end
-
-    subgraph DBs
-        userDB[(users DB)]
-        session[(Active Sessions)]
-        comment[(comments)]
-    end
-
-Gateway-->Auth
-Auth-->User
-Auth-->Session
-Gateway -->Session
-Comment-->Filter
-Gateway-->Comment
-
-User-->userDB
-Session-->session
-Comment-->comment
-```
-
-## Sequence Diagrams for implementation
-
-### Authentication flow:
+## Authentication flow:
 
 
 ```mermaid
@@ -113,7 +84,7 @@ autonumber
     deactivate GW
 ```
 
-### Comment flow:
+## Comment flow:
 
 ```mermaid
 sequenceDiagram
