@@ -1,0 +1,21 @@
+services:
+  #commentservice:
+  #  build: .
+  #  container_name: commentservice
+  #  ports:
+  #    - "8080:8080"
+  #  environment:
+  #    - SPRING_PROFILES_ACTIVE=prod
+  #  depends_on:
+  #    - userservice-db
+
+  commentservice-db:
+    image: postgres:16
+    container_name: commentservice-db
+    restart: always
+    environment:
+      POSTGRES_DB: comments_db
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    ports:
+      - "5432:5432"

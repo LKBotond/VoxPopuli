@@ -1,0 +1,97 @@
+services:
+  # DataBases:
+
+  #Postgresql
+  user-service-db:
+    image: postgres:16
+    container_name: users-service-db
+    restart: always
+    environment:
+      POSTGRES_DB: users_db
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+
+  comment-service-db:
+    image: postgres:16
+    container_name: comments-db
+    restart: always
+    environment:
+      POSTGRES_DB: comments_db
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+
+  #Redis
+  session-service-redis:
+    image: redis:7
+    container_name: session-service-redis
+    command: redis-server --requirepass myStrongPassword
+    restart: unless-stopped
+
+  #Microservices:
+
+  #Auth and subordinates:
+  user-service:
+    build:
+      context: .
+      dockerfile: UserService/Dockerfile
+    container_name: user-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://user-service-db:5432/users_db
+      - SPRING_DATASOURCE_USERNAME=myuser
+      - SPRING_DATASOURCE_PASSWORD=mypassword
+    depends_on:
+      - user-service-db
+
+  session-service:
+    build:
+      context: .
+      dockerfile: SessionService/Dockerfile.dev
+    container_name: session-service
+    environment:
+      - LOGGING_LEVEL_COM_VOXPOPULI_SESSIONSERVICE_CONTROLLERS=DEBUG
+      - LOGGING_LEVEL_COM_VOXPOPULI_SESSIONSERVICE_SERVICES=DEBUG
+    depends_on:
+      - session-service-redis
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: AuthenticationService/Dockerfile
+    container_name: auth-service
+    environment:
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY=DEBUG
+    depends_on:
+      - session-service-redis
+
+  comment-service:
+    build:
+      context: .
+      dockerfile: CommentService/Dockerfile
+    container_name: comment-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://comment-service-db:5432/comments_db
+      - SPRING_DATASOURCE_USERNAME=myuser
+      - SPRING_DATASOURCE_PASSWORD=mypassword
+    depends_on:
+      - comment-service-db
+
+  filter-service:
+    build:
+      context: .
+      dockerfile: FilterService/Dockerfile
+    container_name: filter-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+
+  gateway:
+    build:
+      context: .
+      dockerfile: Gateway/Dockerfile
+    container_name: gateway
+    environment:
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_CLOUD_GATEWAY=DEBUG
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_HTTP_SERVER_REACTIVE=DEBUG
+      - LOGGING_LEVEL_REACTOR_NETTY=DEBUG
+    ports:
+      - "8080:8080"
