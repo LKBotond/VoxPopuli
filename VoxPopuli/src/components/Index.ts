@@ -1,0 +1,7 @@
+export { default as Button } from "./generics/Button";
+export { default as Form } from "./generics/Form";
+export { default as Input } from "./generics/Input";
+export { default as Div } from "./generics/Div";
+export { default as H } from "./generics/Header";
+export { default as P } from "./generics/Paragraph";
+export { default as UL } from "./generics/UnorderedList";

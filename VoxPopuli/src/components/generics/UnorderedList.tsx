@@ -1,12 +1,12 @@
 import type { HTMLAttributes } from "react";
-interface UnorderedListProps extends HTMLAttributes<HTMLUListElement> {
+interface ULProps extends HTMLAttributes<HTMLUListElement> {
   className?: string;
 }
-function UnorderedList({
+function UL({
   className = "",
   children,
   ...props
-}: UnorderedListProps) {
+}: ULProps) {
   const baseClasses =
     "flex w-full flex-col p-4 rounded-md shadow-sm";
   return (
@@ -15,4 +15,4 @@ function UnorderedList({
     </ul>
   );
 }
-export default UnorderedList;
+export default UL;
