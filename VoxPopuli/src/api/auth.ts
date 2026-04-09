@@ -3,16 +3,20 @@ import type {
   RegistrationRequest,
   SessionToken,
 } from "../contracts/Auth";
+import type { ApiRequest, OriginHeader } from "../contracts/ApiRequest";
 import { saveSession } from "../utils/helpers";
 import { post } from "./VoxPopuliApi";
+
 export async function register(
-  registrationRequest: RegistrationRequest,
+  registrationRequest: ApiRequest<OriginHeader, RegistrationRequest>,
 ): Promise<boolean> {
   try {
-    const sessionToken = await post<RegistrationRequest, SessionToken>(
-      "/register",
-      registrationRequest,
-    );
+    const sessionToken = await post<
+      OriginHeader,
+      RegistrationRequest,
+      SessionToken
+    >("/register", registrationRequest);
+
     saveSession(sessionToken);
     return true;
   } catch (e) {
@@ -21,10 +25,10 @@ export async function register(
   }
 }
 export async function login(
-  registrationRequest: LoginRequest,
+  registrationRequest: ApiRequest<OriginHeader, LoginRequest>,
 ): Promise<boolean> {
   try {
-    const sessionToken = await post<LoginRequest, SessionToken>(
+    const sessionToken = await post<OriginHeader, LoginRequest, SessionToken>(
       "/login",
       registrationRequest,
     );
@@ -35,4 +39,3 @@ export async function login(
     return false;
   }
 }
-

@@ -30,4 +30,4 @@ export type RuntimeMessage =
   | CommentMessage
   | CommentEditMessage
   | CommentDeleteMessag
-  | UnknownActionResponse;
+

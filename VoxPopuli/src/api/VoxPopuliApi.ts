@@ -1,70 +1,70 @@
-import { useQuery } from "@tanstack/react-query";
+//import { useQuery } from "@tanstack/react-query";
 import { basePath } from "../contracts/Path";
+import type { AuthHeader } from "../contracts/ApiRequest";
+//import type { ApiRequest } from "../contracts/ApiRequest";
 
-export async function post<req, res>(path: string, payload: req): Promise<res> {
+interface ApiRequest<Theader, Tpayload> {
+  headers: Theader;
+  payload: Tpayload;
+}
+
+export async function post<THeader extends HeadersInit, TPayload, TResponse>(
+  path: string,
+  request: ApiRequest<THeader, TPayload>,
+): Promise<TResponse> {
   const response = await fetch(basePath + path, {
     method: "POST",
-    headers: {
-      //need to check for my headers
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
+    headers: request.headers,
+    body: JSON.stringify(request.payload),
   });
 
   if (!response.ok) {
     throw new Error("API request failed: " + response.status);
   }
 
-  return response.json();
+  return response.json() as Promise<TResponse>;
 }
 
-export async function put<req, res>(path: string, payload: req): Promise<res> {
+export async function put<
+  Theader extends Record<string, string>,
+  Tpayload,
+  Tresponse,
+>(path: string, payload: ApiRequest<Theader, Tpayload>): Promise<Tresponse> {
   const response = await fetch(basePath + path, {
     method: "PUT",
-    headers: {
-      //need to check for my headers
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
+    headers: payload.headers,
+    body: JSON.stringify(payload.payload),
   });
   if (!response.ok) {
     throw new Error("API request failed, " + response.status);
   }
   return response.json();
 }
-export async function get<T>(path: string): Promise<T> {
+export async function get<Tresponse>(
+  path: string,
+  headers: AuthHeader,
+): Promise<Tresponse> {
   const response = await fetch(basePath + path, {
     method: "GET",
-    headers: {
-      //need to check for my headers
-      "Content-Type": "application/json",
-    },
+    headers: headers,
   });
   if (!response.ok) {
     throw new Error("API request failed, " + response.status);
   }
   return response.json();
 }
-
-export async function del<T>(path: string): Promise<T> {
+export async function del<Tresponse>(
+  path: string,
+  headers: AuthHeader,
+): Promise<Tresponse> {
   const response = await fetch(basePath + path, {
     method: "DELETE",
-    headers: {
-      //need to check for my headers
-      "Content-Type": "application/json",
-    },
+    headers: headers,
   });
   if (!response.ok) {
     throw new Error("API request failed, " + response.status);
   }
   return response.json();
-}
-
-export function useApiToGet<T>(key: string, path: string) {
-  return useQuery<T, Error>({
-    queryKey: [key, path],
-    queryFn: () => get<T>(path),
-  });
 }
 
 export async function sendMessage<T>(message: object): Promise<T> {
