@@ -16,8 +16,8 @@ export function validateFormData(data: FormData): boolean {
   return true;
 }
 
-export async function saveSession(sessionToken: SessionToken): Promise<void> {
-  await chrome.storage.session.set({ session: sessionToken });
+export function saveSession(sessionToken: SessionToken): void {
+  chrome.storage.session.set({ session: sessionToken });
 }
 
 export async function loadSession(): Promise<SessionToken | undefined> {

@@ -6,7 +6,7 @@ import type {
   SessionToken,
 } from "./contracts/Auth";
 import { loadSession } from "./utils/helpers";
-import * as Api from "./api/VoxPopuliApi";
+import * as AuthAPI from "./api/auth.ts";
 
 //call the helpers
 chrome.runtime.onMessage.addListener(
@@ -24,10 +24,10 @@ async function handleMessaging(message: RuntimeMessage) {
 
     switch (message.action) {
       case "login":
-        return await Api.login(message.payload as LoginRequest);
+        return await AuthAPI.login(message.payload as LoginRequest);
 
       case "register":
-        return await Api.register(message.payload as RegistrationRequest);
+        return await AuthAPI.register(message.payload as RegistrationRequest);
 
       case "getComments":
         if (!sessionToken) throw new Error("Unauthorized");
