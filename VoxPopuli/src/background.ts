@@ -1,12 +1,13 @@
 import type { CommentEditRequest, CommentRequest } from "./contracts/Comment";
-import type { CommentDeleteMessag, RuntimeMessage } from "./types/MessageTypes";
+import type { RuntimeMessage } from "./types/MessageTypes";
 import type {
   LoginRequest,
   RegistrationRequest,
   SessionToken,
 } from "./contracts/Auth";
 import { loadSession } from "./utils/helpers";
-import * as AuthAPI from "./api/auth.ts";
+import * as AuthAPI from "./api/Auth.ts";
+import * as CommentAPI from "./api/Comment.ts";
 
 //call the helpers
 chrome.runtime.onMessage.addListener(
@@ -31,24 +32,20 @@ async function handleMessaging(message: RuntimeMessage) {
 
       case "getComments":
         if (!sessionToken) throw new Error("Unauthorized");
-        return await Api.getComments(message.payload as string, sessionToken);
+        return await CommentAPI.getAll(message.payload as string);
 
       case "comment":
         if (!sessionToken) throw new Error("Unauthorized");
-        return await Api.postComment(
-          message.payload as CommentRequest,
-          sessionToken,
-        );
+        return await CommentAPI.comment(message.payload as CommentRequest);
 
       case "edit":
         if (!sessionToken) throw new Error("Unauthorized");
-        return await Api.editComment(
-          message.payload as CommentEditRequest,
-          sessionToken,
+        return await CommentAPI.edit(
+          message.payload as CommentEditRequest
         );
       case "deleteComment":
         if (!sessionToken) throw new Error("Unauthorized");
-        return await Api.deleteComment(message.payload as string, sessionToken);
+        return await CommentAPI.deleteComment(message.payload as string);
 
       default:
         console.warn("Unknown action", message.action);

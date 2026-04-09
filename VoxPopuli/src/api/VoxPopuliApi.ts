@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { basePath } from "../contracts/Path";
 
-export async function post<req,res>(path: string, payload: req): Promise<res> {
+export async function post<req, res>(path: string, payload: req): Promise<res> {
   const response = await fetch(basePath + path, {
     method: "POST",
     headers: {
@@ -18,7 +18,7 @@ export async function post<req,res>(path: string, payload: req): Promise<res> {
   return response.json();
 }
 
-export async function put<T>(path: string, payload: T): Promise<T> {
+export async function put<req, res>(path: string, payload: req): Promise<res> {
   const response = await fetch(basePath + path, {
     method: "PUT",
     headers: {
@@ -35,6 +35,20 @@ export async function put<T>(path: string, payload: T): Promise<T> {
 export async function get<T>(path: string): Promise<T> {
   const response = await fetch(basePath + path, {
     method: "GET",
+    headers: {
+      //need to check for my headers
+      "Content-Type": "application/json",
+    },
+  });
+  if (!response.ok) {
+    throw new Error("API request failed, " + response.status);
+  }
+  return response.json();
+}
+
+export async function del<T>(path: string): Promise<T> {
+  const response = await fetch(basePath + path, {
+    method: "DELETE",
     headers: {
       //need to check for my headers
       "Content-Type": "application/json",

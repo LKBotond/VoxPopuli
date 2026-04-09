@@ -1,7 +1,7 @@
 import type { ViewProps } from "../../types/Props";
 import { VIEWS } from "../../types/Constants";
 import * as UI from "../Index";
-import { submitLoginForm } from "../../api/Handlers/HandleSubmission";
+import { submitLoginForm } from "../../api/handlers/HandleSubmission";
 import { redirect } from "../../utils/helpers";
 
 export function LoginView({ changeViewTo }: ViewProps) {
