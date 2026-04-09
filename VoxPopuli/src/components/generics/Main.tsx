@@ -2,13 +2,13 @@ import type { FormHTMLAttributes } from "react";
 interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
   className?: string;
 }
-function Form({ className = "", children, ...props }: FormProps) {
+function Main({ className = "", children, ...props }: FormProps) {
   const baseClasses =
-    "flex items-center justify-center w-1/2 flex-col gap-2 p-4 border border-gray-100/50 backdrop-blur-sm rounded-md shadow-sm bg-slate-800";
+    "flex items-center justify-center w-full h-screen bg-neutral-800";
   return (
     <form className={`${baseClasses} ${className}`} {...props}>
       {children}
     </form>
   );
 }
-export default Form;
+export default Main;

@@ -8,7 +8,7 @@ function UL({
   ...props
 }: ULProps) {
   const baseClasses =
-    "flex w-full flex-col p-4 rounded-md shadow-sm";
+    "flex w-1/2 flex-col p-4 bg-neutral-750 rounded-md shadow-sm";
   return (
     <ul className={`${baseClasses} ${className}`} {...props}>
       {children}
