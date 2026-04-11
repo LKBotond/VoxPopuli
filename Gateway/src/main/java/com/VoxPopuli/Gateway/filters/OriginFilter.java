@@ -10,25 +10,29 @@ import com.VoxPopuli.headercontracts.NamingConventions;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 @Component
+@Slf4j
 public class OriginFilter extends AbstractGatewayFilterFactory<OriginFilter.Config> {
 
     public OriginFilter() {
-    super(Config.class);
-}
-    @Override
-    public GatewayFilter apply(Config config){
-        
-        return(exchange,chain)->{
-        String originId= exchange.getRequest().getHeaders().getFirst(NamingConventions.extensionId);
+        super(Config.class);
+    }
 
-        if(originId==null|| originId.isBlank()||! originId.matches(config.getAcceptedId())){
-            return onError(exchange, HttpStatus.UNAUTHORIZED);
-        }
-        return chain.filter(exchange);
-    };
+    @Override
+    public GatewayFilter apply(Config config) {
+
+        return (exchange, chain) -> {
+            String originId = exchange.getRequest().getHeaders().getFirst(NamingConventions.extensionId);
+            log.info("origin_ID_denomination"+NamingConventions.extensionId);
+            log.info("origin_ID"+originId);
+            if (originId == null || originId.isBlank() || !originId.matches(config.getAcceptedId())) {
+                return onError(exchange, HttpStatus.UNAUTHORIZED);
+            }
+            return chain.filter(exchange);
+        };
     }
 
     private Mono<Void> onError(ServerWebExchange exchange, HttpStatus status) {

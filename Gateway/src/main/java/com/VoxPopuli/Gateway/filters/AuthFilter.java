@@ -4,6 +4,8 @@ import com.VoxPopuli.Gateway.clients.SessionClient;
 import com.VoxPopuli.headercontracts.NamingConventions;
 import com.VoxPopuli.sessioncontracts.InternalUserData;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import reactor.core.publisher.Mono;
 
 @Component
+@Slf4j
 public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> {
 
     private final SessionClient sessionClient;
@@ -26,7 +29,8 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
             String token = exchange.getRequest().getHeaders().getFirst(NamingConventions.sessionId);
-
+            log.info("id_denomination:" + NamingConventions.sessionId);
+            log.info("token:" + token);
             if (token == null || token.isBlank()) {
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
             }

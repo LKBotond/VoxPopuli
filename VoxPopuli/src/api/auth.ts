@@ -15,7 +15,7 @@ export async function register(
       OriginHeader,
       RegistrationRequest,
       SessionToken
-    >("/register", registrationRequest);
+    >("/auth/register", registrationRequest);
 
     saveSession(sessionToken);
     return true;
@@ -29,7 +29,7 @@ export async function login(
 ): Promise<boolean> {
   try {
     const sessionToken = await post<OriginHeader, LoginRequest, SessionToken>(
-      "/login",
+      "/auth/login",
       registrationRequest,
     );
     saveSession(sessionToken);

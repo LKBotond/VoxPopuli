@@ -8,10 +8,14 @@ import type {
   AuthHeader,
   OriginHeader,
 } from "./contracts/ApiRequest.ts";
-import { SESSION_HEADER, EXTENSION_ID } from "./contracts/NamingConventions.ts";
-//call the helpers
+import {
+  SESSION_HEADER,
+  EXTENSION_ID,
+  CONTENT_TYPE,
+} from "./contracts/NamingConventions.ts";
 chrome.runtime.onMessage.addListener(
   (message: RuntimeMessage, _, sendResponse) => {
+    console.log("got a message: ", message);
     if (message.action === "login" || message.action === "register") {
       handleAuthMessaging(message).then((response) => {
         sendResponse(response);
@@ -27,7 +31,8 @@ chrome.runtime.onMessage.addListener(
 );
 
 async function handleAuthMessaging(message: RuntimeMessage) {
-  const placeholderOriginId = "placeholder";
+  const placeholderOriginId =
+    "chromeExtensionIdNotHardcodedHereButInEnvironmentalVariables";
   const originHeader = buildOriginHeader(placeholderOriginId);
   switch (message.action) {
     case "login": {
@@ -42,7 +47,8 @@ async function handleAuthMessaging(message: RuntimeMessage) {
   }
 }
 async function handleCommentMessaging(message: RuntimeMessage) {
-  const placeholderOriginId = "placeholder";
+  const placeholderOriginId =
+    "chromeExtensionIdNotHardcodedHereButInEnvironmentalVariables";
   try {
     const sessionToken: SessionToken | undefined = await loadSession();
     if (!sessionToken) throw new Error("Unauthorized");
@@ -82,12 +88,14 @@ async function handleCommentMessaging(message: RuntimeMessage) {
 
 function buildAuthHeader(sessionId: string, extensionId: string): AuthHeader {
   return {
+    [CONTENT_TYPE]: "application/json",
     [SESSION_HEADER]: sessionId,
     [EXTENSION_ID]: extensionId,
   };
 }
 function buildOriginHeader(extensionId: string): OriginHeader {
   return {
+    [CONTENT_TYPE]: "application/json",
     [EXTENSION_ID]: extensionId,
   };
 }

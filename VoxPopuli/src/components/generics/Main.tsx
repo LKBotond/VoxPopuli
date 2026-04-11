@@ -4,11 +4,11 @@ interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
 }
 function Main({ className = "", children, ...props }: FormProps) {
   const baseClasses =
-    "flex items-center justify-center w-full h-screen bg-neutral-800";
+    "flex items-center justify-center min-w-[350px] min-h-[400px] h-screen bg-neutral-800 rounded-xl";
   return (
-    <form className={`${baseClasses} ${className}`} {...props}>
+    <main className={`${baseClasses} ${className}`} {...props}>
       {children}
-    </form>
+    </main>
   );
 }
 export default Main;
