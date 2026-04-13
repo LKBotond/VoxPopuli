@@ -18,8 +18,8 @@ export function LoginView({ changeViewTo }: ViewProps) {
     <>
       <UI.Form className="text-center" onSubmit={hanldeLogin}>
         <UI.H>Login Form</UI.H>
-        <UI.Input placeholder="email" required type="text"></UI.Input>
-        <UI.Input placeholder="password" required type="password"></UI.Input>
+        <UI.Input name="email" placeholder="email" required type="text"></UI.Input>
+        <UI.Input name="pass" placeholder="password" required type="password"></UI.Input>
         <UI.Button type="submit">Login</UI.Button>
         <UI.Button onClick={() => changeViewTo(VIEWS.INDEX)}>back</UI.Button>
       </UI.Form>

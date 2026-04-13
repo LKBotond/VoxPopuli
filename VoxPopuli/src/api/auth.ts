@@ -16,11 +16,10 @@ export async function register(
       RegistrationRequest,
       SessionToken
     >("/auth/register", registrationRequest);
-
-    saveSession(sessionToken);
+    await saveSession(sessionToken);
     return true;
   } catch (e) {
-    console.log("error: " + e);
+    console.error("error: " + e);
     return false;
   }
 }

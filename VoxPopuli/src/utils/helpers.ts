@@ -16,12 +16,13 @@ export function validateFormData(data: FormData): boolean {
   return true;
 }
 
-export function saveSession(sessionToken: SessionToken): void {
-  chrome.storage.session.set({ session: sessionToken });
+export async function saveSession(sessionToken: SessionToken): Promise<void> {
+  await chrome.storage.session.set({ session: sessionToken });
 }
 
 export async function loadSession(): Promise<SessionToken | undefined> {
   const { session } = await chrome.storage.session.get("session");
+  console.log("requested session:", session);
   return session as SessionToken | undefined;
 }
 

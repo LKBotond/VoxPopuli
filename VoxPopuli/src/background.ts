@@ -42,7 +42,8 @@ async function handleAuthMessaging(message: RuntimeMessage) {
 
     case "register": {
       const apiRequest = buildApiRequest(originHeader, message.payload);
-      return await AuthAPI.register(apiRequest);
+      const response = await AuthAPI.register(apiRequest)
+      return response;
     }
   }
 }
