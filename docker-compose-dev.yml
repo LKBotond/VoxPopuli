@@ -35,6 +35,9 @@ services:
       context: .
       dockerfile: UserService/Dockerfile.dev
     container_name: user-service
+    volumes:
+      - ./UserService:/app
+      - ~/.m2:/root/.m2
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://user-service-db:5432/users_db
       - SPRING_DATASOURCE_USERNAME=myuser
@@ -49,7 +52,7 @@ services:
     container_name: session-service
     volumes:
       - ./SessionService:/app
-      - ~/.m2:/root/.m2      
+      - ~/.m2:/root/.m2
     environment:
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY=DEBUG
@@ -61,6 +64,9 @@ services:
       context: .
       dockerfile: AuthenticationService/Dockerfile.dev
     container_name: auth-service
+    volumes:
+      - ./AuthenticationService:/app
+      - ~/.m2:/root/.m2
     environment:
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB=DEBUG
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY=DEBUG
@@ -72,6 +78,9 @@ services:
       context: .
       dockerfile: CommentService/Dockerfile.dev
     container_name: comment-service
+    volumes:
+      - ./CommentService:/app
+      - ~/.m2:/root/.m2
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://comment-service-db:5432/comments_db
       - SPRING_DATASOURCE_USERNAME=myuser
@@ -84,6 +93,9 @@ services:
       context: .
       dockerfile: FilterService/Dockerfile.dev
     container_name: filter-service
+    volumes:
+      - ./FilterService:/app
+      - ~/.m2:/root/.m2
     environment:
       - SPRING_PROFILES_ACTIVE=prod
 
@@ -92,6 +104,9 @@ services:
       context: .
       dockerfile: Gateway/Dockerfile.dev
     container_name: gateway
+    volumes:
+      - ./Gateway:/app
+      - ~/.m2:/root/.m2
     environment:
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_CLOUD_GATEWAY=DEBUG
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_HTTP_SERVER_REACTIVE=DEBUG

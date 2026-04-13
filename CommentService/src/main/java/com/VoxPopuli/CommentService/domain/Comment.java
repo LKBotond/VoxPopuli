@@ -28,19 +28,19 @@ public class Comment {
     @Column(name = "comment_id")
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID commentId;
-    
+
     @Column(name = "parent_id")
     UUID parentId;
-    
+
     @Column(name = "user_id")
     UUID userId;
-    
-    @Column(name = "source_link_hash")
+
+    @Column(name = "source_link_hash", nullable = false)
     String sourceLinkHash;
-    
+
     @Column(name = "content")
     String content;
-    
+
     @Column(name = "last_updated")
     OffsetDateTime lastUpdated;
 

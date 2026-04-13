@@ -4,7 +4,6 @@ WORKDIR /app
 COPY CommentService/mvnw .
 COPY CommentService/.mvn .mvn
 COPY CommentService/pom.xml .
-COPY AuthenticationService/src ./src
 
 RUN chmod +x mvnw
 
