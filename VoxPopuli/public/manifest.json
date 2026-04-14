@@ -2,11 +2,17 @@
   "manifest_version": 3,
   "name": "My Extension",
   "version": "1.0",
-  "permissions": ["storage"], 
+  "permissions": ["storage"],
   "background": {
     "service_worker": "background.js",
-    "type":"module"
+    "type": "module"
   },
+  "web_accessible_resources": [
+    {
+      "resources": ["interior.html", "interior.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
   "action": {
     "default_popup": "index.html"
   }

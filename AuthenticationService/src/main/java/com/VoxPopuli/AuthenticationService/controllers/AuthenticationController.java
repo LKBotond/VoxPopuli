@@ -6,16 +6,17 @@ import com.VoxPopuli.authcontracts.PassUpdateRequest;
 import com.VoxPopuli.authcontracts.RegistrationRequest;
 import com.VoxPopuli.sessioncontracts.SessionToken;
 import com.VoxPopuli.usercontracts.HashedRegistrationRequest;
+import com.VoxPopuli.headercontracts.NamingConventions;
 
 import jakarta.annotation.security.DenyAll;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Arrays;
-
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -34,12 +35,13 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<SessionToken> register(@RequestBody RegistrationRequest request) {
-        log.info("========================================");
-        log.info("RegistrationRequest Alias: " + request.getAlias());
-        log.info("RegistrationRequest Email: " + request.getEmail());
-        log.info("RegistrationRequest passAray: " + Arrays.toString(request.getPassArray()));
-        log.info("========================================");
         return ResponseEntity.ok(authService.registerUser(request));
+    }
+
+    @DeleteMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestHeader(NamingConventions.sessionId) String sessionId) {
+        authService.logoutUser(sessionId);
+        return ResponseEntity.ok().build();
     }
 
     // unimplemented

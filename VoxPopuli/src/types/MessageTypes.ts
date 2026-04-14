@@ -25,6 +25,7 @@ export type UnknownActionResponse = BaseMessage<
 // Union type for all messages
 export type RuntimeMessage =
   | LoginMessage
+  | LogoutMessage
   | RegistrationMessage
   | CommentGetMessage
   | CommentMessage

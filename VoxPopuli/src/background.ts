@@ -17,11 +17,11 @@ chrome.runtime.onMessage.addListener(
   (message: RuntimeMessage, _, sendResponse) => {
     console.log("got a message: ", message);
     if (message.action === "login" || message.action === "register") {
-      handleAuthMessaging(message).then((response) => {
+      handleAuthenticationMessaging(message).then((response) => {
         sendResponse(response);
       });
     } else {
-      handleCommentMessaging(message).then((response) => {
+      handleAuthenticatedMessaging(message).then((response) => {
         sendResponse(response);
       });
     }
@@ -30,7 +30,12 @@ chrome.runtime.onMessage.addListener(
   },
 );
 
-async function handleAuthMessaging(message: RuntimeMessage) {
+/**
+ * Handles baseline messaging, without a session token in the header, intended for login and registration purposes
+ * @param message message/request that should be sent
+ * @returns response to the message, usually sessionToken
+ */
+async function handleAuthenticationMessaging(message: RuntimeMessage) {
   const placeholderOriginId =
     "chromeExtensionIdNotHardcodedHereButInEnvironmentalVariables";
   const originHeader = buildOriginHeader(placeholderOriginId);
@@ -42,12 +47,17 @@ async function handleAuthMessaging(message: RuntimeMessage) {
 
     case "register": {
       const apiRequest = buildApiRequest(originHeader, message.payload);
-      const response = await AuthAPI.register(apiRequest)
+      const response = await AuthAPI.register(apiRequest);
       return response;
     }
   }
 }
-async function handleCommentMessaging(message: RuntimeMessage) {
+/**
+ * Handles Autheticated messaging, iontended for anything and everything that requires a session token in the header to be valid (comments, pass changes, logout, etc)
+ * @param message any message to be sent
+ * @returns response to said message
+ */
+async function handleAuthenticatedMessaging(message: RuntimeMessage) {
   const placeholderOriginId =
     "chromeExtensionIdNotHardcodedHereButInEnvironmentalVariables";
   try {
@@ -59,6 +69,13 @@ async function handleCommentMessaging(message: RuntimeMessage) {
     );
 
     switch (message.action) {
+      case "logout": {
+        const authHeader = buildAuthHeader(
+          sessionToken.sessionId,
+          placeholderOriginId,
+        );
+        return await AuthAPI.logout(authHeader);
+      }
       case "comment": {
         const apiRequest = buildApiRequest(authHeader, message.payload);
         return await CommentAPI.comment(apiRequest);
@@ -101,9 +118,9 @@ function buildOriginHeader(extensionId: string): OriginHeader {
   };
 }
 
-function buildApiRequest<header, payload>(
+function buildApiRequest<header, payload = undefined>(
   headers: header,
-  jsonified: payload,
+  jsonified?: payload,
 ): ApiRequest<header, payload> {
   const apiRequest: ApiRequest<header, payload> = {
     headers: headers,

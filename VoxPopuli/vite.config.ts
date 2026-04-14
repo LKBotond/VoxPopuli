@@ -5,12 +5,14 @@ import { resolve } from "path";
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  base: "",
 build: {
    watch: {},
     outDir: "dist",
     rollupOptions: {
       input: {
-        popup: resolve(__dirname, "index.html"), // React UI
+        popupIndex: resolve(__dirname, "index.html"),
+        popupInterior: resolve(__dirname, "interior.html"),
         background: resolve(__dirname, "src/background.ts"),
       },
       output: {

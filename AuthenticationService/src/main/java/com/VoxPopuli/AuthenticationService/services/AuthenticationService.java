@@ -54,6 +54,10 @@ public class AuthenticationService {
         return sessionClient.createSession(SessionMapper.fromUserData(data));
     }
 
+    public void logoutUser(String sessionId) {
+        sessionClient.endSession(sessionId);
+    }
+
     private String hashPass(char[] pass) {
         return passHashingService.hashWithArgon2(pass);
     }

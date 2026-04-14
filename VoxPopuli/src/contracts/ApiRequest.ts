@@ -3,9 +3,9 @@ import {
   EXTENSION_ID,
   CONTENT_TYPE,
 } from "./NamingConventions";
-export interface ApiRequest<Theader, Tpayload> {
+export interface ApiRequest<Theader, Tpayload = undefined> {
   headers: Theader;
-  payload: Tpayload;
+  payload?: Tpayload;
 }
 export interface AuthHeader {
   [CONTENT_TYPE]: string;

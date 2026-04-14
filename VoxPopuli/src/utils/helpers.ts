@@ -34,5 +34,5 @@ export function setPage(path: string): void {
   chrome.action.setPopup({ popup: path });
 }
 export function redirect(path: string): void {
-  window.location.href = path;
+  window.location.href = chrome.runtime.getURL(path);
 }

@@ -6,7 +6,6 @@ import type { ViewProps } from "../types/Props";
 import { IndexView } from "../components/views/IndexView";
 import { LoginView } from "../components/views/LoginView";
 import { RegistrationView } from "../components/views/RegistrationView";
-import { InteriorView } from "../components/views/InteriorView";
 import ".././styles/Tailwind.css";
 import Main from "../components/generics/Main";
 
@@ -26,8 +25,6 @@ function App() {
         return <LoginView {...viewProps} />;
       case VIEWS.REGISTER:
         return <RegistrationView {...viewProps} />;
-      case VIEWS.INTERIOR:
-        return <InteriorView {...viewProps} />;
       default:
         return <div>Unknown view</div>;
     }

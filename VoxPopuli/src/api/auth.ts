@@ -3,9 +3,13 @@ import type {
   RegistrationRequest,
   SessionToken,
 } from "../contracts/Auth";
-import type { ApiRequest, OriginHeader } from "../contracts/ApiRequest";
+import type {
+  ApiRequest,
+  AuthHeader,
+  OriginHeader,
+} from "../contracts/ApiRequest";
 import { saveSession } from "../utils/helpers";
-import { post } from "./VoxPopuliApi";
+import { del, post } from "./VoxPopuliApi";
 
 export async function register(
   registrationRequest: ApiRequest<OriginHeader, RegistrationRequest>,
@@ -17,6 +21,7 @@ export async function register(
       SessionToken
     >("/auth/register", registrationRequest);
     await saveSession(sessionToken);
+    chrome.action.setPopup({ popup: chrome.runtime.getURL("interior.html") });
     return true;
   } catch (e) {
     console.error("error: " + e);
@@ -32,6 +37,17 @@ export async function login(
       registrationRequest,
     );
     saveSession(sessionToken);
+    chrome.action.setPopup({ popup: chrome.runtime.getURL("interior.html") });
+    return true;
+  } catch (e) {
+    console.log("error: " + e);
+    return false;
+  }
+}
+
+export async function logout(logoutRequest: AuthHeader): Promise<boolean> {
+  try {
+    await del("/auth/logout", logoutRequest);
     return true;
   } catch (e) {
     console.log("error: " + e);

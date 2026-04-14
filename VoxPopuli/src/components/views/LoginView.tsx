@@ -10,16 +10,27 @@ export function LoginView({ changeViewTo }: ViewProps) {
     const formData = new FormData(event.target);
     if (!(await submitLoginForm(formData))) {
       alert("Something went wrong");
+      return;
     }
-    return redirect("pages/Interior.html");
+    return redirect("interior.html");
   };
 
   return (
     <>
       <UI.Form className="text-center" onSubmit={hanldeLogin}>
         <UI.H>Login Form</UI.H>
-        <UI.Input name="email" placeholder="email" required type="text"></UI.Input>
-        <UI.Input name="pass" placeholder="password" required type="password"></UI.Input>
+        <UI.Input
+          name="email"
+          placeholder="email"
+          required
+          type="text"
+        ></UI.Input>
+        <UI.Input
+          name="pass"
+          placeholder="password"
+          required
+          type="password"
+        ></UI.Input>
         <UI.Button type="submit">Login</UI.Button>
         <UI.Button onClick={() => changeViewTo(VIEWS.INDEX)}>back</UI.Button>
       </UI.Form>

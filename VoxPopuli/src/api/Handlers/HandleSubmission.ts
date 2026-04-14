@@ -2,11 +2,9 @@ import { sendMessage } from "../VoxPopuliApi";
 import type {
   LoginMessage,
   RegistrationMessage,
+  LogoutMessage,
 } from "../../types/MessageTypes";
-import type {
-  LoginRequest,
-  RegistrationRequest,
-} from "../../contracts/Auth";
+import type { LoginRequest, RegistrationRequest } from "../../contracts/Auth";
 
 export async function submitLoginForm(formData: FormData) {
   const loginRequest: LoginMessage = buildLoginMessage(formData);
@@ -28,6 +26,11 @@ export async function submitRegistrationForm(formData: FormData) {
   return sendMessage<boolean>(registrationRequest);
 }
 
+export async function handleLogout() {
+  const logoutMessage: LogoutMessage = buildLogoutMessage();
+  return sendMessage<boolean>(logoutMessage);
+}
+
 function buildLoginMessage(formData: FormData): LoginMessage {
   const payload = mapToMessage<LoginRequest>(formData);
   return { action: "login", payload: payload };
@@ -35,6 +38,10 @@ function buildLoginMessage(formData: FormData): LoginMessage {
 function buildRegistrationMessage(formData: FormData): RegistrationMessage {
   const payload = mapToMessage<RegistrationRequest>(formData);
   return { action: "register", payload: payload };
+}
+
+function buildLogoutMessage(): LogoutMessage {
+  return { action: "logout", payload: undefined };
 }
 function mapToMessage<T>(formData: FormData): T {
   return Object.fromEntries(formData.entries()) as T;
