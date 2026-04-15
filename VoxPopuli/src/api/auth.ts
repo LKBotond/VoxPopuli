@@ -8,7 +8,7 @@ import type {
   AuthHeader,
   OriginHeader,
 } from "../contracts/ApiRequest";
-import { saveSession } from "../utils/helpers";
+import { saveSession, endSession } from "../utils/helpers";
 import { del, post } from "./VoxPopuliApi";
 
 export async function handleReregister(
@@ -45,9 +45,12 @@ export async function handleLogin(
   }
 }
 
-export async function handleLogout(logoutRequest: AuthHeader): Promise<boolean> {
+export async function handleLogout(
+  logoutRequest: AuthHeader,
+): Promise<boolean> {
   try {
     await del("/auth/logout", logoutRequest);
+    await endSession();
     chrome.action.setPopup({ popup: chrome.runtime.getURL("index.html") });
     return true;
   } catch (e) {
