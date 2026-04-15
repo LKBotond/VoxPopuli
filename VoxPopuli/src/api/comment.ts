@@ -57,13 +57,16 @@ export async function getAll(
 }
 export async function deleteComment(
   deleteRequest: ApiRequest<AuthHeader, string>,
-): Promise<CommentResponse> {
+): Promise<CommentResponse | void> {
   try {
     const commentResponse = await del<CommentResponse>(
-      "/comments/" + deleteRequest,
+      "/comments/" + deleteRequest.payload,
       deleteRequest.headers,
     );
     console.log(commentResponse);
+    if (!commentResponse) {
+      throw new Error("Expected response but got none");
+    }
     return commentResponse;
   } catch (e) {
     console.log("error: " + e);
