@@ -41,7 +41,7 @@ public class AuthenticationController {
     @DeleteMapping("/logout")
     public ResponseEntity<Void> logout(@RequestHeader(NamingConventions.sessionId) String sessionId) {
         authService.logoutUser(sessionId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     // unimplemented

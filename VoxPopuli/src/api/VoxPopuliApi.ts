@@ -51,13 +51,16 @@ export async function get<Tresponse>(
 export async function del<Tresponse>(
   path: string,
   headers: AuthHeader,
-): Promise<Tresponse> {
+): Promise<Tresponse | void> {
   const response = await fetch(basePath + path, {
     method: "DELETE",
     headers: headers,
   });
   if (!response.ok) {
     throw new Error("API request failed, " + response.status);
+  }
+  if (response.status === 204) {
+    return;
   }
   return response.json();
 }

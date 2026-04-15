@@ -9,7 +9,7 @@ export function InteriorView() {
       alert("Something went wrong");
       return;
     }
-    return redirect("pages/index.html");
+    return redirect("index.html");
   };
   return (
     <UI.UL className="text-center">
