@@ -11,7 +11,7 @@ import type {
 import { saveSession } from "../utils/helpers";
 import { del, post } from "./VoxPopuliApi";
 
-export async function register(
+export async function handleReregister(
   registrationRequest: ApiRequest<OriginHeader, RegistrationRequest>,
 ): Promise<boolean> {
   try {
@@ -28,7 +28,7 @@ export async function register(
     return false;
   }
 }
-export async function login(
+export async function handleLogin(
   registrationRequest: ApiRequest<OriginHeader, LoginRequest>,
 ): Promise<boolean> {
   try {
@@ -45,9 +45,10 @@ export async function login(
   }
 }
 
-export async function logout(logoutRequest: AuthHeader): Promise<boolean> {
+export async function handleLogout(logoutRequest: AuthHeader): Promise<boolean> {
   try {
     await del("/auth/logout", logoutRequest);
+    chrome.action.setPopup({ popup: chrome.runtime.getURL("index.html") });
     return true;
   } catch (e) {
     console.log("error: " + e);

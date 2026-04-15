@@ -3,16 +3,8 @@ import type { SessionToken } from "./contracts/Auth";
 import { loadSession } from "./utils/helpers";
 import * as AuthAPI from "./api/Auth.ts";
 import * as CommentAPI from "./api/Comment.ts";
-import type {
-  ApiRequest,
-  AuthHeader,
-  OriginHeader,
-} from "./contracts/ApiRequest.ts";
-import {
-  SESSION_HEADER,
-  EXTENSION_ID,
-  CONTENT_TYPE,
-} from "./contracts/NamingConventions.ts";
+import * as Builders from "./utils/builders.ts";
+
 chrome.runtime.onMessage.addListener(
   (message: RuntimeMessage, _, sendResponse) => {
     console.log("got a message: ", message);
@@ -38,22 +30,32 @@ chrome.runtime.onMessage.addListener(
 async function handleAuthenticationMessaging(message: RuntimeMessage) {
   const placeholderOriginId =
     "chromeExtensionIdNotHardcodedHereButInEnvironmentalVariables";
-  const originHeader = buildOriginHeader(placeholderOriginId);
+  const originHeader = Builders.buildOriginHeader(placeholderOriginId);
   switch (message.action) {
     case "login": {
-      const apiRequest = buildApiRequest(originHeader, message.payload);
-      return await AuthAPI.login(apiRequest);
+      const apiRequest = Builders.buildApiRequest(
+        originHeader,
+        message.payload,
+      );
+      return await AuthAPI.handleLogin(apiRequest);
     }
 
     case "register": {
-      const apiRequest = buildApiRequest(originHeader, message.payload);
-      const response = await AuthAPI.register(apiRequest);
+      const apiRequest = Builders.buildApiRequest(
+        originHeader,
+        message.payload,
+      );
+      const response = await AuthAPI.handleReregister(apiRequest);
       return response;
     }
+
+    default:
+      console.warn("Unknown action", message.action);
+      return { error: "Unknown action" };
   }
 }
 /**
- * Handles Autheticated messaging, iontended for anything and everything that requires a session token in the header to be valid (comments, pass changes, logout, etc)
+ * Handles Autheticated messaging, intended for anything and everything that requires a session token in the header to be valid (comments, pass changes, logout, etc)
  * @param message any message to be sent
  * @returns response to said message
  */
@@ -62,35 +64,48 @@ async function handleAuthenticatedMessaging(message: RuntimeMessage) {
     "chromeExtensionIdNotHardcodedHereButInEnvironmentalVariables";
   try {
     const sessionToken: SessionToken | undefined = await loadSession();
+
     if (!sessionToken) throw new Error("Unauthorized");
-    const authHeader = buildAuthHeader(
+    const authHeader = Builders.buildAuthHeader(
       sessionToken.sessionId,
       placeholderOriginId,
     );
 
     switch (message.action) {
       case "logout": {
-        const authHeader = buildAuthHeader(
+        const authHeader = Builders.buildAuthHeader(
           sessionToken.sessionId,
           placeholderOriginId,
         );
-        return await AuthAPI.logout(authHeader);
+        return await AuthAPI.handleLogout(authHeader);
       }
       case "comment": {
-        const apiRequest = buildApiRequest(authHeader, message.payload);
+        const apiRequest = Builders.buildApiRequest(
+          authHeader,
+          message.payload,
+        );
         return await CommentAPI.comment(apiRequest);
       }
 
       case "edit": {
-        const apiRequest = buildApiRequest(authHeader, message.payload);
+        const apiRequest = Builders.buildApiRequest(
+          authHeader,
+          message.payload,
+        );
         return await CommentAPI.edit(apiRequest);
       }
       case "getComments": {
-        const apiRequest = buildApiRequest(authHeader, message.payload);
+        const apiRequest = Builders.buildApiRequest(
+          authHeader,
+          message.payload,
+        );
         return await CommentAPI.getAll(apiRequest);
       }
       case "deleteComment": {
-        const apiRequest = buildApiRequest(authHeader, message.payload);
+        const apiRequest = Builders.buildApiRequest(
+          authHeader,
+          message.payload,
+        );
         return await CommentAPI.deleteComment(apiRequest);
       }
 
@@ -102,29 +117,4 @@ async function handleAuthenticatedMessaging(message: RuntimeMessage) {
     console.error("Background script error:", error);
     return { error: error instanceof Error ? error.message : "Unknown error" };
   }
-}
-
-function buildAuthHeader(sessionId: string, extensionId: string): AuthHeader {
-  return {
-    [CONTENT_TYPE]: "application/json",
-    [SESSION_HEADER]: sessionId,
-    [EXTENSION_ID]: extensionId,
-  };
-}
-function buildOriginHeader(extensionId: string): OriginHeader {
-  return {
-    [CONTENT_TYPE]: "application/json",
-    [EXTENSION_ID]: extensionId,
-  };
-}
-
-function buildApiRequest<header, payload = undefined>(
-  headers: header,
-  jsonified?: payload,
-): ApiRequest<header, payload> {
-  const apiRequest: ApiRequest<header, payload> = {
-    headers: headers,
-    payload: jsonified,
-  };
-  return apiRequest;
 }
