@@ -1,6 +1,6 @@
-import React from "react";
+import type {HTMLAttributes} from "react";
 
-interface DivProps extends React.HTMLAttributes<HTMLDivElement> {
+interface DivProps extends HTMLAttributes<HTMLDivElement> {
   className?: string;
 }
 

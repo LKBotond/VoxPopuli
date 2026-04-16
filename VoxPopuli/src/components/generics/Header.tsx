@@ -1,6 +1,6 @@
-import React from "react";
+import type { HTMLAttributes } from "react";
 
-interface Hprops extends React.HTMLAttributes<HTMLHeadingElement> {
+interface Hprops extends HTMLAttributes<HTMLHeadingElement> {
   className?: string;
   priority?: 1 | 2 | 3 | 4 | 5 | 6;
 }

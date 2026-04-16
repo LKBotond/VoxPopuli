@@ -14,7 +14,7 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 CREATE TABLE
     comments (
-        comment_id UUID DEFAULT gen_random_uuid() NOT NULL,
+        comment_id UUID DEFAULT gen_random_uuid () NOT NULL,
         parent_id UUID,
         user_id UUID,
         source_link_hash TEXT NOT NULL,

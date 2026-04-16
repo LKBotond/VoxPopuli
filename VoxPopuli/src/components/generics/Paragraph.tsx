@@ -1,6 +1,6 @@
-import React from "react";
+import type{HTMLAttributes} from "react";
 
-interface PProps extends React.HTMLAttributes<HTMLParagraphElement> {
+interface PProps extends HTMLAttributes<HTMLParagraphElement> {
   className?: string;
 }
 

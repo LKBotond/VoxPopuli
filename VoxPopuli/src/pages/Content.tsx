@@ -1,5 +1,6 @@
+import { CommentView } from "../components/views/CommentView";
 
 function App() {
-  return <div>Hello from content script 👋</div>;
+  return CommentView("Lefty Thighty", "Righty Loosy");
 }
 export default App;
