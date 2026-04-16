@@ -35,6 +35,9 @@ public class Comment {
     @Column(name = "user_id")
     UUID userId;
 
+    @Column(name = "alias")
+    String alias;
+
     @Column(name = "source_link_hash", nullable = false)
     String sourceLinkHash;
 

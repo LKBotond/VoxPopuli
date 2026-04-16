@@ -1,6 +1,7 @@
 export interface CommentRequest {
   parentId: string;
   content: string;
+  alias : string
   sourceLinkHash: string;
   updatedAt: string;
 }
@@ -8,6 +9,7 @@ export interface CommentRequest {
 export interface CommentResponse {
   commentId: string;
   parentId: string;
+  alias : string
   content: string;
   updatedAt: string;
 }

@@ -16,6 +16,7 @@ import lombok.Setter;
 public class CommentResponse {
     String commentId;
     String parentId;
+    String alias;
     String content;
     OffsetDateTime updatedAt;
 }

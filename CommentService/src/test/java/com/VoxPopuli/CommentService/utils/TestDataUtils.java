@@ -20,6 +20,7 @@ public final class TestDataUtils {
                 .parentId(UUID.randomUUID())
                 .userId(UUID.randomUUID())
                 .sourceLinkHash("www.webpage.hash")
+                .alias("TestAlias")
                 .content("lorem ipsum")
                 .lastUpdated(OffsetDateTime.now())
                 .build();
@@ -29,6 +30,7 @@ public final class TestDataUtils {
         return CommentRequest.builder()
                 .parentId(UUID.randomUUID().toString())
                 .sourceLinkHash("www.webpage.hash")
+                .alias("TestAlias")
                 .content("lorem ipsum")
                 .updatedAt(OffsetDateTime.now())
                 .build();

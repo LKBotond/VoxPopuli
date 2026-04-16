@@ -14,6 +14,7 @@ public final class CommentMapper {
                 return CommentResponse.builder()
                                 .commentId(comment.getCommentId().toString())
                                 .parentId(comment.getParentId().toString())
+                                .alias(comment.getAlias())
                                 .content(comment.getContent() != null
                                                 ? comment.getContent()
                                                 : "[deleted]")
@@ -25,6 +26,7 @@ public final class CommentMapper {
                 return Comment.builder()
                                 .parentId(UUID.fromString(request.getParentId()))
                                 .userId(userId)
+                                .alias(request.getAlias())
                                 .content(request.getContent())
                                 .sourceLinkHash(request.getSourceLinkHash())
                                 .lastUpdated(request.getUpdatedAt())
