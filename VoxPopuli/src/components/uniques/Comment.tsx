@@ -1,14 +1,26 @@
-import type { CommentResponse } from "../../contracts/Comment";
+import type { CommentNode } from "../../types/Props";
 import * as UI from "../Index";
-interface CommentProps {
-commentResponse:CommentResponse
-}
-function Comment(comment: CommentProps) {
+type CommentProps = {
+  comment: CommentNode;
+  onReply: (parentId: string) => void;
+};
+function Comment({ comment, onReply }: CommentProps) {
   return (
-    <UI.Div>
-      <UI.H>{comment.commentResponse.}</UI.H>
+    <UI.Div style={{ marginLeft: "20px" }}>
+      <UI.H>{`${comment.alias} (says)`}</UI.H>
       <UI.P>{comment.content}</UI.P>
-      <UI.Button>Repply</UI.Button>
+
+      <UI.Button onClick={() => onReply(comment.commentId)}>
+        Reply
+      </UI.Button>
+
+      {comment.replies?.map((reply) => (
+        <Comment
+          key={reply.commentId}
+          comment={reply}
+          onReply={onReply}
+        />
+      ))}
     </UI.Div>
   );
 }
