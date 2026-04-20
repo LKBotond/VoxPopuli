@@ -1,13 +1,15 @@
 import type { CommentViewProps } from "../../types/Props";
 import { buildResponseTrees } from "../../utils/comments";
-import Comment from "../uniques/Comment";
 import * as UI from "../Index";
-import type { CommentRequest } from "../../contracts/Comment";
 
 export function CommentView({ comments }: CommentViewProps) {
   const roots = buildResponseTrees(comments);
-  //const handleRoot = async () => {};
-  //const handleReply = async (parentId: string) => {};
+  const handleRoot = async () => {
+    //implementation eventually will come here
+  };
+  const handleReply = async (parentId: string) => {
+    //implementation eventually will come here
+  };
 
   return (
     <UI.Section className="grid-cols-5">
@@ -15,8 +17,10 @@ export function CommentView({ comments }: CommentViewProps) {
       <UI.Div className="col-span-2 bg-gray-900">
         <UI.H>Vox Populi</UI.H>
         <UI.P>Let the people hear your voice</UI.P>
+        <UI.CommentForm handleComment={handleRoot}></UI.CommentForm>
+
         {roots.map((rootNode) => (
-          <Comment
+          <UI.Comment
             key={rootNode.commentId}
             comment={rootNode}
             onReply={handleReply}

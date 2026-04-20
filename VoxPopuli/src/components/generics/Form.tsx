@@ -1,5 +1,5 @@
 import type { FormHTMLAttributes } from "react";
-interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
+export interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
   className?: string;
 }
 function Form({ className = "", children, ...props }: FormProps) {

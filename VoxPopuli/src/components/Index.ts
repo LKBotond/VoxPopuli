@@ -5,4 +5,6 @@ export { default as Div } from "./generics/Div";
 export { default as H } from "./generics/Header";
 export { default as P } from "./generics/Paragraph";
 export { default as UL } from "./generics/UnorderedList";
-export { default as Section} from "./generics/Section"
+export { default as Section } from "./generics/Section";
+export { default as CommentForm } from "./uniques/CommentForm";
+export { default as Comment} from "./uniques/Comment"
