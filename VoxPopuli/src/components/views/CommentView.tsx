@@ -1,14 +1,50 @@
-import type { CommentViewProps } from "../../types/Props";
+import { useState } from "react";
 import { buildResponseTrees } from "../../utils/comments";
+import type { CommentRequest, CommentResponse } from "../../contracts/Comment";
+import { sendMessage } from "../../api/VoxPopuliApi";
 import * as UI from "../Index";
+import type { CommentMessage } from "../../types/MessageTypes";
 
-export function CommentView({ comments }: CommentViewProps) {
-  const roots = buildResponseTrees(comments);
-  const handleRoot = async () => {
-    //implementation eventually will come here
+export interface CommentViewProps {
+  comments: CommentResponse[];
+  userAlias: string;
+}
+
+export function CommentView({ comments, userAlias }: CommentViewProps) {
+  const [commentList, setCommentList] = useState(comments);
+  const roots = buildResponseTrees(commentList);
+
+  const buildCommentRequest = (
+    parentId: string | undefined,
+    content: string,
+    userAlias: string,
+  ): CommentRequest => {
+    return {
+      parentId,
+      content,
+      alias: userAlias,
+      sourceLinkHash: window.location.href,
+      updatedAt: new Date().toISOString(),
+    };
   };
-  const handleReply = async (parentId: string) => {
-    //implementation eventually will come here
+
+  const buildCommentMessage = (request: CommentRequest): CommentMessage => {
+    return {
+      action: "comment",
+      payload: request,
+    };
+  };
+
+  const handleComment = async (
+    parentId: string | undefined,
+    content: string,
+    userAlias: string,
+  ) => {
+    const commentRequest = buildCommentMessage(
+      buildCommentRequest(parentId, content, userAlias),
+    );
+    const response: CommentResponse = await sendMessage(commentRequest);
+    setCommentList((prev) => [...prev, response]);
   };
 
   return (
@@ -17,13 +53,19 @@ export function CommentView({ comments }: CommentViewProps) {
       <UI.Div className="col-span-2 bg-gray-900">
         <UI.H>Vox Populi</UI.H>
         <UI.P>Let the people hear your voice</UI.P>
-        <UI.CommentForm handleComment={handleRoot}></UI.CommentForm>
+        <UI.CommentForm
+          handleComment={(parentId, content) => {
+            handleComment(parentId, content, userAlias);
+          }}
+        ></UI.CommentForm>
 
         {roots.map((rootNode) => (
           <UI.Comment
             key={rootNode.commentId}
             comment={rootNode}
-            onReply={handleReply}
+            onReply={(parentId, content) => {
+              handleComment(parentId, content, userAlias);
+            }}
           />
         ))}
       </UI.Div>

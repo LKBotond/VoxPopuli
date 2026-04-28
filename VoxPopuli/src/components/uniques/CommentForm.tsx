@@ -12,6 +12,7 @@ function CommentForm(formProps: CommentFormProps) {
   const onSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
     formProps.handleComment(formProps.parentId, content);
+    setContent("");
   };
 
   return (
