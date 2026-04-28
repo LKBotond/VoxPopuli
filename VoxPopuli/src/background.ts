@@ -1,8 +1,8 @@
 import type { RuntimeMessage } from "./types/MessageTypes";
-import type { SessionToken } from "./contracts/Auth";
+import type { SessionToken } from "./contracts/Auth.ts";
 import { loadSession } from "./utils/helpers";
-import * as AuthAPI from "./api/Auth.ts";
-import * as CommentAPI from "./api/Comment.ts";
+import * as AuthAPI from "./api/AuthApi.ts";
+import * as CommentAPI from "./api/CommentApi.ts";
 import * as Builders from "./utils/builders.ts";
 
 chrome.runtime.onMessage.addListener(
