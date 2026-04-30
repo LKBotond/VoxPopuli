@@ -10,6 +10,7 @@ export async function comment(
   commentRequest: ApiRequest<AuthHeader, CommentRequest>,
 ): Promise<CommentResponse> {
   try {
+    console.log("REQUEST:", JSON.stringify(commentRequest, null, 2));
     const commentResponse = await post<
       AuthHeader,
       CommentRequest,
@@ -44,8 +45,9 @@ export async function getAll(
   getRequest: ApiRequest<AuthHeader, string>,
 ): Promise<CommentResponse[]> {
   try {
+    console.log("REQUEST:", JSON.stringify(getRequest, null, 2));
     const commentResponse = await get<CommentResponse[]>(
-      "/comments/" + getRequest,
+      "/comments/" + getRequest.payload,
       getRequest.headers,
     );
     console.log(commentResponse);

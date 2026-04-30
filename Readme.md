@@ -120,10 +120,12 @@ Service-to-service-level sequence diagrams can be found in the [Architecture.md]
 ## Quick Start
 
 1.  clone this repository
-2.  navigate your IDE/ terminal to the root of this project.
-3.  run : `docker compose -f docker-compose-dev.yml up`
-4.  you can send requests to it via your preferred platform (Postman Curl)
-5.  DTO's for structuring requests can be found in the **contracts** folder
+2.  navigate your IDE/ terminal to the contracts folder.
+3.  run : `mvn clean install` (these are the commonly used DTO's, Working on a cleaner solution is in the list)
+4.  navigate your IDE/ terminal to the root of this project.
+5.  run : `docker compose -f docker-compose-dev.yml up`
+6.  you can send requests to it via your preferred platform (Postman Curl)
+7.  DTO's for structuring requests can be found in the **contracts** folder
 
 ## TODO:
 
@@ -141,7 +143,7 @@ Service-to-service-level sequence diagrams can be found in the [Architecture.md]
 - [x] Messaging logic (extension ↔ backend).
 - [x] BackgroundScript.
 - [x] Popup UI.
-- [ ] Comment Logic for the Shadow Dom and content scripts.
+- [x] Comment Logic for the Shadow Dom and content scripts.
 
 **Integration:**
 

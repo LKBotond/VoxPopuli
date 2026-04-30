@@ -108,6 +108,10 @@ async function handleAuthenticatedMessaging(message: RuntimeMessage) {
         );
         return await CommentAPI.deleteComment(apiRequest);
       }
+      case "getAlias": {
+        console.log("alias: " + sessionToken.alias);
+        return sessionToken.alias;
+      }
 
       default:
         console.warn("Unknown action", message.action);

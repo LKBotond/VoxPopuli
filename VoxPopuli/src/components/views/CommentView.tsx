@@ -8,22 +8,28 @@ import type { CommentMessage } from "../../types/MessageTypes";
 export interface CommentViewProps {
   comments: CommentResponse[];
   userAlias: string;
+  sourceLinkHash:string
 }
 
-export function CommentView({ comments, userAlias }: CommentViewProps) {
-  const [commentList, setCommentList] = useState(comments);
+export function CommentView({
+  comments,
+  userAlias,
+  sourceLinkHash,
+}: CommentViewProps) {
+  const [commentList, setCommentList] = useState<CommentResponse[]>(
+    comments ?? [],
+  );
   const roots = buildResponseTrees(commentList);
 
   const buildCommentRequest = (
     parentId: string | undefined,
     content: string,
-    userAlias: string,
   ): CommentRequest => {
     return {
       parentId,
       content,
       alias: userAlias,
-      sourceLinkHash: window.location.href,
+      sourceLinkHash: sourceLinkHash,
       updatedAt: new Date().toISOString(),
     };
   };
@@ -38,10 +44,9 @@ export function CommentView({ comments, userAlias }: CommentViewProps) {
   const handleComment = async (
     parentId: string | undefined,
     content: string,
-    userAlias: string,
   ) => {
     const commentRequest = buildCommentMessage(
-      buildCommentRequest(parentId, content, userAlias),
+      buildCommentRequest(parentId, content),
     );
     const response: CommentResponse = await sendMessage(commentRequest);
     setCommentList((prev) => [...prev, response]);
@@ -55,7 +60,7 @@ export function CommentView({ comments, userAlias }: CommentViewProps) {
         <UI.P>Let the people hear your voice</UI.P>
         <UI.CommentForm
           handleComment={(parentId, content) => {
-            handleComment(parentId, content, userAlias);
+            handleComment(parentId, content);
           }}
         ></UI.CommentForm>
 
@@ -64,7 +69,7 @@ export function CommentView({ comments, userAlias }: CommentViewProps) {
             key={rootNode.commentId}
             comment={rootNode}
             onReply={(parentId, content) => {
-              handleComment(parentId, content, userAlias);
+              handleComment(parentId, content);
             }}
           />
         ))}

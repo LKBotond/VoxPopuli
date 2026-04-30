@@ -56,7 +56,8 @@ public class CommentController {
     @GetMapping("/{sourceLinkHash}")
     public ResponseEntity<List<CommentResponse>> findAllCommentsForSite(
             @PathVariable("sourceLinkHash") String sourceLinkHash) {
-        return ResponseEntity.ok().body(commentService.getAllCommentsForSite(sourceLinkHash));
+        List<CommentResponse> results = commentService.getAllCommentsForSite(sourceLinkHash);
+        return ResponseEntity.ok().body(results);
     }
 
 }

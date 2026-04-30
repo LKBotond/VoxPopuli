@@ -13,7 +13,9 @@ public final class CommentMapper {
         public static final CommentResponse toCommentResponse(Comment comment) {
                 return CommentResponse.builder()
                                 .commentId(comment.getCommentId().toString())
-                                .parentId(comment.getParentId().toString())
+                                .parentId(comment.getParentId() != null
+                                                ? comment.getParentId().toString()
+                                                : null)
                                 .alias(comment.getAlias())
                                 .content(comment.getContent() != null
                                                 ? comment.getContent()
@@ -24,7 +26,9 @@ public final class CommentMapper {
 
         public static final Comment fromRequest(CommentRequest request, UUID userId) {
                 return Comment.builder()
-                                .parentId(UUID.fromString(request.getParentId()))
+                                .parentId(request.getParentId() != null
+                                                ? UUID.fromString(request.getParentId())
+                                                : null)
                                 .userId(userId)
                                 .alias(request.getAlias())
                                 .content(request.getContent())

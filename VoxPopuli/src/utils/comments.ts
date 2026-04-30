@@ -1,6 +1,7 @@
 import type { CommentNode } from "../types/Props";
 import type { CommentResponse } from "../contracts/Comment";
 export function buildResponseTrees(comments: CommentResponse[]): CommentNode[] {
+  if (!Array.isArray(comments)) return [];
   const map = new Map<string, CommentNode>();
   const roots: CommentNode[] = [];
   comments.forEach((comment) => {

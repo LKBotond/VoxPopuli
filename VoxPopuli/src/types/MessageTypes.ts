@@ -22,6 +22,9 @@ export type UnknownActionResponse = BaseMessage<
   { error: "Unknown action" }
 >;
 
+//intra extension
+export type GetAliasMessage = BaseMessage<"getAlias", null>;
+
 // Union type for all messages
 export type RuntimeMessage =
   | LoginMessage
@@ -31,4 +34,4 @@ export type RuntimeMessage =
   | CommentMessage
   | CommentEditMessage
   | CommentDeleteMessag
-
+  | GetAliasMessage;

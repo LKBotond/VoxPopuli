@@ -11,8 +11,6 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 -- ============================
 -- Users Table
 -- ============================
--- What were you Thinking Sherloc leaving out all of the aliases from the commets? PEOPLE WANT PRESTIGE YOU ASSS
--- updated the table but nnow you need to update everything
 CREATE TABLE
     comments (
         comment_id UUID DEFAULT gen_random_uuid () NOT NULL,
