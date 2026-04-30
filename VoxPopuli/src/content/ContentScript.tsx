@@ -2,7 +2,7 @@ import { createShadowRoot } from "./shadow";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import tailwindStyles from ".././styles/Tailwind.css?inline";
-import App from "../pages/Content";
+import App from "../apps/Content";
 const shadow = createShadowRoot();
 const styleElement = document.createElement("style");
 styleElement.textContent = tailwindStyles;
