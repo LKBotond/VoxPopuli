@@ -11,15 +11,16 @@ function App() {
 
   console.log("alias: " + userAlias);
   return (
-    <>
-      {isVisible && (
-        <CommentView
-          comments={comments}
-          userAlias={userAlias}
-          sourceLinkHash={sourceLinkHash}
-        />
-      )}
-    </>
+    <CommentView
+      comments={comments}
+      userAlias={userAlias}
+      sourceLinkHash={sourceLinkHash}
+      className={
+        isVisible
+          ? "opacity-100 scale-100"
+          : "opacity-0 scale-95 pointer-events-none"
+      }
+    />
   );
 }
 export default App;

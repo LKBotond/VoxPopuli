@@ -4,20 +4,23 @@ import { sendMessage } from "../../api/VoxPopuliApi";
 import * as UI from "../Index";
 import type { CommentMessage } from "../../types/MessageTypes";
 
-export type CommentNode = CommentResponse & {
+type CommentNode = CommentResponse & {
   replies: CommentNode[];
 };
 
-export interface CommentViewProps {
+const baseClasses = "grid-cols-5 transition-all duration-200 ease-out";
+interface CommentViewProps {
   comments: CommentResponse[];
   userAlias: string;
   sourceLinkHash: string;
+  className?: string;
 }
 
 export function CommentView({
   comments,
   userAlias,
   sourceLinkHash,
+  className = "",
 }: CommentViewProps) {
   //hooks
   const [commentList, setCommentList] = useState<CommentResponse[]>(
@@ -89,7 +92,7 @@ export function CommentView({
   }, [commentList]);
 
   return (
-    <UI.Section className="grid-cols-5">
+    <UI.Section className={`${baseClasses} ${className}`.trim()}>
       <UI.Div className="col-span-3"></UI.Div>
       <UI.Div className="col-span-2 p-4 bg-gray-900 overflow-y-auto overflow-x-hidden flex flex-col max-w-full ">
         <UI.H>Vox Populi</UI.H>

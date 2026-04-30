@@ -18,6 +18,7 @@ function CommentForm(formProps: CommentFormProps) {
   return (
     <UI.Form {...formProps} onSubmit={onSubmit}>
       <UI.Input
+        autoFocus
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Your Opinion comes here"
