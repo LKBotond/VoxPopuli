@@ -5,14 +5,16 @@ type CommentNode = CommentResponse & {
   replies: CommentNode[];
 };
 type CommentProps = {
+  className?: string | null;
   comment: CommentNode;
   onReply: (parentId: string | undefined, content: string) => void;
 };
-function Comment({ comment, onReply }: CommentProps) {
+function Comment({ comment, onReply, className = "" }: CommentProps) {
+  const baseClasses = "ml-1 p-2 pr-0 pb-0 min-w-0";
   const [showReplyForm, setShowReplyForm] = useState(false);
   return (
-    <UI.Div style={{ marginLeft: "20px" }}>
-      <UI.H>{`${comment.alias} (says)`}</UI.H>
+    <UI.Div className={`${baseClasses} ${className}`.trim()}>
+      <UI.H>{`${comment.alias} says`}</UI.H>
       <UI.P>{comment.content}</UI.P>
 
       <UI.Button onClick={() => setShowReplyForm((status) => !status)}>
@@ -30,7 +32,12 @@ function Comment({ comment, onReply }: CommentProps) {
       )}
 
       {comment.replies?.map((reply) => (
-        <Comment key={reply.commentId} comment={reply} onReply={onReply} />
+        <Comment
+          key={reply.commentId}
+          comment={reply}
+          onReply={onReply}
+          className=" border-solid border-l-2 border-gray-200"
+        />
       ))}
     </UI.Div>
   );

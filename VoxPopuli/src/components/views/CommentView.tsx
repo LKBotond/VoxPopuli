@@ -91,7 +91,7 @@ export function CommentView({
   return (
     <UI.Section className="grid-cols-5">
       <UI.Div className="col-span-3"></UI.Div>
-      <UI.Div className="col-span-2 bg-gray-900">
+      <UI.Div className="col-span-2 p-4 bg-gray-900 overflow-y-auto overflow-x-hidden flex flex-col max-w-full ">
         <UI.H>Vox Populi</UI.H>
         <UI.P>Let the people hear your voice</UI.P>
         <UI.CommentForm

@@ -8,6 +8,6 @@ export function createShadowRoot() {
   const target = document.body || document.documentElement;
   target.appendChild(host);
 
-const shadow = host.attachShadow({ mode: "open" });
+  const shadow = host.attachShadow({ mode: "open" });
   return shadow;
 }

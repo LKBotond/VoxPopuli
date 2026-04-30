@@ -4,15 +4,16 @@ import tailwindcss from "@tailwindcss/vite";
 import webExtension from "vite-plugin-web-extension";
 export default defineConfig({
   plugins: [
-    react(), 
+    react(),
     tailwindcss(),
-   webExtension({
-      manifest: "manifest.json", 
-      additionalInputs: [
-        "interior.html"
-      ],
+    webExtension({
+      manifest: "manifest.json",
+      additionalInputs: ["interior.html"],
     }),
   ],
+  build: {
+    watch: {},
+  },
 });
 //export default defineConfig({
 //plugins: [react(), tailwindcss()],

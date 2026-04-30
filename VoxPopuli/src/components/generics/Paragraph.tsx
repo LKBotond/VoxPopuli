@@ -5,7 +5,7 @@ interface PProps extends HTMLAttributes<HTMLParagraphElement> {
 }
 
 function P({ className = "", ...props }: PProps) {
-  const baseClasses = "w-full m-1 px-4 py-2 rounded text-white border";
+  const baseClasses = "w-full m-1 px-4 py-2 rounded text-gray-200 background";
 
   return <p className={`${baseClasses} ${className}`} {...props} />;
 }
