@@ -1,14 +1,17 @@
-import { useState } from "react";
-import { buildResponseTrees } from "../../utils/comments";
+import { useMemo, useState } from "react";
 import type { CommentRequest, CommentResponse } from "../../contracts/Comment";
 import { sendMessage } from "../../api/VoxPopuliApi";
 import * as UI from "../Index";
 import type { CommentMessage } from "../../types/MessageTypes";
 
+export type CommentNode = CommentResponse & {
+  replies: CommentNode[];
+};
+
 export interface CommentViewProps {
   comments: CommentResponse[];
   userAlias: string;
-  sourceLinkHash:string
+  sourceLinkHash: string;
 }
 
 export function CommentView({
@@ -16,10 +19,39 @@ export function CommentView({
   userAlias,
   sourceLinkHash,
 }: CommentViewProps) {
+  //hooks
   const [commentList, setCommentList] = useState<CommentResponse[]>(
     comments ?? [],
   );
-  const roots = buildResponseTrees(commentList);
+
+  //utils
+  const buildResponseTrees = (comments: CommentResponse[]): CommentNode[] => {
+    if (!Array.isArray(comments)) return [];
+    const map = new Map<string, CommentNode>();
+    const roots: CommentNode[] = [];
+    comments.forEach((comment) => {
+      map.set(comment.commentId, { ...comment, replies: [] });
+    });
+    comments.forEach((comment) => {
+      const commentNode = map.get(comment.commentId)!;
+      if (comment.parentId) {
+        const parent = map.get(comment.parentId);
+        parent?.replies.push(commentNode);
+      } else {
+        roots.push(commentNode);
+      }
+    });
+
+    return roots;
+  };
+
+  const orderTreesByNewest = (comments: CommentNode[]) => {
+    return comments.sort((left, right) => {
+      return (
+        new Date(right.updatedAt).getTime() - new Date(left.updatedAt).getTime()
+      );
+    });
+  };
 
   const buildCommentRequest = (
     parentId: string | undefined,
@@ -51,6 +83,10 @@ export function CommentView({
     const response: CommentResponse = await sendMessage(commentRequest);
     setCommentList((prev) => [...prev, response]);
   };
+
+  const roots = useMemo(() => {
+    return orderTreesByNewest(buildResponseTrees(commentList));
+  }, [commentList]);
 
   return (
     <UI.Section className="grid-cols-5">
