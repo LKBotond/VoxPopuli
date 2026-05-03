@@ -1,8 +1,8 @@
-import type { ViewProps } from "../../types/Props";
-import { VIEWS } from "../../types/Constants";
-import * as UI from "../Index";
-import { submitLoginForm } from "../../api/handlers/HandleSubmission";
-import { redirect } from "../../utils/helpers";
+import type { ViewProps } from "../../../shared/types/Props";
+import { VIEWS } from "../../../shared/types/Constants";
+import * as UI from "../../../shared/UI";
+import { submitLoginForm } from "../../../api/handlers/HandleSubmission";
+import { redirect } from "../../../shared/utils/helpers";
 
 export function LoginView({ changeViewTo }: ViewProps) {
   const hanldeLogin = async (event: React.SubmitEvent) => {

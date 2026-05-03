@@ -1,6 +1,6 @@
-import { handleLogout } from "../../api/handlers/HandleSubmission";
-import { redirect } from "../../utils/helpers";
-import * as UI from "../Index";
+import { handleLogout } from "../../../api/handlers/HandleSubmission";
+import { redirect } from "../../../shared/utils/helpers";
+import * as UI from "../../../shared/UI";
 
 export function InteriorView() {
   const logout = async (event: React.MouseEvent<HTMLButtonElement>) => {

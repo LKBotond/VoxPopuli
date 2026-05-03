@@ -1,16 +1,16 @@
 import React from "react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import type { View } from "../types/View";
-import { VIEWS } from "../types/Constants";
-import type { ViewProps } from "../types/Props";
-import { IndexView } from "../components/views/IndexView";
-import { LoginView } from "../components/views/LoginView";
-import { RegistrationView } from "../components/views/RegistrationView";
-import ".././styles/Tailwind.css";
-import Main from "../components/generics/Main";
+import type { View } from "../../shared/types/View";
+import { VIEWS } from "../../shared/types/Constants";
+import type { ViewProps } from "../../shared/types/Props";
+import { IndexView } from "../../features/exterior/components/IndexView";
+import { LoginView } from "../../features/exterior/components/LoginView";
+import { RegistrationView } from "../../features/exterior/components/RegistrationView";
+import "../../shared/styles/Tailwind.css"
+import Main from "../../shared/components/Main";
 
 const queryClient= new QueryClient();
-function App() {
+function ExteriorApp() {
   const [view, setView] = React.useState<View>(VIEWS.INDEX);
   const handleViewChange = (newView: View) => {
     setView(newView);
@@ -37,4 +37,4 @@ function App() {
   )
 }
 
-export default App;
+export default ExteriorApp;

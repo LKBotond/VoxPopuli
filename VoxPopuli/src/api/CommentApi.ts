@@ -1,9 +1,9 @@
-import type { ApiRequest, AuthHeader } from "../contracts/ApiRequest";
+import type { ApiRequest, AuthHeader } from "../shared/contracts/ApiRequest";
 import type {
   CommentEditRequest,
   CommentRequest,
   CommentResponse,
-} from "../contracts/Comment";
+} from "../shared/contracts/Comment";
 import { post, put, get, del } from "./VoxPopuliApi";
 
 export async function comment(

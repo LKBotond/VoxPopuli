@@ -1,10 +1,10 @@
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { InteriorView } from "../components/views/InteriorView";
-import ".././styles/Tailwind.css";
-import Main from "../components/generics/Main";
+import { InteriorView } from "../../features/interior/components/InteriorView";
+import "../../shared/styles/Tailwind.css"
+import Main from "../../shared/components/Main";
 
 const queryClient = new QueryClient();
-function App() {
+function InteriorApp() {
   const renderView = () => {
     return <InteriorView />;
   };
@@ -16,4 +16,4 @@ function App() {
   );
 }
 
-export default App;
+export default InteriorApp;

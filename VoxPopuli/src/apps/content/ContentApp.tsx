@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { CommentView } from "../components/views/CommentView";
-import { useVoxPopuliData } from "../hooks/DataHook";
-import { useKeyboardShortcut } from "../hooks/KeyboardHook";
+import { CommentView } from "../../features/comment/components/CommentView";
+import { useVoxPopuliData } from "../../shared/hooks/DataHook";
+import { useKeyboardShortcut } from "../../shared/hooks/KeyboardHook";
 
-function App() {
+function ContentApp() {
   const [isVisible, setIsVisible] = useState(false);
   const { comments, userAlias, sourceLinkHash } = useVoxPopuliData();
 
@@ -23,4 +23,4 @@ function App() {
     />
   );
 }
-export default App;
+export default ContentApp;

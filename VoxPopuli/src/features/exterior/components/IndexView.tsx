@@ -1,7 +1,7 @@
-import type { ViewProps } from "../../types/Props";
-import { VIEWS } from "../../types/Constants";
-import Button from "../generics/Button";
-import UnorderedList from "../generics/UnorderedList";
+import type { ViewProps } from "../../../shared/types/Props";
+import { VIEWS } from "../../../shared/types/Constants";
+import Button from "../../../shared/components/Button";
+import UnorderedList from "../../../shared/components/UnorderedList";
 
 export function IndexView({ changeViewTo }: ViewProps) {
   return (

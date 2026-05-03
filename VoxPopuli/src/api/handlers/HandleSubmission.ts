@@ -3,8 +3,8 @@ import type {
   LoginMessage,
   RegistrationMessage,
   LogoutMessage,
-} from "../../types/MessageTypes";
-import type { LoginRequest, RegistrationRequest } from "../../contracts/Auth";
+} from "../../shared/types/MessageTypes";
+import type { LoginRequest, RegistrationRequest } from "../../shared/contracts/Auth";
 
 export async function submitLoginForm(formData: FormData) {
   const loginRequest: LoginMessage = buildLoginMessage(formData);

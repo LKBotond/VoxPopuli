@@ -1,7 +1,7 @@
 //import { useQuery } from "@tanstack/react-query";
-import { basePath } from "../contracts/Path";
-import type { AuthHeader } from "../contracts/ApiRequest";
-import type { ApiRequest } from "../contracts/ApiRequest";
+import { basePath } from "../shared/contracts/Path";
+import type { AuthHeader } from "../shared/contracts/ApiRequest";
+import type { ApiRequest } from "../shared/contracts/ApiRequest";
 
 export async function post<THeader extends HeadersInit, TPayload, TResponse>(
   path: string,

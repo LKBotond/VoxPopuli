@@ -1,6 +1,6 @@
 import { useState } from "react";
-import type { CommentResponse } from "../../contracts/Comment";
-import * as UI from "../Index";
+import type { CommentResponse } from "../../../shared/contracts/Comment";
+import * as UI from "../../../shared/UI";
 type CommentNode = CommentResponse & {
   replies: CommentNode[];
 };

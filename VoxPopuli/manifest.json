@@ -4,22 +4,22 @@
   "version": "1.0",
   "permissions": ["storage"],
   "background": {
-    "service_worker": "src/background.ts",
+    "service_worker": "src/apps/background/background.ts",
     "type": "module"
   },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["src/content/ContentScript.tsx"]
+      "js": ["src/apps/content/ContentMain.tsx"]
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["interior.html", "interior.js"],
+      "resources": ["src/entries/interior.html", "src/entries/exterior.html"],
       "matches": ["<all_urls>"]
     }
   ],
   "action": {
-    "default_popup": "index.html"
+    "default_popup": "src/entries/exterior.html"
   }
 }

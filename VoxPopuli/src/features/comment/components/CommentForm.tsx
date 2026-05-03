@@ -1,6 +1,6 @@
 import { useState } from "react";
-import type { FormProps } from "../generics/Form";
-import * as UI from "../Index";
+import type { FormProps } from "../../../shared/components/Form";
+import * as UI from "../../../shared/UI";
 
 interface CommentFormProps extends FormProps {
   parentId?: string;

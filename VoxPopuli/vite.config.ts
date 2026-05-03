@@ -8,30 +8,10 @@ export default defineConfig({
     tailwindcss(),
     webExtension({
       manifest: "manifest.json",
-      additionalInputs: ["interior.html"],
+      additionalInputs: ["src/entries/interior.html"],
     }),
   ],
   build: {
     watch: {},
   },
 });
-//export default defineConfig({
-//plugins: [react(), tailwindcss()],
-//base: "",
-//build: {
-//    watch: {},
-//    outDir: "dist",
-//    rollupOptions: {
-//      input: {
-//        popupIndex: resolve(__dirname, "index.html"),
-//        popupInterior: resolve(__dirname, "interior.html"),
-//        background: resolve(__dirname, "src/background.ts"),
-//      },
-//      output: {
-//        entryFileNames: "[name].js",
-//        chunkFileNames: "chunks/[name].js",
-//        assetFileNames: "assets/[name].[ext]",
-//      },
-//    },
-//  },
-//});

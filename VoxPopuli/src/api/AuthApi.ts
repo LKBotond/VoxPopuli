@@ -2,13 +2,13 @@ import type {
   LoginRequest,
   RegistrationRequest,
   SessionToken,
-} from "../contracts/Auth";
+} from "../shared/contracts/Auth";
 import type {
   ApiRequest,
   AuthHeader,
   OriginHeader,
-} from "../contracts/ApiRequest";
-import { saveSession, endSession } from "../utils/helpers";
+} from "../shared/contracts/ApiRequest";
+import { saveSession, endSession } from "../shared/utils/helpers";
 import { del, post } from "./VoxPopuliApi";
 
 export async function handleReregister(

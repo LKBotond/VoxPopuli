@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { sendMessage } from "../api/VoxPopuliApi";
-import { hashString } from "../utils/hash";
+import { sendMessage } from "../../api/VoxPopuliApi";
+import { hashString } from "../../shared/utils/hash";
 import type { CommentResponse } from "../contracts/Comment";
 
 export function useVoxPopuliData() {
@@ -12,7 +12,7 @@ export function useVoxPopuliData() {
     const init = async () => {
       const hexUrl = await hashString(window.location.href);
       setSourceLinkHash(hexUrl);
-      
+
       const commentRes = await sendMessage<CommentResponse[]>({
         action: "getComments",
         payload: hexUrl,
