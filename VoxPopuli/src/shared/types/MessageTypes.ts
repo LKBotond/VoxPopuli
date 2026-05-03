@@ -17,6 +17,9 @@ export type CommentGetMessage = BaseMessage<"getComments", string>;
 export type CommentMessage = BaseMessage<"comment", CommentRequest>;
 export type CommentEditMessage = BaseMessage<"edit", CommentEditRequest>;
 export type CommentDeleteMessag = BaseMessage<"deleteComment", string>;
+
+//errorHandling
+export type Unauthorized = BaseMessage<string>;
 export type UnknownActionResponse = BaseMessage<
   string,
   { error: "Unknown action" }

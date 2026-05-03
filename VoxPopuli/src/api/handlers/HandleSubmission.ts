@@ -4,6 +4,8 @@ import type {
   RegistrationMessage,
   LogoutMessage,
 } from "../../shared/types/MessageTypes";
+
+import * as Actions from "../../shared/types/Constants"
 import type { LoginRequest, RegistrationRequest } from "../../shared/contracts/Auth";
 
 export async function submitLoginForm(formData: FormData) {
@@ -33,15 +35,15 @@ export async function handleLogout() {
 
 function buildLoginMessage(formData: FormData): LoginMessage {
   const payload = mapToMessage<LoginRequest>(formData);
-  return { action: "login", payload: payload };
+  return { action: Actions.LOGIN, payload: payload };
 }
 function buildRegistrationMessage(formData: FormData): RegistrationMessage {
   const payload = mapToMessage<RegistrationRequest>(formData);
-  return { action: "register", payload: payload };
+  return { action: Actions.REGISTER, payload: payload };
 }
 
 function buildLogoutMessage(): LogoutMessage {
-  return { action: "logout", payload: undefined };
+  return { action: Actions.LOGOUT, payload: undefined };
 }
 function mapToMessage<T>(formData: FormData): T {
   return Object.fromEntries(formData.entries()) as T;

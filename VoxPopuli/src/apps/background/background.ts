@@ -4,6 +4,7 @@ import { loadSession } from "../../shared/utils/helpers.ts";
 import * as AuthAPI from "../../api/AuthApi.ts";
 import * as CommentAPI from "../../api/CommentApi.ts";
 import * as Builders from "../../shared/utils/builders.ts";
+import * as Actions from "../../shared/types/Constants.ts";
 
 chrome.runtime.onMessage.addListener(
   (message: RuntimeMessage, _, sendResponse) => {
@@ -32,7 +33,7 @@ async function handleAuthenticationMessaging(message: RuntimeMessage) {
     "chromeExtensionIdNotHardcodedHereButInEnvironmentalVariables";
   const originHeader = Builders.buildOriginHeader(placeholderOriginId);
   switch (message.action) {
-    case "login": {
+    case Actions.LOGIN: {
       const apiRequest = Builders.buildApiRequest(
         originHeader,
         message.payload,
@@ -40,7 +41,7 @@ async function handleAuthenticationMessaging(message: RuntimeMessage) {
       return await AuthAPI.handleLogin(apiRequest);
     }
 
-    case "register": {
+    case Actions.REGISTER: {
       const apiRequest = Builders.buildApiRequest(
         originHeader,
         message.payload,
@@ -65,21 +66,23 @@ async function handleAuthenticatedMessaging(message: RuntimeMessage) {
   try {
     const sessionToken: SessionToken | undefined = await loadSession();
 
-    if (!sessionToken) throw new Error("Unauthorized");
+    if (!sessionToken) {
+      return [];
+    }
     const authHeader = Builders.buildAuthHeader(
       sessionToken.sessionId,
       placeholderOriginId,
     );
 
     switch (message.action) {
-      case "logout": {
+      case Actions.LOGOUT: {
         const authHeader = Builders.buildAuthHeader(
           sessionToken.sessionId,
           placeholderOriginId,
         );
         return await AuthAPI.handleLogout(authHeader);
       }
-      case "comment": {
+      case Actions.COMMENT: {
         const apiRequest = Builders.buildApiRequest(
           authHeader,
           message.payload,
@@ -87,29 +90,28 @@ async function handleAuthenticatedMessaging(message: RuntimeMessage) {
         return await CommentAPI.comment(apiRequest);
       }
 
-      case "edit": {
+      case Actions.EDIT: {
         const apiRequest = Builders.buildApiRequest(
           authHeader,
           message.payload,
         );
         return await CommentAPI.edit(apiRequest);
       }
-      case "getComments": {
+      case Actions.GET_COMMENTS: {
         const apiRequest = Builders.buildApiRequest(
           authHeader,
           message.payload,
         );
         return await CommentAPI.getAll(apiRequest);
       }
-      case "deleteComment": {
+      case Actions.DELETE_COMMENT: {
         const apiRequest = Builders.buildApiRequest(
           authHeader,
           message.payload,
         );
         return await CommentAPI.deleteComment(apiRequest);
       }
-      case "getAlias": {
-        console.log("alias: " + sessionToken.alias);
+      case Actions.GET_ALIAS: {
         return sessionToken.alias;
       }
 
