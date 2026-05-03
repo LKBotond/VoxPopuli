@@ -1,10 +1,10 @@
-import type { RuntimeMessage } from "../../shared/types/MessageTypes.ts";
+import type { RuntimeMessage } from "../../shared/api/frontend/MessageTypes.ts";
 import type { SessionToken } from "../../shared/contracts/Auth.ts";
 import { loadSession } from "../../shared/utils/helpers.ts";
-import * as AuthAPI from "../../api/AuthApi.ts";
-import * as CommentAPI from "../../api/CommentApi.ts";
+import * as AuthAPI from "../../features/exterior/services/AuthService.ts";
+import * as CommentAPI from "../../features/comment/services/backend/BackendCommentService.ts"
 import * as Builders from "../../shared/utils/builders.ts";
-import * as Actions from "../../shared/types/Constants.ts";
+import * as Actions from "../../shared/api/frontend/Actions"
 
 chrome.runtime.onMessage.addListener(
   (message: RuntimeMessage, _, sendResponse) => {

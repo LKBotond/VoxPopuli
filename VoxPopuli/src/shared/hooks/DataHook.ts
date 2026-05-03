@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { sendMessage } from "../../api/VoxPopuliApi";
+import { sendMessage } from "../api/frontend/Messaging";
 import { hashString } from "../../shared/utils/hash";
 import type { CommentResponse } from "../contracts/Comment";
 

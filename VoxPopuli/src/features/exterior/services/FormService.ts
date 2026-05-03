@@ -1,12 +1,12 @@
-import { sendMessage } from "../VoxPopuliApi";
+import { sendMessage } from "../../../shared/api/frontend/Messaging";
 import type {
   LoginMessage,
   RegistrationMessage,
   LogoutMessage,
-} from "../../shared/types/MessageTypes";
+} from "../../../shared/api/frontend/MessageTypes";
 
-import * as Actions from "../../shared/types/Constants"
-import type { LoginRequest, RegistrationRequest } from "../../shared/contracts/Auth";
+import * as Actions from "../../../shared/api/frontend/Actions"
+import type { LoginRequest, RegistrationRequest } from "../../../shared/contracts/Auth";
 
 export async function submitLoginForm(formData: FormData) {
   const loginRequest: LoginMessage = buildLoginMessage(formData);

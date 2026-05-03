@@ -1,10 +1,10 @@
-import type { ApiRequest, AuthHeader } from "../shared/contracts/ApiRequest";
+import type { ApiRequest, AuthHeader } from "../../../../shared/contracts/ApiRequest";
 import type {
   CommentEditRequest,
   CommentRequest,
   CommentResponse,
-} from "../shared/contracts/Comment";
-import { post, put, get, del } from "./VoxPopuliApi";
+} from "../../../../shared/contracts/Comment";
+import { post, put, get, del } from "../../../../shared/api/backend/VoxPopuliApi";
 
 export async function comment(
   commentRequest: ApiRequest<AuthHeader, CommentRequest>,

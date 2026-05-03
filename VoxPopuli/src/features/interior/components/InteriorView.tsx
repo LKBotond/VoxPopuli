@@ -1,4 +1,4 @@
-import { handleLogout } from "../../../api/handlers/HandleSubmission";
+import { handleLogout } from "../../exterior/services/FormService";
 import { redirect } from "../../../shared/utils/helpers";
 import * as UI from "../../../shared/UI";
 

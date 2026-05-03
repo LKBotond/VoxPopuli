@@ -1,7 +1,7 @@
 import type { ViewProps } from "../../../shared/types/Props";
 import { VIEWS } from "../../../shared/types/Constants";
 import * as UI from "../../../shared/UI";
-import { submitRegistrationForm } from "../../../api/handlers/HandleSubmission";
+import { submitRegistrationForm } from "../services/FormService";
 import { redirect } from "../../../shared/utils/helpers";
 
 export function RegistrationView({ changeViewTo }: ViewProps) {

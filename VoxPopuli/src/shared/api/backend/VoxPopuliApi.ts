@@ -1,14 +1,15 @@
 //import { useQuery } from "@tanstack/react-query";
-import { basePath } from "../shared/contracts/Path";
-import type { AuthHeader } from "../shared/contracts/ApiRequest";
-import type { ApiRequest } from "../shared/contracts/ApiRequest";
+import { basePath } from "../../contracts/Path";
+import type { AuthHeader } from "../../contracts/ApiRequest";
+import type { ApiRequest } from "../../contracts/ApiRequest";
+import * as Methods from "./Methods";
 
 export async function post<THeader extends HeadersInit, TPayload, TResponse>(
   path: string,
   request: ApiRequest<THeader, TPayload>,
 ): Promise<TResponse> {
   const response = await fetch(basePath + path, {
-    method: "POST",
+    method: Methods.POST,
     headers: request.headers,
     body: JSON.stringify(request.payload),
   });
@@ -26,7 +27,7 @@ export async function put<
   Tresponse,
 >(path: string, payload: ApiRequest<Theader, Tpayload>): Promise<Tresponse> {
   const response = await fetch(basePath + path, {
-    method: "PUT",
+    method: Methods.PUT,
     headers: payload.headers,
     body: JSON.stringify(payload.payload),
   });
@@ -40,7 +41,7 @@ export async function get<Tresponse>(
   headers: AuthHeader,
 ): Promise<Tresponse> {
   const response = await fetch(basePath + path, {
-    method: "GET",
+    method: Methods.GET,
     headers: headers,
   });
   if (!response.ok) {
@@ -53,7 +54,7 @@ export async function del<Tresponse>(
   headers: AuthHeader,
 ): Promise<Tresponse | void> {
   const response = await fetch(basePath + path, {
-    method: "DELETE",
+    method: Methods.DELETE,
     headers: headers,
   });
   if (!response.ok) {
@@ -65,12 +66,3 @@ export async function del<Tresponse>(
   return response.json();
 }
 
-export async function sendMessage<T>(message: object): Promise<T> {
-  return new Promise<T>((resolve, reject) => {
-    chrome.runtime.sendMessage(message, (response) => {
-      if (chrome.runtime.lastError) {
-        reject(chrome.runtime.lastError);
-      } else resolve(response as T);
-    });
-  });
-}

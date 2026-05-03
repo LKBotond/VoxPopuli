@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import type { CommentRequest, CommentResponse } from "../../../shared/contracts/Comment";
-import { sendMessage } from "../../../api/VoxPopuliApi";
+import { sendMessage } from "../../../shared/api/frontend/Messaging";
 import * as UI from "../../../shared/UI";
-import type { CommentMessage } from "../../../shared/types/MessageTypes";
+import type { CommentMessage } from "../../../shared/api/frontend/MessageTypes";
 
 type CommentNode = CommentResponse & {
   replies: CommentNode[];

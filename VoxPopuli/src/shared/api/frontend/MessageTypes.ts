@@ -1,5 +1,5 @@
-import type { LoginRequest, RegistrationRequest } from "../contracts/Auth";
-import type { CommentRequest, CommentEditRequest } from "../contracts/Comment";
+import type { LoginRequest, RegistrationRequest } from "../../contracts/Auth";
+import type { CommentRequest, CommentEditRequest } from "../../contracts/Comment";
 
 // Base type
 export interface BaseMessage<Action extends string, Payload = undefined> {
