@@ -1,0 +1,30 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: docker compose -f docker-compose.dev.yml build
+    
+    - name: Start services
+      run: docker compose -f docker-compose.dev.yml up -d
+
+    - name: Show container status
+      run: docker ps
+
+    - name: Show logs
+      run: docker compose -f docker-compose.dev.yml logs
+
+    - name: Stop containers
+      run: docker compose -f docker-compose.dev.yml down
