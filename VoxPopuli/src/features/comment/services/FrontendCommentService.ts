@@ -1,6 +1,7 @@
 import { sendMessage } from "../../../shared/api/frontend/Messaging";
 import { hashString } from "../../../shared/utils/hash";
 import type { CommentResponse } from "../../../shared/contracts/Comment";
+import type { CommentRequest } from "../../../shared/contracts/Comment";
 import * as Actions from "../../../shared/api/frontend/Actions";
 
 function cleanSourceLink(sourceLink: string) {
@@ -42,4 +43,19 @@ export async function getUserAlias(): Promise<string> {
     action: Actions.GET_ALIAS,
     payload: null,
   });
+}
+
+export function buildCommentRequest(
+  parentId: string | undefined,
+  content: string,
+  userAlias: string,
+  sourceLinkHash: string,
+): CommentRequest {
+  return {
+    parentId,
+    content,
+    alias: userAlias,
+    sourceLinkHash: sourceLinkHash,
+    updatedAt: new Date().toISOString(),
+  };
 }

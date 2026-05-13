@@ -12,6 +12,8 @@ type CommentProps = {
 function Comment({ comment, onReply, className = "" }: CommentProps) {
   const baseClasses = "ml-1 p-2 pr-0 pb-0 min-w-0";
   const [showReplyForm, setShowReplyForm] = useState(false);
+  const [showRepplies, setShowRepllies] = useState(false);
+
   return (
     <UI.Div className={`${baseClasses} ${className}`.trim()}>
       <UI.H>{`${comment.alias} says`}</UI.H>
@@ -19,6 +21,20 @@ function Comment({ comment, onReply, className = "" }: CommentProps) {
 
       <UI.Button onClick={() => setShowReplyForm((status) => !status)}>
         {showReplyForm ? "Cancel" : "Reply"}
+      </UI.Button>
+
+      {showRepplies &&
+        comment.replies?.map((reply) => (
+          <Comment
+            key={reply.commentId}
+            comment={reply}
+            onReply={onReply}
+            className=" border-solid border-l-2 border-gray-200"
+          />
+        ))}
+
+      <UI.Button onClick={() => setShowRepllies((status) => !status)}>
+        {showRepplies ? "Hide" : "Show"}
       </UI.Button>
 
       {showReplyForm && (
@@ -30,15 +46,6 @@ function Comment({ comment, onReply, className = "" }: CommentProps) {
           }}
         />
       )}
-
-      {comment.replies?.map((reply) => (
-        <Comment
-          key={reply.commentId}
-          comment={reply}
-          onReply={onReply}
-          className=" border-solid border-l-2 border-gray-200"
-        />
-      ))}
     </UI.Div>
   );
 }

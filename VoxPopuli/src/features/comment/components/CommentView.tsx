@@ -1,12 +1,16 @@
 import { useMemo, useState } from "react";
-import type { CommentRequest, CommentResponse } from "../../../shared/contracts/Comment";
+import type {
+  CommentRequest,
+  CommentResponse,
+} from "../../../shared/contracts/Comment";
 import { sendMessage } from "../../../shared/api/frontend/Messaging";
 import * as UI from "../../../shared/UI";
 import type { CommentMessage } from "../../../shared/api/frontend/MessageTypes";
-
-type CommentNode = CommentResponse & {
-  replies: CommentNode[];
-};
+import {
+  buildResponseTrees,
+  orderTreesByNewest,
+} from "../services/CommentService";
+import { buildCommentRequest } from "../services/FrontendCommentService";
 
 const baseClasses = "grid-cols-5 transition-all duration-200 ease-out";
 interface CommentViewProps {
@@ -27,48 +31,6 @@ export function CommentView({
     comments ?? [],
   );
 
-  //utils
-  const buildResponseTrees = (comments: CommentResponse[]): CommentNode[] => {
-    if (!Array.isArray(comments)) return [];
-    const map = new Map<string, CommentNode>();
-    const roots: CommentNode[] = [];
-    comments.forEach((comment) => {
-      map.set(comment.commentId, { ...comment, replies: [] });
-    });
-    comments.forEach((comment) => {
-      const commentNode = map.get(comment.commentId)!;
-      if (comment.parentId) {
-        const parent = map.get(comment.parentId);
-        parent?.replies.push(commentNode);
-      } else {
-        roots.push(commentNode);
-      }
-    });
-
-    return roots;
-  };
-
-  const orderTreesByNewest = (comments: CommentNode[]) => {
-    return comments.sort((left, right) => {
-      return (
-        new Date(right.updatedAt).getTime() - new Date(left.updatedAt).getTime()
-      );
-    });
-  };
-
-  const buildCommentRequest = (
-    parentId: string | undefined,
-    content: string,
-  ): CommentRequest => {
-    return {
-      parentId,
-      content,
-      alias: userAlias,
-      sourceLinkHash: sourceLinkHash,
-      updatedAt: new Date().toISOString(),
-    };
-  };
-
   const buildCommentMessage = (request: CommentRequest): CommentMessage => {
     return {
       action: "comment",
@@ -81,7 +43,7 @@ export function CommentView({
     content: string,
   ) => {
     const commentRequest = buildCommentMessage(
-      buildCommentRequest(parentId, content),
+      buildCommentRequest(parentId, content, userAlias, sourceLinkHash),
     );
     const response: CommentResponse = await sendMessage(commentRequest);
     setCommentList((prev) => [...prev, response]);
