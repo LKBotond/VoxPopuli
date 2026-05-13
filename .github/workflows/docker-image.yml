@@ -24,7 +24,7 @@ jobs:
       run: docker ps
 
     - name: Show logs
-      run: docker compose -f docker-compose.dev.yml logs
+      run: docker compose -f docker-compose-dev.yml logs
 
     - name: Stop containers
-      run: docker compose -f docker-compose.dev.yml down
+      run: docker compose -f docker-compose-dev.yml down
