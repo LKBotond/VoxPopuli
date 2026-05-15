@@ -14,10 +14,11 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: VoxPopuli/ppackage-lock.json
+          cache-dependency-path: VoxPopuli/package-lock.json
 
       - name: Install dependencies
         working-directory: VoxPopuli
         run: npm ci
       - name: Build Vite app
+        working-directory: VoxPopuli
         run: npm run build
