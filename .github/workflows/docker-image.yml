@@ -2,29 +2,29 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
+    paths-ignore:
+      - "**.md"
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker compose -f docker-compose-dev.yml build
-    
-    - name: Start services
-      run: docker compose -f docker-compose-dev.yml up -d
+      - uses: actions/checkout@v4
+      - name: Build the Docker image
+        run: docker compose -f docker-compose-dev.yml build
 
-    - name: Show container status
-      run: docker ps
+      - name: Start services
+        run: docker compose -f docker-compose-dev.yml up -d
 
-    - name: Show logs
-      run: docker compose -f docker-compose-dev.yml logs
+      - name: Show container status
+        run: docker ps
 
-    - name: Stop containers
-      run: docker compose -f docker-compose-dev.yml down
+      - name: Show logs
+        run: docker compose -f docker-compose-dev.yml logs
+
+      - name: Stop containers
+        run: docker compose -f docker-compose-dev.yml down

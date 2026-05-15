@@ -31,7 +31,7 @@ With this approach, I’ve learned how to use Docker and Dockerfiles, how to deb
 
 **Persistance:** JPA, PostgreSQL, Redis
 
-**Tools:** Maven, Git
+**Tools:** Maven, Git, Github Actions
 
 ### Frontend:
 

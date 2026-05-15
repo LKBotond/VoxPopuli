@@ -2,7 +2,13 @@ name: Vite Ci
 on:
   push:
     branches: ["main"]
-  pull_request: 
+    paths:
+      - "VoxPopuli/src/**"
+      - "VoxPopuli/public/**"
+      - "VoxPopuli/package.json"
+      - "VoxPopuli/vite.config.ts"
+      - "VoxPopuli/tsconfig.json"
+  pull_request:
     branches: ["main"]
 jobs:
   build:
