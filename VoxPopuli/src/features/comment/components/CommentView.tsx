@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import type {
   CommentRequest,
   CommentResponse,
@@ -17,6 +17,7 @@ interface CommentViewProps {
   comments: CommentResponse[];
   userAlias: string;
   sourceLinkHash: string;
+  addComment: (comment: CommentResponse) => void;
   className?: string;
 }
 
@@ -24,20 +25,15 @@ export function CommentView({
   comments,
   userAlias,
   sourceLinkHash,
+  addComment,
   className = "",
 }: CommentViewProps) {
-  //hooks
-  const [commentList, setCommentList] = useState<CommentResponse[]>(
-    comments ?? [],
-  );
-
   const buildCommentMessage = (request: CommentRequest): CommentMessage => {
     return {
       action: "comment",
       payload: request,
     };
   };
-
   const handleComment = async (
     parentId: string | undefined,
     content: string,
@@ -46,12 +42,12 @@ export function CommentView({
       buildCommentRequest(parentId, content, userAlias, sourceLinkHash),
     );
     const response: CommentResponse = await sendMessage(commentRequest);
-    setCommentList((prev) => [...prev, response]);
+    addComment(response);
   };
 
   const roots = useMemo(() => {
-    return orderTreesByNewest(buildResponseTrees(commentList));
-  }, [commentList]);
+    return orderTreesByNewest(buildResponseTrees(comments));
+  }, [comments]);
 
   return (
     <UI.Section className={`${baseClasses} ${className}`.trim()}>

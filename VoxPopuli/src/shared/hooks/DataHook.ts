@@ -28,6 +28,8 @@ export function useVoxPopuliData() {
 
     init();
   }, []);
-
-  return { comments, userAlias, sourceLinkHash };
+  const addComment = (comment: CommentResponse) => {
+    setComments((prev) => [...prev, comment]);
+  };
+  return { comments, userAlias, sourceLinkHash, addComment };
 }

@@ -5,16 +5,17 @@ import { useKeyboardShortcut } from "../../shared/hooks/KeyboardHook";
 
 function ContentApp() {
   const [isVisible, setIsVisible] = useState(false);
-  const { comments, userAlias, sourceLinkHash } = useVoxPopuliData();
+  const { comments, userAlias, sourceLinkHash, addComment } =
+    useVoxPopuliData();
 
   useKeyboardShortcut("k", () => setIsVisible((prev) => !prev));
 
-  console.log("alias: " + userAlias);
   return (
     <CommentView
       comments={comments}
       userAlias={userAlias}
       sourceLinkHash={sourceLinkHash}
+      addComment={addComment}
       className={
         isVisible
           ? "opacity-100 scale-100"

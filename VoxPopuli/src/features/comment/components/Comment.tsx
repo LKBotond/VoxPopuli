@@ -18,11 +18,14 @@ function Comment({ comment, onReply, className = "" }: CommentProps) {
     <UI.Div className={`${baseClasses} ${className}`.trim()}>
       <UI.H>{`${comment.alias} says`}</UI.H>
       <UI.P>{comment.content}</UI.P>
-
-      <UI.Button onClick={() => setShowReplyForm((status) => !status)}>
-        {showReplyForm ? "Cancel" : "Reply"}
-      </UI.Button>
-
+      <UI.Div className="flex">
+        <UI.Button onClick={() => setShowReplyForm((status) => !status)}>
+          {showReplyForm ? "Cancel" : "Reply"}
+        </UI.Button>
+        <UI.Button onClick={() => setShowRepllies((status) => !status)}>
+          {showRepplies ? "Hide" : "Show"}
+        </UI.Button>
+      </UI.Div>
       {showRepplies &&
         comment.replies?.map((reply) => (
           <Comment
@@ -32,10 +35,6 @@ function Comment({ comment, onReply, className = "" }: CommentProps) {
             className=" border-solid border-l-2 border-gray-200"
           />
         ))}
-
-      <UI.Button onClick={() => setShowRepllies((status) => !status)}>
-        {showRepplies ? "Hide" : "Show"}
-      </UI.Button>
 
       {showReplyForm && (
         <UI.CommentForm

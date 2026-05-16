@@ -25,7 +25,6 @@ export async function endSession(): Promise<void> {
 
 export async function loadSession(): Promise<SessionToken | undefined> {
   const { session } = await chrome.storage.session.get("session");
-  console.log("requested session:", session);
   return session as SessionToken | undefined;
 }
 
