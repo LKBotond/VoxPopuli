@@ -1,0 +1,24 @@
+import { handleLogout } from "../services/UserService";
+import { redirect } from "@/entrypoints/common/utils/helpers";
+import * as UI from "@/entrypoints/common/components/UI";
+
+export function InteriorView() {
+  const logout = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (!(await handleLogout())) {
+      alert("Something went wrong");
+      return;
+    }
+    return redirect("index.html");
+  };
+  return (
+    <UI.UL className="text-center">
+      <li>
+        <UI.H className="mb-2">You are in</UI.H>
+      </li>
+      <li>
+        <UI.Button onClick={logout}>logout</UI.Button>
+      </li>
+    </UI.UL>
+  );
+}
